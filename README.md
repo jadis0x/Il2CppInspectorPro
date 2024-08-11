@@ -5,7 +5,7 @@ This is a continuation of [Il2CppInspector, by djkaty](https://github.com/djkaty
 
 ![Il2CppInspector GUI](docs/GUI_Preview.png)
 
-### Redux only features
+### Main features
 
 * Support for metadata version 29 and 29.1, with full reconstruction of custom attributes
 * Proper extraction of static array initializer contents with their correct length
@@ -26,8 +26,6 @@ This is a continuation of [Il2CppInspector, by djkaty](https://github.com/djkaty
     - Automatic unloading of conflicting type libraries
     - Addition of custom fake string segment to show string literal contents in decompiler
     - A fake xref between MethodInfo instances and their corresponding method to quickly get the correct function
-
-### Main features
 
 * Output IL2CPP type definitions, metadata and method pointers as **[C# stub code](#creating-c-prototypes)**
 
