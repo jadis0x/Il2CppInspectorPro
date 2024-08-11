@@ -1,5 +1,5 @@
 # Il2CppInspector 2024
-Il2CppInspectorRedux helps you to reverse engineer IL2CPP applications, providing the most complete analysis currently available.
+Il2CppInspector helps you to reverse engineer IL2CPP applications, providing the most complete analysis currently available.
 
 This is a continuation of [Il2CppInspector, by djkaty](https://github.com/djkaty/Il2CppInspector) which has suspended development, and contains some new features and support for new metadata versions.
 
