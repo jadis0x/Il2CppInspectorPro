@@ -301,7 +301,9 @@ namespace Il2CppInspector.Outputs
 
         private void writeHeader() {
             writeLine("// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty");
+            writeLine("// Modified by: Jadis0x - https://github.com/jadis0x");
             writeLine("// Target Unity version: " + _model.UnityHeaders);
+            writeLine("// Created on: " + DateTime.Now.ToString("MMMM dd, yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture));
             writeLine("");
         }
 
