@@ -315,7 +315,7 @@ namespace Il2CppInspector.Outputs
                 .Replace("%GUID1%", guid1.ToString())
                 .Replace("%GUID2%", guid2.ToString())
                 .Replace("%GUID3%", guid3.ToString())
-                .Replace("%GUID4%", guid3.ToString());
+                .Replace("%GUID4%", guid4.ToString());
 
             WriteIfNotExists(Path.Combine(projectPath, filtersFile), filters);
 
