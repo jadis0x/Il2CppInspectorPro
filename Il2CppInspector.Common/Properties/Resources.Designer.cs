@@ -19,7 +19,7 @@ namespace Il2CppInspector.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -61,6 +61,37 @@ namespace Il2CppInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;UnityEngine/Camera.h&quot;
+        ///
+        ///app::Camera* Camera::MainCamera()
+        ///{
+        ///    static app::Camera* mainCamera = nullptr;
+        ///
+        ///    if (!mainCamera) {
+        ///        // If the mainCamera has not been initialized yet, retrieve it from Unity.
+        ///        mainCamera = app::Camera_get_main(nullptr);
+        ///    }
+        ///
+        ///    return mainCamera;
+        /// 
+        ///}
+        ///
+        ///app::Camera* Camera::CurrentCamera()
+        ///{
+        ///    static app::Camera* currentCamera = nullptr;
+        ///
+        ///    if (!currentCamera) {
+        ///        // If the currentCamera has not b [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Cpp_Camera {
+            get {
+                return ResourceManager.GetString("Cpp_Camera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
         ///// DLL entry point
         ///
@@ -79,11 +110,31 @@ namespace Il2CppInspector.Properties {
         ///    {
         ///    case DLL_PROCESS_ATTACH:
         ///        init_il2cpp();
-        ///        CreateThread(NULL, 0, (LPTHREAD_S [rest of string was truncated]&quot;;.
+        ///        CreateThread(NU [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_DLLMainCpp {
             get {
                 return ResourceManager.GetString("Cpp-DLLMainCpp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;UnityEngine/GameObject.h&quot;
+        ///#include &lt;helpers.h&gt;
+        ///
+        ///app::Component* GameObject::GetComponentByName(app::GameObject* go, const char* type)
+        ///{
+        /// app::Component* component = app::GameObject_GetComponentByName(go, ConvertToSystemString(type), nullptr);
+        ///
+        /// return component ? component : nullptr;
+        ///}
+        ///.
+        /// </summary>
+        internal static string Cpp_GameObject {
+            get {
+                return ResourceManager.GetString("Cpp_GameObject", resourceCulture);
             }
         }
         
@@ -107,8 +158,7 @@ namespace Il2CppInspector.Properties {
         ///    return (uintptr_t) GetModuleHandleW(L&quot;GameAssembly.dll&quot;);
         ///}
         ///
-        ///// Helper function to append text to a file
-        ///void il2cppi_l [rest of string was truncated]&quot;;.
+        ///// Helper function to append text to a  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_HelpersCpp {
             get {
@@ -135,9 +185,7 @@ namespace Il2CppInspector.Properties {
         ///void il2cppi_log_write(std::string text);
         ///
         ///// Helper function to open a new console window and redirect stdout there
-        ///void il2cppi_new_console();
-        ///
-        ///#if _MSC_V [rest of string was truncated]&quot;;.
+        ///void il2cppi_new_cons [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_HelpersH {
             get {
@@ -166,11 +214,40 @@ namespace Il2CppInspector.Properties {
         ///
         ///// Application-specific functions
         ///#define DO_APP_FUNC(a, r, n, p) extern r (*n) p
-        ///#define DO_APP_FUNC_METHODINFO(a, n) extern [rest of string was truncated]&quot;;.
+        ///#define DO_APP_FUNC_MET [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_Il2CppAppDataH {
             get {
                 return ResourceManager.GetString("Cpp-Il2CppAppDataH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;Il2cppBridge.h&quot;
+        ///#include &lt;iostream&gt;
+        ///
+        ///Il2cppBridge::Il2cppBridge(const char* imageName)
+        ///{
+        ///    domain = il2cpp_domain_get();
+        ///    if (!domain) {
+        ///        throw std::runtime_error(&quot;Failed to get the domain.&quot;);
+        ///    }
+        ///
+        ///    currentAssembly = il2cpp_domain_assembly_open(domain, imageName);
+        ///    if (!currentAssembly) {
+        ///        throw std::runtime_error(&quot;Failed to open assembly.&quot;);
+        ///    }
+        ///}
+        ///
+        ///Il2cppBridge&amp; Il2cppBridge::OpenAssembly(const char* imageName)
+        ///{
+        ///    if (co [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Cpp_Il2cppBridge {
+            get {
+                return ResourceManager.GetString("Cpp_Il2cppBridge", resourceCulture);
             }
         }
         
@@ -193,9 +270,7 @@ namespace Il2CppInspector.Properties {
         ///#define DO_APP_FUNC(a, r, n, p) r (*n) p
         ///#define DO_APP_FUNC_METHODINFO(a, n) struct MethodInfo ** n
         ///namespace app {
-        ///#include &quot;il2cpp-functions.h&quot;
-        ///}
-        ///#und [rest of string was truncated]&quot;;.
+        ///#include &quot;il2cpp-f [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_Il2CppInitCpp {
             get {
@@ -215,6 +290,37 @@ namespace Il2CppInspector.Properties {
         internal static string Cpp_Il2CppInitH {
             get {
                 return ResourceManager.GetString("Cpp_Il2CppInitH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;UnityEngine/Input.h&quot;
+        ///#include &lt;helpers.h&gt;
+        ///#include &lt;Windows.h&gt;
+        ///
+        ///float InputSystem::GetAxis(const char* axisName)
+        ///{
+        /// return app::Input_1_GetAxis(ConvertToSystemString(axisName), nullptr);
+        ///}
+        ///
+        ///int InputSystem::GetKey(KeyCode code)
+        ///{
+        /// return static_cast&lt;int&gt;(code);
+        ///}
+        ///
+        ///bool InputSystem::GetKeyDown(KeyCode key)
+        ///{
+        /// // Convert KeyCode enum value to virtual keycode
+        /// int vkey = GetKey(key);
+        ///
+        /// // Check key state with GetKeyState
+        /// return (GetKeyState(vkey) &amp; 0x80 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Cpp_Input {
+            get {
+                return ResourceManager.GetString("Cpp_Input", resourceCulture);
             }
         }
         
@@ -239,7 +345,7 @@ namespace Il2CppInspector.Properties {
         ///void Run()
         ///{
         ///    // Initialize thread data - DO NOT REMOVE
-        ///    il2cpp_thread_attach(il2cpp [rest of string was truncated]&quot;;.
+        ///    il2cpp_ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_MainCpp {
             get {
@@ -259,6 +365,58 @@ namespace Il2CppInspector.Properties {
         internal static string Cpp_MainH {
             get {
                 return ResourceManager.GetString("Cpp-MainH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;UnityEngine/Math.h&quot;
+        ///#include &lt;helpers.h&gt;
+        ///
+        ///const char* Math::Vector3::ToString(app::Vector3 v)
+        ///{
+        /// return (&quot;x: &quot; + std::to_string(v.x) + &quot; y: &quot; + std::to_string(v.y) + &quot; z: &quot; + std::to_string(v.z)).c_str();
+        ///}
+        ///
+        ///namespace app {
+        /// Vector3 operator+(const Vector3&amp; lhs, const Vector3&amp; rhs) {
+        ///  return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z };
+        /// }
+        ///
+        /// Vector3 operator*(const Vector3&amp; vec, float scalar) {
+        ///  return { vec.x * scalar, vec.y * scalar, vec.z * scalar } [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Cpp_Math {
+            get {
+                return ResourceManager.GetString("Cpp_Math", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;UnityEngine/Object.h&quot;
+        ///#include &lt;helpers.h&gt;
+        ///
+        ///app::GameObject__Array* Object::FindGameObjectsWithTag(const char* tag)
+        ///{
+        /// app::GameObject__Array* go_array_result = app::GameObject_FindGameObjectsWithTag(ConvertToSystemString(tag), nullptr);
+        ///
+        /// return go_array_result ? go_array_result : nullptr;
+        ///}
+        ///
+        ///bool Object::IsNull(app::Object_1* obj)
+        ///{
+        /// if (obj == nullptr || !app::Object_1_op_Implicit(obj, nullptr))
+        ///  return true;
+        ///
+        /// return false;
+        ///}.
+        /// </summary>
+        internal static string Cpp_Object {
+            get {
+                return ResourceManager.GetString("Cpp_Object", resourceCulture);
             }
         }
         
@@ -285,11 +443,47 @@ namespace Il2CppInspector.Properties {
         ///#ifndef PCH_IL2CPP_H
         ///#define PCH_IL2CPP_H
         ///
-        ///// add headers that you [rest of string was truncated]&quot;;.
+        ///// add headers [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_PCHIl2CppH {
             get {
                 return ResourceManager.GetString("Cpp-PCHIl2CppH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;UnityEngine/Transform.h&quot;
+        ///
+        ///Transform::Transform(float x, float y, float z)
+        ///{
+        /// this-&gt;x = x;
+        /// this-&gt;y = y;
+        /// this-&gt;z = z;
+        ///}
+        ///
+        ///Transform::Transform()
+        ///{
+        /// this-&gt;x = 0.f;
+        /// this-&gt;y = 0.f;
+        /// this-&gt;z = 0.f;
+        ///}
+        ///
+        ///app::Transform* Transform::GetTransform(app::GameObject* go)
+        ///{
+        /// if (!go || !app::GameObject_get_transform) return nullptr;
+        ///
+        /// app::Transform* __transform = app::GameObject_get_transform(go, nullptr);
+        ///
+        /// return __transform ? __transform : nullptr;
+        ///}
+        ///
+        ///app:: [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Cpp_Transform {
+            get {
+                return ResourceManager.GetString("Cpp_Transform", resourceCulture);
             }
         }
         
@@ -307,8 +501,7 @@ namespace Il2CppInspector.Properties {
         ///      &lt;Filter&gt;framework&lt;/Filter&gt;
         ///    &lt;/ClCompile&gt;
         ///    &lt;ClCompile Include=&quot;framework\il2cpp-init.cpp&quot;&gt;
-        ///      &lt;Filter&gt;framework&lt;/Filter&gt;
-        ///     [rest of string was truncated]&quot;;.
+        ///      &lt;Filter&gt;framework&lt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CppProjFilters {
             get {
@@ -328,7 +521,7 @@ namespace Il2CppInspector.Properties {
         ///      &lt;Configuration&gt;Release&lt;/Configuration&gt;
         ///      &lt;Platform&gt;Win32&lt;/Platform&gt;
         ///    &lt;/ProjectConfiguration&gt;
-        ///    &lt;ProjectConfiguration  [rest of string was truncated]&quot;;.
+        ///    &lt;ProjectCon [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CppProjTemplate {
             get {
@@ -350,7 +543,7 @@ namespace Il2CppInspector.Properties {
         ///		Release|x64 = Release|x64
         ///		Release|x86 = Release|x86
         ///	EndGlobalSection
-        ///	GlobalSection(ProjectConfigurationPlatfo [rest of string was truncated]&quot;;.
+        ///	GlobalSection(ProjectConfig [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CppSlnTemplate {
             get {
@@ -370,7 +563,7 @@ namespace Il2CppInspector.Properties {
         ///    &lt;ProjectGuid&gt;{%PROJECTGUID%}&lt;/ProjectGuid&gt;
         ///    &lt;!--&lt;ProductVersion/&gt;--&gt;
         ///    &lt;!--&lt;SchemaVersion/&gt;--&gt;
-        ///    &lt;OutputType&gt;Li [rest of string was truncated]&quot;;.
+        ///    &lt;Ou [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CsProjTemplate {
             get {
@@ -399,6 +592,190 @@ namespace Il2CppInspector.Properties {
         internal static string CsSlnTemplate {
             get {
                 return ResourceManager.GetString("CsSlnTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///class Camera {
+        ///public:
+        /// /**
+        /// * This constructor is deleted to ensure that the Camera class cannot be instantiated.
+        /// */
+        /// Camera() = delete;
+        ///public:
+        /// /**
+        ///  * Retrieves the main camera of the Unity scene. This is typically the camera
+        ///  * designated as the main camera in the Unity editor.
+        ///  *
+        ///  * @return app::Camera* Pointer to the main camera object. Returns nullptr if
+        ///  *         the main camera is not found.
+        ///  */
+        /// static app::Camera* MainCamera();
+        ///
+        /// /**
+        ///  * Retrieves the curr [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string H_Camera {
+            get {
+                return ResourceManager.GetString("H_Camera", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///class GameObject {
+        ///public:
+        /// GameObject() = delete;
+        ///public:
+        /// static app::Component* GetComponentByName(app::GameObject* go, const char* type);
+        ///};.
+        /// </summary>
+        internal static string H_GameObject {
+            get {
+                return ResourceManager.GetString("H_GameObject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///struct Il2CppImage;
+        ///struct Il2CppDomain;
+        ///struct Il2CppAssembly;
+        ///struct Il2CppClass;
+        ///struct Il2CppType;
+        ///struct Il2CppObject;
+        ///
+        ///class Il2cppBridge {
+        ///public:
+        /// Il2cppBridge(const char* imageName);
+        /// Il2cppBridge&amp; OpenAssembly(const char* imageName);
+        /// Il2cppBridge&amp; find_class(const char* classNamespace, const char* className);
+        /// Il2CppObject* get_class();
+        ///public:
+        /// const Il2CppImage* GetCurrentImage();
+        ///private:
+        /// Il2CppDomain* domain;
+        ///private:
+        /// const Il2CppAssembly* currentAssembly;        /// [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string H_Il2cppBridge {
+            get {
+                return ResourceManager.GetString("H_Il2cppBridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///
+        ///// https://bytetool.web.app/en/ascii/
+        ///enum class KeyCode {
+        /// Undefined = -1,
+        /// Backspace = 0x08,
+        /// Tab = 0x09,
+        /// Clear = 0x0C,
+        /// Enter = 0x0D,
+        /// Shift = 0x10,
+        /// Ctrl = 0x11,
+        /// Alt = 0x12,
+        /// Pause = 0x13,
+        /// CapsLock = 0x14,
+        /// Esc = 0x1B,
+        /// Spacebar = 0x20,
+        /// PageUp = 0x21,
+        /// PageDown = 0x22,
+        /// End = 0x23,
+        /// Home = 0x24,
+        /// LeftArrow = 0x25,
+        /// UpArrow = 0x26,
+        /// RightArrow = 0x27,
+        /// DownArrow = 0x28,
+        /// Select = 0x29,
+        /// Print = 0x2A,
+        /// Execute = 0x2B,
+        /// PrintScreen = 0x2C,
+        /// Insert = 0x2D,
+        /// D [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string H_Input {
+            get {
+                return ResourceManager.GetString("H_Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///namespace Math {
+        /// namespace Vector3 {
+        ///  const char* ToString(app::Vector3 v);
+        /// }
+        ///}
+        ///
+        ///namespace app {
+        /// Vector3 operator+(const Vector3&amp; lhs, const Vector3&amp; rhs);
+        /// Vector3 operator*(const Vector3&amp; vec, float scalar);
+        /// Vector3 operator-(const Vector3&amp; lhs, const Vector3&amp; rhs);
+        ///}.
+        /// </summary>
+        internal static string H_Math {
+            get {
+                return ResourceManager.GetString("H_Math", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///#include &lt;type_traits&gt;
+        ///#include &quot;Il2cppBridge.h&quot;
+        ///#include &lt;vector&gt;
+        ///#include &lt;string&gt;
+        ///
+        ///// credit by @ALittlePatate
+        ///// Utility macro: Used to get the value of a specific field from an object.
+        ///// This macro returns the value at a memory offset within the object.
+        ///#define get_field_value(object, type, field)  *(type*)((uintptr_t)object + field-&gt;offset)
+        ///
+        ///class Object {
+        ///public:
+        /// // Prevent instantiation of the Object class.
+        /// Object() = delete;
+        ///public:
+        /// /**
+        /// * @param obj A pointer to [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string H_Object {
+            get {
+                return ResourceManager.GetString("H_Object", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///class Transform {
+        ///public:
+        /// Transform(float x, float y, float z);
+        /// Transform();
+        ///public:
+        /// static app::Transform* GetTransform(app::GameObject* go);
+        /// app::Vector3 GetPosition(app::Transform* transform);
+        /// app::Quaternion GetRotation(app::Transform* transform);
+        /// app::Vector3 GetForward(app::Transform* transform);
+        /// app::Vector3 GetRight(app::Transform* transform);
+        /// app::Quaternion QuaternionEuler(app::Vector3 eulerAngles);
+        /// app::Quaternion QuaternionIdentity();
+        ///public:
+        /// // e.g. NolanB [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string H_Transform {
+            get {
+                return ResourceManager.GetString("H_Transform", resourceCulture);
             }
         }
         
