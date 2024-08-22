@@ -191,6 +191,25 @@ namespace Il2CppInspector
                     Header.attributeDataRangeSize / Sizeof(typeof(Il2CppCustomAttributeDataRange)));
             }
 
+            if (Version is 29 or 31)
+            {
+                // 29.2/31.2 added a new isUnmanagedCallersOnly flag to Il2CppMethodDefinition.
+                // This offsets all subsequent entries by one - we can detect this by checking the
+                // top token byte (which should always be 0x06).
+
+                if (Methods.Length >= 2)
+                {
+                    var secondToken = Methods[1].token;
+                    if (secondToken >> 24 != 0x6)
+                    {
+                        Version += 0.2;
+
+                        Methods = ReadArray<Il2CppMethodDefinition>(Header.methodsOffset,
+                            Header.methodsCount / Sizeof(typeof(Il2CppMethodDefinition)));
+                    }
+                }
+            }
+
             // Get all metadata strings
             var pluginGetStringsResult = PluginHooks.GetStrings(this);
             if (pluginGetStringsResult.IsDataModified && !pluginGetStringsResult.IsInvalid)

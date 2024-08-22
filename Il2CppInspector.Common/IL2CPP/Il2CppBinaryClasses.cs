@@ -60,15 +60,19 @@ namespace Il2CppInspector
         [Version(Min = 22, Max = 29)]
         public ulong unresolvedVirtualCallCount;
 
-        [Version(Min = 29.1)]
+        [Version(Min = 29.1, Max = 29.1)]
+        [Version(Min = 31.1, Max = 31.1)]
         public ulong unresolvedIndirectCallCount;
 
         [Version(Min = 22)]
         public ulong unresolvedVirtualCallPointers;
 
-        [Version(Min = 29.1)]
+        [Version(Min = 29.1, Max = 29.1)]
+        [Version(Min = 31.1, Max = 31.1)]
         public ulong unresolvedInstanceCallPointers;
-        [Version(Min = 29.1)]
+
+        [Version(Min = 29.1, Max = 29.1)]
+        [Version(Min = 31.1, Max = 31.1)]
         public ulong unresolvedStaticCallPointers;
 
         // Added in metadata v23

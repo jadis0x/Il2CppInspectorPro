@@ -294,9 +294,9 @@ namespace Il2CppInspector
                 CodeRegistration = Image.ReadMappedObject<Il2CppCodeRegistration>(codeRegistration);
             }
 
-            if (Image.Version == 29 && (long)CodeRegistration.genericMethodPointersCount - MetadataRegistration.genericMethodTableCount > 0x10000)
+            if (Image.Version is 29 or 31 && (long)CodeRegistration.genericMethodPointersCount - MetadataRegistration.genericMethodTableCount > 0x10000)
             {
-                Image.Version = 29.1;
+                Image.Version += 0.1;
                 codeRegistration -= 2 * pointerSize;
                 CodeRegistration = Image.ReadMappedObject<Il2CppCodeRegistration>(codeRegistration);
             }

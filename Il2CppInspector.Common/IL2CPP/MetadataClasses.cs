@@ -342,8 +342,9 @@ namespace Il2CppInspector
         public ushort slot;
         public ushort parameterCount;
 
-        [Version(Min = 29.2, Max = 31)]
-        public bool isUnmanagedCallersOnly;
+        [Version(Min = 29.2, Max = 29.2)]
+        [Version(Min = 31.2, Max = 31.2)]
+        public byte isUnmanagedCallersOnly;
     }
 
     public class Il2CppParameterDefinition
