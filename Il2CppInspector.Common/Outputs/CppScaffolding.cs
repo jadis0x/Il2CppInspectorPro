@@ -309,13 +309,23 @@ namespace Il2CppInspector.Outputs
             var guid2 = Guid.NewGuid();
             var guid3 = Guid.NewGuid();
             var guid4 = Guid.NewGuid();
+            var guid5 = Guid.NewGuid();
+            var guid6 = Guid.NewGuid();
+            var guid7 = Guid.NewGuid();
+            var guid8 = Guid.NewGuid();
+
+
             var filtersFile = projectFile + ".filters";
 
             var filters = Resources.CppProjFilters
                 .Replace("%GUID1%", guid1.ToString())
                 .Replace("%GUID2%", guid2.ToString())
                 .Replace("%GUID3%", guid3.ToString())
-                .Replace("%GUID4%", guid4.ToString());
+                .Replace("%GUID4%", guid4.ToString())
+                .Replace("%GUID5%", guid4.ToString())
+                .Replace("%GUID6%", guid4.ToString())
+                .Replace("%GUID7%", guid4.ToString())
+                .Replace("%GUID8%", guid4.ToString());
 
             WriteIfNotExists(Path.Combine(projectPath, filtersFile), filters);
 
