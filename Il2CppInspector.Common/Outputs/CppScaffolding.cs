@@ -135,23 +135,13 @@ namespace Il2CppInspector.Outputs
             var srcUserPath = Path.Combine(projectPath, "user");
             var srcFxPath = Path.Combine(projectPath, "framework");
             var srcDataPath = Path.Combine(projectPath, "appdata");
+            var libPath = Path.Combine(projectPath, "lib");
 
             Directory.CreateDirectory(projectPath);
             Directory.CreateDirectory(srcUserPath);
             Directory.CreateDirectory(srcFxPath);
             Directory.CreateDirectory(srcDataPath);
-
-            var srcLibPublicPath = Path.Combine(projectPath, "lib", "public");
-            var srcLibPrivatePath = Path.Combine(projectPath, "lib", "private");
-
-            Directory.CreateDirectory(srcLibPublicPath);
-            Directory.CreateDirectory(srcLibPrivatePath);
-
-            var publicUnityEnginePath = Path.Combine(srcLibPublicPath, "UnityEngine");
-            var privateUnityEnginePath = Path.Combine(srcLibPrivatePath, "UnityEngine");
-
-            Directory.CreateDirectory(publicUnityEnginePath);
-            Directory.CreateDirectory(privateUnityEnginePath);
+            Directory.CreateDirectory(libPath);
 
             // Write type definitions to il2cpp-types.h
             WriteTypes(Path.Combine(srcDataPath, "il2cpp-types.h"));
@@ -278,24 +268,9 @@ namespace Il2CppInspector.Outputs
             WriteIfNotExists(Path.Combine(srcUserPath, "main.cpp"), Resources.Cpp_MainCpp);
             WriteIfNotExists(Path.Combine(srcUserPath, "main.h"), Resources.Cpp_MainH);
 
-            WriteIfNotExists(Path.Combine(srcLibPublicPath, "Il2cppBridge.h"), Resources.H_Il2cppBridge);
-            WriteIfNotExists(Path.Combine(srcLibPrivatePath, "Il2cppBridge.cpp"), Resources.Cpp_Il2cppBridge);
-
-            // Private UnityEngine folder
-            WriteIfNotExists(Path.Combine(privateUnityEnginePath, "Camera.cpp"), Resources.Cpp_Camera);
-            WriteIfNotExists(Path.Combine(privateUnityEnginePath, "GameObject.cpp"), Resources.Cpp_GameObject);
-            WriteIfNotExists(Path.Combine(privateUnityEnginePath, "Input.cpp"), Resources.Cpp_Input);
-            WriteIfNotExists(Path.Combine(privateUnityEnginePath, "Math.cpp"), Resources.Cpp_Math);
-            WriteIfNotExists(Path.Combine(privateUnityEnginePath, "Object.cpp"), Resources.Cpp_Object);
-            WriteIfNotExists(Path.Combine(privateUnityEnginePath, "Transform.cpp"), Resources.Cpp_Transform);
-
-            // Public UnityEngine folder
-            WriteIfNotExists(Path.Combine(publicUnityEnginePath, "Camera.h"), Resources.H_Camera);
-            WriteIfNotExists(Path.Combine(publicUnityEnginePath, "GameObject.h"), Resources.H_GameObject);
-            WriteIfNotExists(Path.Combine(publicUnityEnginePath, "Input.h"), Resources.H_Input);
-            WriteIfNotExists(Path.Combine(publicUnityEnginePath, "Math.h"), Resources.H_Math);
-            WriteIfNotExists(Path.Combine(publicUnityEnginePath, "Object.h"), Resources.H_Object);
-            WriteIfNotExists(Path.Combine(publicUnityEnginePath, "Transform.h"), Resources.H_Transform);
+            WriteIfNotExists(Path.Combine(libPath, "Il2cppBridge.h"), Resources.H_Il2cppBridge);
+            WriteIfNotExists(Path.Combine(libPath, "Il2cppBridge.cpp"), Resources.Cpp_Il2cppBridge);
+            WriteIfNotExists(Path.Combine(libPath, "RiftLib.hpp"), Resources.H_RiftLib);
 
             // Write Visual Studio project and solution files
             var projectGuid = Guid.NewGuid();
@@ -309,11 +284,6 @@ namespace Il2CppInspector.Outputs
             var guid2 = Guid.NewGuid();
             var guid3 = Guid.NewGuid();
             var guid4 = Guid.NewGuid();
-            var guid5 = Guid.NewGuid();
-            var guid6 = Guid.NewGuid();
-            var guid7 = Guid.NewGuid();
-            var guid8 = Guid.NewGuid();
-
 
             var filtersFile = projectFile + ".filters";
 
@@ -321,11 +291,7 @@ namespace Il2CppInspector.Outputs
                 .Replace("%GUID1%", guid1.ToString())
                 .Replace("%GUID2%", guid2.ToString())
                 .Replace("%GUID3%", guid3.ToString())
-                .Replace("%GUID4%", guid4.ToString())
-                .Replace("%GUID5%", guid4.ToString())
-                .Replace("%GUID6%", guid4.ToString())
-                .Replace("%GUID7%", guid4.ToString())
-                .Replace("%GUID8%", guid4.ToString());
+                .Replace("%GUID4%", guid4.ToString());
 
             WriteIfNotExists(Path.Combine(projectPath, filtersFile), filters);
 

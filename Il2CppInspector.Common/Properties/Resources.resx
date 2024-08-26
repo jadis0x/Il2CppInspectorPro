@@ -196,6 +196,15 @@ std::string il2cppi_to_string(Il2CppString* str) {
 std::string il2cppi_to_string(app::String* str) {
     return il2cppi_to_string(reinterpret_cast&lt;Il2CppString*&gt;(str));
 }
+
+app::String* ConvertToSystemString(const char* str)
+{
+    Il2CppString* il2cpp_str = il2cpp_string_new(str);
+
+    app::String* system_string_str = reinterpret_cast&lt;app::String*&gt;(il2cpp_str);
+
+    return system_string_str;
+}
 #endif</value>
   </data>
   <data name="Cpp-HelpersH" xml:space="preserve">
@@ -225,6 +234,9 @@ std::string il2cppi_to_string(Il2CppString* str);
 
 // Helper function to convert System.String to std::string
 std::string il2cppi_to_string(app::String* str);
+
+// Helper function to convert const char* to System.String
+app::String* ConvertToSystemString(const char* str);
 #endif
 
 // Helper function to check if a metadata usage pointer is initialized
@@ -326,13 +338,7 @@ void Run()
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;Create&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;Create&lt;/PrecompiledHeader&gt;
     &lt;/ClCompile&gt;
-    &lt;ClCompile Include="lib\private\Il2cppBridge.cpp" /&gt;
-    &lt;ClCompile Include="lib\private\UnityEngine\Camera.cpp" /&gt;
-    &lt;ClCompile Include="lib\private\UnityEngine\GameObject.cpp" /&gt;
-    &lt;ClCompile Include="lib\private\UnityEngine\Input.cpp" /&gt;
-    &lt;ClCompile Include="lib\private\UnityEngine\Math.cpp" /&gt;
-    &lt;ClCompile Include="lib\private\UnityEngine\Object.cpp" /&gt;
-    &lt;ClCompile Include="lib\private\UnityEngine\Transform.cpp" /&gt;
+    &lt;ClCompile Include="lib\Il2cppBridge.cpp" /&gt;
     &lt;ClCompile Include="user\main.cpp" /&gt;
   &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
@@ -346,13 +352,8 @@ void Run()
     &lt;ClInclude Include="framework\il2cpp-appdata.h" /&gt;
     &lt;ClInclude Include="framework\il2cpp-init.h" /&gt;
     &lt;ClInclude Include="framework\pch-il2cpp.h" /&gt;
-    &lt;ClInclude Include="lib\public\Il2cppBridge.h" /&gt;
-    &lt;ClInclude Include="lib\public\UnityEngine\Camera.h" /&gt;
-    &lt;ClInclude Include="lib\public\UnityEngine\GameObject.h" /&gt;
-    &lt;ClInclude Include="lib\public\UnityEngine\Input.h" /&gt;
-    &lt;ClInclude Include="lib\public\UnityEngine\Math.h" /&gt;
-    &lt;ClInclude Include="lib\public\UnityEngine\Object.h" /&gt;
-    &lt;ClInclude Include="lib\public\UnityEngine\Transform.h" /&gt;
+    &lt;ClInclude Include="lib\Il2cppBridge.h" /&gt;
+    &lt;ClInclude Include="lib\RiftLib.hpp" /&gt;
     &lt;ClInclude Include="user\main.h" /&gt;
   &lt;/ItemGroup&gt;
   &lt;PropertyGroup Label="Globals"&gt;
@@ -428,7 +429,7 @@ void Run()
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
-      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib/public&lt;/AdditionalIncludeDirectories&gt;
+      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib&lt;/AdditionalIncludeDirectories&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
@@ -447,7 +448,7 @@ void Run()
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
-      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib/public&lt;/AdditionalIncludeDirectories&gt;
+      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib&lt;/AdditionalIncludeDirectories&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
@@ -466,7 +467,7 @@ void Run()
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
-      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib/public&lt;/AdditionalIncludeDirectories&gt;
+      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib&lt;/AdditionalIncludeDirectories&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
@@ -485,7 +486,7 @@ void Run()
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
-      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib/public&lt;/AdditionalIncludeDirectories&gt;
+      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)lib&lt;/AdditionalIncludeDirectories&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
@@ -1328,26 +1329,8 @@ void Run();</value>
     &lt;ClCompile Include="framework\pch-il2cpp.cpp"&gt;
       &lt;Filter&gt;framework&lt;/Filter&gt;
     &lt;/ClCompile&gt;
- &lt;ClCompile Include="lib\private\Il2cppBridge.cpp"&gt;
-  &lt;Filter&gt;lib\private&lt;/Filter&gt;
-&lt;/ClCompile&gt;
-&lt;ClCompile Include="lib\private\UnityEngine\Camera.cpp"&gt;
-  &lt;Filter&gt;lib\private\UnityEngine&lt;/Filter&gt;
-&lt;/ClCompile&gt;
-&lt;ClCompile Include="lib\private\UnityEngine\GameObject.cpp"&gt;
-  &lt;Filter&gt;lib\private\UnityEngine&lt;/Filter&gt;
-&lt;/ClCompile&gt;
-&lt;ClCompile Include="lib\private\UnityEngine\Input.cpp"&gt;
-  &lt;Filter&gt;lib\private\UnityEngine&lt;/Filter&gt;
-&lt;/ClCompile&gt;
-&lt;ClCompile Include="lib\private\UnityEngine\Math.cpp"&gt;
-  &lt;Filter&gt;lib\private\UnityEngine&lt;/Filter&gt;
-&lt;/ClCompile&gt;
-&lt;ClCompile Include="lib\private\UnityEngine\Object.cpp"&gt;
-  &lt;Filter&gt;lib\private\UnityEngine&lt;/Filter&gt;
-&lt;/ClCompile&gt;
-&lt;ClCompile Include="lib\private\UnityEngine\Transform.cpp"&gt;
-  &lt;Filter&gt;lib\private\UnityEngine&lt;/Filter&gt;
+ &lt;ClCompile Include="lib\Il2cppBridge.cpp"&gt;
+  &lt;Filter&gt;lib&lt;/Filter&gt;
 &lt;/ClCompile&gt;
   &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
@@ -1384,26 +1367,11 @@ void Run();</value>
     &lt;ClInclude Include="framework\pch-il2cpp.h"&gt;
       &lt;Filter&gt;framework&lt;/Filter&gt;
     &lt;/ClInclude&gt;
-&lt;ClInclude Include="lib\public\Il2cppBridge.h"&gt;
-  &lt;Filter&gt;lib\public&lt;/Filter&gt;
+&lt;ClInclude Include="lib\Il2cppBridge.h"&gt;
+  &lt;Filter&gt;lib&lt;/Filter&gt;
 &lt;/ClInclude&gt;
-&lt;ClInclude Include="lib\public\UnityEngine\Camera.h"&gt;
-  &lt;Filter&gt;lib\public\UnityEngine&lt;/Filter&gt;
-&lt;/ClInclude&gt;
-&lt;ClInclude Include="lib\public\UnityEngine\GameObject.h"&gt;
-  &lt;Filter&gt;lib\public\UnityEngine&lt;/Filter&gt;
-&lt;/ClInclude&gt;
-&lt;ClInclude Include="lib\public\UnityEngine\Input.h"&gt;
-  &lt;Filter&gt;lib\public\UnityEngine&lt;/Filter&gt;
-&lt;/ClInclude&gt;
-&lt;ClInclude Include="lib\public\UnityEngine\Math.h"&gt;
-  &lt;Filter&gt;lib\public\UnityEngine&lt;/Filter&gt;
-&lt;/ClInclude&gt;
-&lt;ClInclude Include="lib\public\UnityEngine\Object.h"&gt;
-  &lt;Filter&gt;lib\public\UnityEngine&lt;/Filter&gt;
-&lt;/ClInclude&gt;
-&lt;ClInclude Include="lib\public\UnityEngine\Transform.h"&gt;
-  &lt;Filter&gt;lib\public\UnityEngine&lt;/Filter&gt;
+&lt;ClInclude Include="lib\RiftLib.hpp"&gt;
+  &lt;Filter&gt;lib&lt;/Filter&gt;
 &lt;/ClInclude&gt;
   &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
@@ -1418,18 +1386,6 @@ void Run();</value>
     &lt;/Filter&gt;
     &lt;Filter Include="lib"&gt;
       &lt;UniqueIdentifier&gt;{%GUID4%}&lt;/UniqueIdentifier&gt;
-    &lt;/Filter&gt;
-    &lt;Filter Include="lib\public"&gt;
-      &lt;UniqueIdentifier&gt;{%GUID5%}&lt;/UniqueIdentifier&gt;
-    &lt;/Filter&gt;
-    &lt;Filter Include="lib\private"&gt;
-      &lt;UniqueIdentifier&gt;{%GUID6%}&lt;/UniqueIdentifier&gt;
-    &lt;/Filter&gt;
-    &lt;Filter Include="lib\private\UnityEngine"&gt;
-      &lt;UniqueIdentifier&gt;{%GUID7%}&lt;/UniqueIdentifier&gt;
-    &lt;/Filter&gt;
-    &lt;Filter Include="lib\public\UnityEngine"&gt;
-      &lt;UniqueIdentifier&gt;{%GUID8%}&lt;/UniqueIdentifier&gt;
     &lt;/Filter&gt;
   &lt;/ItemGroup&gt;
 &lt;/Project&gt;</value>
@@ -1499,262 +1455,42 @@ Il2CppObject* Il2cppBridge::get_class()
 }
 </value>
   </data>
-  <data name="Cpp_Camera" xml:space="preserve">
-    <value>#include "pch-il2cpp.h"
+  <data name="H_Il2cppBridge" xml:space="preserve">
+    <value>#pragma once
 
-#include "UnityEngine/Camera.h"
+struct Il2CppImage;
+struct Il2CppDomain;
+struct Il2CppAssembly;
+struct Il2CppClass;
+struct Il2CppType;
+struct Il2CppObject;
 
-app::Camera* Camera::MainCamera()
-{
-    static app::Camera* mainCamera = nullptr;
-
-    if (!mainCamera) {
-        // If the mainCamera has not been initialized yet, retrieve it from Unity.
-        mainCamera = app::Camera_get_main(nullptr);
-    }
-
-    return mainCamera;
- 
-}
-
-app::Camera* Camera::CurrentCamera()
-{
-    static app::Camera* currentCamera = nullptr;
-
-    if (!currentCamera) {
-        // If the currentCamera has not been initialized yet, retrieve it from Unity.
-        currentCamera = app::Camera_get_current(nullptr);
-    }
-
-    return currentCamera;
-}
-
-int32_t Camera::AllCamerasCount()
-{
-    static int32_t allCamerasCount = -1; // Initial value is -1 to indicate uninitialized state.
-
-    if (allCamerasCount == -1) {
-        // If the allCamerasCount has not been initialized yet, retrieve it from Unity.
-        allCamerasCount = app::Camera_get_allCamerasCount(nullptr);
-    }
-
-    return allCamerasCount;
-}
+class Il2cppBridge {
+public:
+ Il2cppBridge(const char* imageName);
+ Il2cppBridge&amp; OpenAssembly(const char* imageName);
+ Il2cppBridge&amp; find_class(const char* classNamespace, const char* className);
+ Il2CppObject* get_class();
+public:
+ const Il2CppImage* GetCurrentImage();
+private:
+ Il2CppDomain* domain;
+private:
+ const Il2CppAssembly* currentAssembly;
+ Il2CppObject* obj;
+};
 </value>
   </data>
-  <data name="Cpp_GameObject" xml:space="preserve">
+  <data name="H_RiftLib" xml:space="preserve">
     <value>#include "pch-il2cpp.h"
+#include "Il2cppBridge.h"
 
-#include "UnityEngine/GameObject.h"
-#include &lt;helpers.h&gt;
-
-app::Component* GameObject::GetComponentByName(app::GameObject* go, const char* type)
-{
- app::Component* component = app::GameObject_GetComponentByName(go, ConvertToSystemString(type), nullptr);
-
- return component ? component : nullptr;
-}
-</value>
-  </data>
-  <data name="Cpp_Input" xml:space="preserve">
-    <value>#include "pch-il2cpp.h"
-
-#include "UnityEngine/Input.h"
-#include &lt;helpers.h&gt;
 #include &lt;Windows.h&gt;
-
-float InputSystem::GetAxis(const char* axisName)
-{
- return app::Input_1_GetAxis(ConvertToSystemString(axisName), nullptr);
-}
-
-int InputSystem::GetKey(KeyCode code)
-{
- return static_cast&lt;int&gt;(code);
-}
-
-bool InputSystem::GetKeyDown(KeyCode key)
-{
- // Convert KeyCode enum value to virtual keycode
- int vkey = GetKey(key);
-
- // Check key state with GetKeyState
- return (GetKeyState(vkey) &amp; 0x8000) != 0;
-}
-
-bool InputSystem::GetKeyDownAsync(KeyCode key)
-{
- // Convert KeyCode enum value to virtual keycode
- int vkey = GetKey(key);
-
- // Check key state with GetAsyncKeyState
- return (GetAsyncKeyState(vkey) &amp; 0x8000) != 0;
-}
-
-</value>
-  </data>
-  <data name="Cpp_Math" xml:space="preserve">
-    <value>#include "pch-il2cpp.h"
-
-#include "UnityEngine/Math.h"
+#include &lt;vector&gt;
 #include &lt;helpers.h&gt;
 
-const char* Math::Vector3::ToString(app::Vector3 v)
-{
- return ("x: " + std::to_string(v.x) + " y: " + std::to_string(v.y) + " z: " + std::to_string(v.z)).c_str();
-}
-
-namespace app {
- Vector3 operator+(const Vector3&amp; lhs, const Vector3&amp; rhs) {
-  return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z };
- }
-
- Vector3 operator*(const Vector3&amp; vec, float scalar) {
-  return { vec.x * scalar, vec.y * scalar, vec.z * scalar };
- }
-
- Vector3 operator-(const Vector3&amp; lhs, const Vector3&amp; rhs) {
-  return { lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z };
- }
-}</value>
-  </data>
-  <data name="Cpp_Object" xml:space="preserve">
-    <value>#include "pch-il2cpp.h"
-
-#include "UnityEngine/Object.h"
-#include &lt;helpers.h&gt;
-
-app::GameObject__Array* Object::FindGameObjectsWithTag(const char* tag)
-{
- app::GameObject__Array* go_array_result = app::GameObject_FindGameObjectsWithTag(ConvertToSystemString(tag), nullptr);
-
- return go_array_result ? go_array_result : nullptr;
-}
-
-bool Object::IsNull(app::Object_1* obj)
-{
- if (obj == nullptr || !app::Object_1_op_Implicit(obj, nullptr))
-  return true;
-
- return false;
-}</value>
-  </data>
-  <data name="Cpp_Transform" xml:space="preserve">
-    <value>#include "pch-il2cpp.h"
-
-#include "UnityEngine/Transform.h"
-
-Transform::Transform(float x, float y, float z)
-{
- this-&gt;x = x;
- this-&gt;y = y;
- this-&gt;z = z;
-}
-
-Transform::Transform()
-{
- this-&gt;x = 0.f;
- this-&gt;y = 0.f;
- this-&gt;z = 0.f;
-}
-
-app::Transform* Transform::GetTransform(app::GameObject* go)
-{
- if (!go || !app::GameObject_get_transform) return nullptr;
-
- app::Transform* __transform = app::GameObject_get_transform(go, nullptr);
-
- return __transform ? __transform : nullptr;
-}
-
-app::Vector3 Transform::GetPosition(app::Transform* transform)
-{
- if (!transform || !app::Transform_get_position) return app::Vector3();
-
- return app::Transform_get_position(transform, nullptr);
-}
-
-app::Quaternion Transform::GetRotation(app::Transform* transform)
-{
- return app::Transform_get_rotation(transform, nullptr);
-}
-
-app::Vector3 Transform::GetForward(app::Transform* transform)
-{
- return app::Transform_get_forward(transform, nullptr);
-}
-
-app::Vector3 Transform::GetRight(app::Transform* transform)
-{
- return app::Transform_get_right(transform, nullptr);
-}
-
-app::Quaternion Transform::QuaternionEuler(app::Vector3 eulerAngles)
-{
- float x = eulerAngles.x;
- float y = eulerAngles.y;
- float z = eulerAngles.z;
-
- return app::Quaternion_Euler(x, y, z, nullptr);
-}
-
-app::Quaternion Transform::QuaternionIdentity()
-{
- return app::Quaternion_get_identity(nullptr);
-}</value>
-  </data>
-  <data name="H_Camera" xml:space="preserve">
-    <value>#pragma once
-
-class Camera {
-public:
- /**
- * This constructor is deleted to ensure that the Camera class cannot be instantiated.
- */
- Camera() = delete;
-public:
- /**
-  * Retrieves the main camera of the Unity scene. This is typically the camera
-  * designated as the main camera in the Unity editor.
-  *
-  * @return app::Camera* Pointer to the main camera object. Returns nullptr if
-  *         the main camera is not found.
-  */
- static app::Camera* MainCamera();
-
- /**
-  * Retrieves the currently active camera in the Unity scene. This can be
-  * different from the main camera if there are multiple cameras or if the
-  * active camera changes during runtime.
-  *
-  * @return app::Camera* Pointer to the current camera object. Returns nullptr if
-  *         the current camera is not found.
-  */
- static app::Camera* CurrentCamera();
-
- /**
-  * Retrieves the total number of cameras that exist in the Unity scene. This
-  * includes all cameras, regardless of whether they are currently active or not.
-  *
-  * @return int32_t The total count of cameras. Returns 0 if no cameras are found
-  *         or if the count has not been initialized yet.
-  */
- static int32_t AllCamerasCount();
-};</value>
-  </data>
-  <data name="H_GameObject" xml:space="preserve">
-    <value>#pragma once
-
-class GameObject {
-public:
- GameObject() = delete;
-public:
- static app::Component* GetComponentByName(app::GameObject* go, const char* type);
-};</value>
-  </data>
-  <data name="H_Input" xml:space="preserve">
-    <value>#pragma once
-
+// Macro definition: Retrieves the value of a field given an object, type, and field information.
+#define get_field_value(object, type, field)  *(type*)((uintptr_t)object + field-&gt;offset)
 
 // https://bytetool.web.app/en/ascii/
 enum class KeyCode {
@@ -1893,219 +1629,369 @@ enum class KeyCode {
  LaunchApp2 = 0xB7
 };
 
-
-
-class InputSystem {
-public:
- InputSystem() = delete;
-public:
- static float GetAxis(const char* axisName);
-
- static int GetKey(KeyCode code); // Helper function to convert from KeyCode to int
- static bool GetKeyDown(KeyCode key);
- static bool GetKeyDownAsync(KeyCode key);
-};</value>
-  </data>
-  <data name="H_Math" xml:space="preserve">
-    <value>#pragma once
-
-namespace Math {
- namespace Vector3 {
-  const char* ToString(app::Vector3 v);
- }
-}
-
 namespace app {
- Vector3 operator+(const Vector3&amp; lhs, const Vector3&amp; rhs);
- Vector3 operator*(const Vector3&amp; vec, float scalar);
- Vector3 operator-(const Vector3&amp; lhs, const Vector3&amp; rhs);
-}</value>
-  </data>
-  <data name="H_Object" xml:space="preserve">
-    <value>#pragma once
-
-#include &lt;type_traits&gt;
-#include "Il2cppBridge.h"
-#include &lt;vector&gt;
-#include &lt;string&gt;
-
-// credit by @ALittlePatate
-// Utility macro: Used to get the value of a specific field from an object.
-// This macro returns the value at a memory offset within the object.
-#define get_field_value(object, type, field)  *(type*)((uintptr_t)object + field-&gt;offset)
-
-class Object {
-public:
- // Prevent instantiation of the Object class.
- Object() = delete;
-public:
- /**
- * @param obj A pointer to a Unity object of type T. T must be derived from app::Object or app::Component_1.
- * @return const char* The name of the object as a const char*.
- *
- * If the object is of type System.String, this function returns the string value directly.
- */
- template&lt;typename T&gt;
- inline static const char* GetObjectName(T* obj)
- {
-  static std::string type;
-  type = il2cppi_to_string(app::Object_ToString(obj, NULL));
-
-  if (type == "System.String") {
-   return il2cppi_to_string(reinterpret_cast&lt;app::String*&gt;(obj)).c_str();
-  }
-
-  return type.c_str();
+ Vector3 operator+(const Vector3&amp; lhs, const Vector3&amp; rhs) {
+  return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z };
  }
 
-
- /**
- * @tparam T The type of the object to return.
- * @param className The name of the class to search for.
- * @param classNamespace (Optional) The namespace where the class is located.
- * @param assemblyName (Optional) The assembly where the class is located. Defaults to "Assembly-CSharp.dll".
- * @return T* Pointer to the found object of type T. Returns nullptr if not found.
- */
- template&lt;typename T&gt;
- static inline T* FindObjectOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
-  Il2cppBridge bridge(assemblyName);
-
-  Il2CppObject* object = bridge.find_class(classNamespace, className).get_class();
-
-  if (!object || !app::Object_1_FindObjectOfType) return nullptr;
-
-  app::Object_1* obj_1 = app::Object_1_FindObjectOfType(reinterpret_cast&lt;app::Type*&gt;(object), nullptr);
-
-  if (!obj_1 || IsNull(obj_1)) return nullptr;
-
-  return reinterpret_cast&lt;T*&gt;(obj_1);
+ Vector3 operator*(const Vector3&amp; vec, float scalar) {
+  return { vec.x * scalar, vec.y * scalar, vec.z * scalar };
  }
 
- /**
- * @tparam T The type of the objects to return.
- * @param className The name of the class to search for.
- * @param classNamespace (Optional) The namespace where the class is located.
- * @param assemblyName (Optional) The assembly where the class is located. Defaults to "Assembly-CSharp.dll".
- * @return std::vector&lt;T*&gt; A vector containing all found objects of type T.
- */
- template&lt;typename T&gt;
- static inline std::vector&lt;T*&gt; FindObjectsWithType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
-  std::vector&lt;T*&gt; objects;
-
-  Il2cppBridge bridge(assemblyName);
-  Il2CppObject* object = bridge.find_class(classNamespace, className).get_class();
-
-  if (!object || !app::Object_1_FindObjectsOfType) return objects;
-
-  app::Object_1__Array* foundObjects = app::Object_1_FindObjectsOfType(reinterpret_cast&lt;app::Type*&gt;(object), nullptr);
-
-  if (foundObjects) {
-   for (int i = 0; i &lt; foundObjects-&gt;max_length; ++i) {
-    if (foundObjects-&gt;vector[i] &amp;&amp; !IsNull(foundObjects-&gt;vector[i])) {
-     objects.push_back(reinterpret_cast&lt;T*&gt;(foundObjects-&gt;vector[i]));
-    }
-   }
-  }
-
-  return objects;
+ Vector3 operator-(const Vector3&amp; lhs, const Vector3&amp; rhs) {
+  return { lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z };
  }
-
- /**
- * @param tag The tag to search for.
- * @return app::GameObject__Array* An array of GameObjects with the specified tag.
- */
- static app::GameObject__Array* FindGameObjectsWithTag(const char* tag);
-
- /**
- * @tparam T The type of the Behaviour.
- * @param behaviour The Behaviour to check.
- * @return bool Returns true if the Behaviour is enabled; otherwise, false.
- */
- template&lt;typename T&gt;
- static inline bool Enabled(T* behaviour) {
-  return app::Behaviour_get_enabled((app::Behaviour*)behaviour, nullptr);
- }
-
- /**
- * @tparam T The type of the Behaviour.
- * @param behaviour The Behaviour to enable or disable.
- * @param value Pass true to enable the Behaviour, false to disable it.
- */
- template&lt;typename T&gt;
- static inline void Enabled(T* behaviour, bool value) {
-  app::Behaviour_set_enabled((app::Behaviour*)behaviour, value, nullptr);
- }
-
- /**
- * @param obj The Unity object to check.
- * @return bool Returns true if the object is null; otherwise, false.
- */
- static bool IsNull(app::Object_1* obj);
-};
-
-
-</value>
-  </data>
-  <data name="H_Transform" xml:space="preserve">
-    <value>#pragma once
-
-class Transform {
-public:
- Transform(float x, float y, float z);
- Transform();
-public:
- static app::Transform* GetTransform(app::GameObject* go);
- app::Vector3 GetPosition(app::Transform* transform);
- app::Quaternion GetRotation(app::Transform* transform);
- app::Vector3 GetForward(app::Transform* transform);
- app::Vector3 GetRight(app::Transform* transform);
- app::Quaternion QuaternionEuler(app::Vector3 eulerAngles);
- app::Quaternion QuaternionIdentity();
-public:
- // e.g. NolanBehaviour
- template&lt;typename T&gt;
- inline app::Transform* GetTransform(T* component);
-private:
- float x, y, z;
-};
-
-template&lt;typename T&gt;
-inline app::Transform* Transform::GetTransform(T* component)
-{
- if (!component) return nullptr;
-
- if (app::Component_get_transform != nullptr) {
-  return app::Component_get_transform((app::Component*)component, nullptr);
- }
-
- return nullptr;
 }
-</value>
-  </data>
-  <data name="H_Il2cppBridge" xml:space="preserve">
-    <value>#pragma once
 
-struct Il2CppImage;
-struct Il2CppDomain;
-struct Il2CppAssembly;
-struct Il2CppClass;
-struct Il2CppType;
-struct Il2CppObject;
+namespace RiftLib {
+ namespace UObject {
+  class Object {
+  public:
+   // Prevent instantiation of the Object class.
+   Object() = delete;
+  public:
+   /**
+   * @param obj The Unity object to check.
+   * @return bool Returns true if the object is null; otherwise, false.
+   */
+   static bool IsNull(app::Object_1* obj) {
+    if (obj == nullptr || !app::Object_1_op_Implicit(obj, nullptr))
+     return true;
 
-class Il2cppBridge {
-public:
- Il2cppBridge(const char* imageName);
- Il2cppBridge&amp; OpenAssembly(const char* imageName);
- Il2cppBridge&amp; find_class(const char* classNamespace, const char* className);
- Il2CppObject* get_class();
-public:
- const Il2CppImage* GetCurrentImage();
-private:
- Il2CppDomain* domain;
-private:
- const Il2CppAssembly* currentAssembly;
- Il2CppObject* obj;
-};
+    return false;
+   }
+
+   /**
+   * @param obj A pointer to a Unity object of type T. T must be derived from app::Object or app::Component_1.
+   * @return const char* The name of the object as a const char*.
+   *
+   * If the object is of type System.String, this function returns the string value directly.
+   */
+   template&lt;typename T&gt;
+   inline static const char* GetObjectName(T* obj)
+   {
+    static std::string type;
+
+    // Static cast to ensure obj is treated as app::Object* 
+    type = il2cppi_to_string(app::Object_ToString((app::Object*)obj, NULL));
+
+    if (type == "System.String") {
+     return il2cppi_to_string(reinterpret_cast&lt;app::String*&gt;(obj)).c_str();
+    }
+
+    return type.c_str();
+   }
+
+
+   /**
+   * @tparam T The type of the object to return.
+   * @param className The name of the class to search for.
+   * @param classNamespace (Optional) The namespace where the class is located.
+   * @param assemblyName (Optional) The assembly where the class is located. Defaults to "Assembly-CSharp.dll".
+   * @return T* Pointer to the found object of type T. Returns nullptr if not found.
+   */
+   template&lt;typename T&gt;
+   static inline T* FindObjectOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
+    Il2cppBridge bridge(assemblyName);
+
+    Il2CppObject* object = bridge.find_class(classNamespace, className).get_class();
+
+    if (!object || !app::Object_1_FindObjectOfType) return nullptr;
+
+    app::Object_1* obj_1 = app::Object_1_FindObjectOfType(reinterpret_cast&lt;app::Type*&gt;(object), nullptr);
+
+    if (!obj_1 || RiftLib::UObject::Object::IsNull(obj_1)) return nullptr;
+
+    return reinterpret_cast&lt;T*&gt;(obj_1);
+   }
+
+   /**
+   * @tparam T The type of the objects to return.
+   * @param className The name of the class to search for.
+   * @param classNamespace (Optional) The namespace where the class is located.
+   * @param assemblyName (Optional) The assembly where the class is located. Defaults to "Assembly-CSharp.dll".
+   * @return std::vector&lt;T*&gt; A vector containing all found objects of type T.
+   */
+   template&lt;typename T&gt;
+   static inline std::vector&lt;T*&gt; FindObjectsWithType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
+    std::vector&lt;T*&gt; objects;
+
+    Il2cppBridge bridge(assemblyName);
+    Il2CppObject* object = bridge.find_class(classNamespace, className).get_class();
+
+    if (!object || !app::Object_1_FindObjectsOfType) return objects;
+
+    app::Object_1__Array* foundObjects = app::Object_1_FindObjectsOfType(reinterpret_cast&lt;app::Type*&gt;(object), nullptr);
+
+    if (foundObjects) {
+     for (int i = 0; i &lt; foundObjects-&gt;max_length; ++i) {
+      if (foundObjects-&gt;vector[i] &amp;&amp; !RiftLib::UObject::Object::IsNull(foundObjects-&gt;vector[i])) {
+       objects.push_back(reinterpret_cast&lt;T*&gt;(foundObjects-&gt;vector[i]));
+      }
+     }
+    }
+
+    return objects;
+   }
+
+
+   /**
+   * @tparam T The type of the Behaviour.
+   * @param behaviour The Behaviour to check.
+   * @return bool Returns true if the Behaviour is enabled; otherwise, false.
+   */
+   template&lt;typename T&gt;
+   static inline bool Enabled(T* behaviour) {
+    return app::Behaviour_get_enabled((app::Behaviour*)behaviour, nullptr);
+   }
+
+   /**
+   * @tparam T The type of the Behaviour.
+   * @param behaviour The Behaviour to enable or disable.
+   * @param value Pass true to enable the Behaviour, false to disable it.
+   */
+   template&lt;typename T&gt;
+   static inline void Enabled(T* behaviour, bool value) {
+    app::Behaviour_set_enabled((app::Behaviour*)behaviour, value, nullptr);
+   }
+  };
+
+
+ }
+
+ namespace UGameObject {
+
+  class GameObject {
+  public:
+   GameObject() = delete;
+  public:
+   static app::Component* GetComponentByName(app::GameObject* go, const char* type) {
+    app::Component* component = app::GameObject_GetComponentByName(go, ConvertToSystemString(type), nullptr);
+
+    return component ? component : nullptr;
+   }
+
+   /**
+   * @param tag The tag to search for.
+   * @return app::GameObject__Array* An array of GameObjects with the specified tag.
+   **/
+   static app::GameObject__Array* FindGameObjectsWithTag(const char* tag) {
+    app::GameObject__Array* go_array_result = app::GameObject_FindGameObjectsWithTag(ConvertToSystemString(tag), nullptr);
+
+    return go_array_result ? go_array_result : nullptr;
+   }
+
+   static app::GameObject* FindGameObjectWithTag(const char* tag) {
+    app::GameObject* go_result = app::GameObject_FindGameObjectWithTag(ConvertToSystemString(tag), nullptr);
+
+    return go_result ? go_result : nullptr;
+   }
+  };
+
+
+ }
+
+ namespace Input {
+  class InputSystem {
+  public:
+   InputSystem() = delete;
+  public:
+   static float GetAxis(const char* axisName) {
+    return app::Input_1_GetAxis(ConvertToSystemString(axisName), nullptr);
+   }
+
+   static int GetKey(KeyCode code) {
+    return static_cast&lt;int&gt;(code);
+   }
+
+   static bool GetKeyDown(KeyCode key) {
+    // Convert KeyCode enum value to virtual keycode
+    int vkey = GetKey(key);
+
+    // Check key state with GetKeyState
+    return (GetKeyState(vkey) &amp; 0x8000) != 0;
+   }
+
+   static bool GetKeyDownAsync(KeyCode key) {
+    // Convert KeyCode enum value to virtual keycode
+    int vkey = GetKey(key);
+
+    // Check key state with GetAsyncKeyState
+    return (GetAsyncKeyState(vkey) &amp; 0x8000) != 0;
+   }
+  };
+ }
+
+ namespace UCamera {
+  class Camera {
+  public:
+   /**
+   * This constructor is deleted to ensure that the Camera class cannot be instantiated.
+   */
+   Camera() = delete;
+  public:
+   /**
+    * Retrieves the main camera of the Unity scene. This is typically the camera
+    * designated as the main camera in the Unity editor.
+    *
+    * @return app::Camera* Pointer to the main camera object. Returns nullptr if
+    *         the main camera is not found.
+    */
+   static app::Camera* MainCamera() {
+    static app::Camera* mainCamera = nullptr;
+
+    if (!mainCamera) {
+     // If the mainCamera has not been initialized yet, retrieve it from Unity.
+     mainCamera = app::Camera_get_main(nullptr);
+    }
+
+    return mainCamera;
+   }
+
+   /**
+    * Retrieves the currently active camera in the Unity scene. This can be
+    * different from the main camera if there are multiple cameras or if the
+    * active camera changes during runtime.
+    *
+    * @return app::Camera* Pointer to the current camera object. Returns nullptr if
+    *         the current camera is not found.
+    */
+   static app::Camera* CurrentCamera() {
+    static app::Camera* currentCamera = nullptr;
+
+    if (!currentCamera) {
+     // If the currentCamera has not been initialized yet, retrieve it from Unity.
+     currentCamera = app::Camera_get_current(nullptr);
+    }
+
+    return currentCamera;
+   }
+
+   /**
+    * Retrieves the total number of cameras that exist in the Unity scene. This
+    * includes all cameras, regardless of whether they are currently active or not.
+    *
+    * @return int32_t The total count of cameras. Returns 0 if no cameras are found
+    *         or if the count has not been initialized yet.
+    */
+   static int32_t AllCamerasCount() {
+    static int32_t allCamerasCount = -1; // Initial value is -1 to indicate uninitialized state.
+
+    if (allCamerasCount == -1) {
+     // If the allCamerasCount has not been initialized yet, retrieve it from Unity.
+     allCamerasCount = app::Camera_get_allCamerasCount(nullptr);
+    }
+
+    return allCamerasCount;
+   }
+  };
+ }
+
+ namespace USceneManager {
+  std::string GetActiveSceneName() {
+   if (app::SceneManager_GetActiveScene != nullptr) {
+    app::Scene activeScene = app::SceneManager_GetActiveScene(nullptr);
+
+    return il2cppi_to_string(app::Scene_get_name(&amp;activeScene, nullptr));
+   }
+
+   return std::string("Unknown Scene");
+  }
+
+  std::string GetSceneName(app::Scene scene) {
+   return il2cppi_to_string(app::Scene_get_name(&amp;scene, nullptr));
+  }
+
+  std::vector&lt;app::Scene&gt; GetAllScenes() {
+   auto sceneCount = app::SceneManager_get_sceneCount(NULL);
+
+   if (sceneCount == 0)
+    return {};
+
+   std::vector&lt;app::Scene&gt; scenes;
+   scenes.reserve(sceneCount);
+
+   for (int i = 0; i &lt; sceneCount; i++)
+   {
+    scenes.emplace_back(app::SceneManager_GetSceneAt(i, NULL));
+   }
+
+   return scenes;
+  }
+ }
+
+ namespace UTransform {
+  class Transform {
+  public:
+   Transform(float x, float y, float z) {
+    this-&gt;x = x;
+    this-&gt;y = y;
+    this-&gt;z = z;
+   }
+  public:
+   static app::Transform* GetTransform(app::GameObject* go) {
+    if (!go || !app::GameObject_get_transform) return nullptr;
+
+    app::Transform* __transform = app::GameObject_get_transform(go, nullptr);
+
+    return __transform ? __transform : nullptr;
+   }
+
+   app::Vector3 GetPosition(app::Transform* transform) {
+    if (!transform || !app::Transform_get_position) return app::Vector3();
+
+    return app::Transform_get_position(transform, nullptr);
+   }
+
+   app::Quaternion GetRotation(app::Transform* transform) {
+    return app::Transform_get_rotation(transform, nullptr);
+   }
+
+   app::Vector3 GetForward(app::Transform* transform) {
+    return app::Transform_get_forward(transform, nullptr);
+   }
+
+   app::Vector3 GetRight(app::Transform* transform) {
+    return app::Transform_get_right(transform, nullptr);
+   }
+
+   app::Quaternion QuaternionEuler(app::Vector3 eulerAngles) {
+    float x = eulerAngles.x;
+    float y = eulerAngles.y;
+    float z = eulerAngles.z;
+
+    return app::Quaternion_Euler(x, y, z, nullptr);
+   }
+
+   app::Quaternion QuaternionIdentity() {
+    return app::Quaternion_get_identity(nullptr);
+   }
+
+  public:
+   template&lt;typename T&gt;
+   inline app::Transform* GetTransform(T* component) {
+    if (!component) return nullptr;
+
+    if (app::Component_get_transform != nullptr) {
+     return app::Component_get_transform((app::Component*)component, nullptr);
+    }
+
+    return nullptr;
+   }
+  private:
+   float x, y, z;
+  };
+ }
+}
+
+namespace RiftMathLibrary {
+ namespace Vector3 {
+  const char* ToString(app::Vector3 v) {
+   return ("x: " + std::to_string(v.x) + " y: " + std::to_string(v.y) + " z: " + std::to_string(v.z)).c_str();
+  }
+ }
+}
+
 </value>
   </data>
 </root>
