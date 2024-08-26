@@ -1,4 +1,4 @@
-# Il2CppInspector 2024
+# Il2CppInspector Pro 2024
 Il2CppInspector helps you to reverse engineer IL2CPP applications, providing the most complete analysis currently available.
 
 This is a continuation of Il2CppInspector by [@djkaty](https://github.com/djkaty/Il2CppInspector), which has suspended development. This version includes new features and support for additional metadata versions, with the latest update from [@lukefz.](https://github.com/LukeFZ)
