@@ -461,6 +461,7 @@ namespace Il2CppInspector.Properties {
         ///#include &lt;Windows.h&gt;
         ///#include &lt;vector&gt;
         ///#include &lt;helpers.h&gt;
+        ///#include &lt;map&gt;
         ///
         ///// Macro definition: Retrieves the value of a field given an object, type, and field information.
         ///#define get_field_value(object, type, field)  *(type*)((uintptr_t)object + field-&gt;offset)
@@ -474,8 +475,7 @@ namespace Il2CppInspector.Properties {
         /// Enter = 0x0D,
         /// Shift = 0x10,
         /// Ctrl = 0x11,
-        /// Alt = 0x12,
-        /// Pause = 0x [rest of string was truncated]&quot;;.
+        /// Alt = 0x [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string H_RiftLib {
             get {

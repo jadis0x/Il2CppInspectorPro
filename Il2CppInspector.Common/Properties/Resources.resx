@@ -1488,6 +1488,7 @@ private:
 #include &lt;Windows.h&gt;
 #include &lt;vector&gt;
 #include &lt;helpers.h&gt;
+#include &lt;map&gt;
 
 // Macro definition: Retrieves the value of a field given an object, type, and field information.
 #define get_field_value(object, type, field)  *(type*)((uintptr_t)object + field-&gt;offset)
@@ -1668,7 +1669,7 @@ namespace RiftLib {
    * If the object is of type System.String, this function returns the string value directly.
    */
    template&lt;typename T&gt;
-   inline static const char* GetObjectName(T* obj)
+   static const char* GetObjectName(T* obj)
    {
     static std::string type;
 
@@ -1691,7 +1692,7 @@ namespace RiftLib {
    * @return T* Pointer to the found object of type T. Returns nullptr if not found.
    */
    template&lt;typename T&gt;
-   static inline T* FindObjectOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
+   static T* FindObjectOfType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
     Il2cppBridge bridge(assemblyName);
 
     Il2CppObject* object = bridge.find_class(classNamespace, className).get_class();
@@ -1713,7 +1714,7 @@ namespace RiftLib {
    * @return std::vector&lt;T*&gt; A vector containing all found objects of type T.
    */
    template&lt;typename T&gt;
-   static inline std::vector&lt;T*&gt; FindObjectsWithType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
+   static std::vector&lt;T*&gt; FindObjectsWithType(const char* className, const char* classNamespace = "", const char* assemblyName = "Assembly-CSharp.dll") {
     std::vector&lt;T*&gt; objects;
 
     Il2cppBridge bridge(assemblyName);
@@ -1741,7 +1742,7 @@ namespace RiftLib {
    * @return bool Returns true if the Behaviour is enabled; otherwise, false.
    */
    template&lt;typename T&gt;
-   static inline bool Enabled(T* behaviour) {
+   static bool Enabled(T* behaviour) {
     return app::Behaviour_get_enabled((app::Behaviour*)behaviour, nullptr);
    }
 
@@ -1751,7 +1752,7 @@ namespace RiftLib {
    * @param value Pass true to enable the Behaviour, false to disable it.
    */
    template&lt;typename T&gt;
-   static inline void Enabled(T* behaviour, bool value) {
+   static void Enabled(T* behaviour, bool value) {
     app::Behaviour_set_enabled((app::Behaviour*)behaviour, value, nullptr);
    }
   };
@@ -1765,10 +1766,42 @@ namespace RiftLib {
   public:
    GameObject() = delete;
   public:
-   static app::Component* GetComponentByName(app::GameObject* go, const char* type) {
+   template &lt;typename T&gt;
+   static T* GetComponentByName(app::GameObject* go, const char* type) {
     app::Component* component = app::GameObject_GetComponentByName(go, ConvertToSystemString(type), nullptr);
+    return component ? reinterpret_cast&lt;T*&gt;(component) : nullptr;
+   }
 
-    return component ? component : nullptr;
+   static std::map&lt;std::string, app::Component*&gt; LogComponents(app::GameObject* go){
+    Il2cppBridge bridge("UnityEngine.CoreModule.dll");
+    Il2CppObject* iCoreModuleObject = bridge.find_class("UnityEngine", "Component").get_class();
+
+    if (iCoreModuleObject == nullptr)
+     return {};
+
+    app::Type* componentType = reinterpret_cast&lt;app::Type*&gt;(iCoreModuleObject);
+    if (!componentType)
+     return {};
+
+    app::Component__Array* componentArr = app::GameObject_GetComponents(go, componentType, nullptr);
+
+    std::map&lt;std::string, app::Component*&gt; componentMap;
+
+    if (componentArr) {
+     for (int i = 0; i &lt; componentArr-&gt;max_length; i++) {
+      app::Component* currentComponent = componentArr-&gt;vector[i];
+
+      if (currentComponent == nullptr)
+       continue;
+
+      const char* componentName = UObject::Object::GetObjectName(currentComponent);
+      if (componentName) {
+       componentMap[std::string(componentName)] = currentComponent;
+      }
+     }
+    }
+
+    return componentMap;
    }
 
    /**
@@ -1980,6 +2013,51 @@ namespace RiftLib {
    }
   private:
    float x, y, z;
+  };
+ }
+
+ namespace ULight {
+  class Light {
+  private:
+   app::Light* _light; // private üye olarak flashlight işaretçisi
+
+  public:
+   Light(app::Light* _li) {
+    if (_li != nullptr) {
+     _light = _li;
+    }
+    else {
+     _li = nullptr;
+    }
+   }
+
+   Light&amp; SetIntensity(float intensity) {
+    if (_light != nullptr) {
+     app::Light_set_intensity(_light, intensity, nullptr);
+    }
+    return *this;
+   }
+
+   Light&amp; SetRange(float range) {
+    if (_light != nullptr) {
+     app::Light_set_range(_light, range, nullptr);
+    }
+    return *this;
+   }
+
+   Light&amp; SetSpotAngle(float spotAngle) {
+    if (_light != nullptr) {
+     app::Light_set_spotAngle(_light, spotAngle, nullptr);
+    }
+    return *this;
+   }
+
+   Light&amp; SetShadows(app::LightShadows__Enum shadows) {
+    if (_light != nullptr) {
+     app::Light_set_shadows(_light, shadows, nullptr);
+    }
+    return *this;
+   }
   };
  }
 }
