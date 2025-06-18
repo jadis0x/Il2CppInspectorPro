@@ -165,7 +165,7 @@ namespace Il2CppInspector.Reflection
             // Generic type definitions have an invoker index of -1
             foreach (var method in MethodsByDefinitionIndex) {
                 var index = package.GetInvokerIndex(method.DeclaringType.Assembly.ModuleDefinition, method.Definition);
-                if (index != -1) {
+                if (index >= 0 && index < MethodInvokers.Length) {
                     if (MethodInvokers[index] == null)
                         MethodInvokers[index] = new MethodInvoker(method, index);
 
@@ -175,7 +175,7 @@ namespace Il2CppInspector.Reflection
 
             // Create method invokers sourced from generic method invoker indices
             foreach (var spec in GenericMethods.Keys) {
-                if (package.GenericMethodInvokerIndices.TryGetValue(spec, out var index)) {
+                if (package.GenericMethodInvokerIndices.TryGetValue(spec, out var index) && index >= 0 && index < MethodInvokers.Length) {
                     if (MethodInvokers[index] == null)
                         MethodInvokers[index] = new MethodInvoker(GenericMethods[spec], index);
 

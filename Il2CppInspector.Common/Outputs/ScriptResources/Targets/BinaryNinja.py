@@ -1,4 +1,5 @@
 from binaryninja import *
+from typing import Optional, List, Dict
 
 #try:
 #	from typing import TYPE_CHECKING
@@ -25,12 +26,12 @@ class BinaryNinjaDisassemblerInterface(BaseDisassemblerInterface):
 	
 	_view: BinaryView
 	_undo_id: str
-	_components: dict[str, Component]
-	_type_cache: dict[str, Type]
-	_function_type_cache: dict[str, Type]
-
+	_components: Dict[str, Component]
+	_type_cache: Dict[str, Type]
+	_function_type_cache: Dict[str, Type]
+	
 	_address_size: int
-	_endianness: Literal["little", "big"]
+	_endianness: str
 
 	TYPE_PARSER_OPTIONS = [
 		"--target=x86_64-pc-linux",
