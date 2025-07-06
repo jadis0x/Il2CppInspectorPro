@@ -7,7 +7,6 @@
     <PublishSingleFile>true</PublishSingleFile>
     <!-- Plugins may require bass class library assemblies we're not using so disable trimming -->
     <PublishTrimmed>false</PublishTrimmed>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Version>2025.1</Version>
     <Company>LukeFZ, Jadis0x, Noisy Cow Studios</Company>
@@ -38,5 +37,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Il2CppInspector.Common\Il2CppInspector.csproj" />
   </ItemGroup>
+
+  <Target Name="GetPlugins" BeforeTargets="Build" Condition="!Exists('$(OutputPath)/plugins.zip')">
+    <Exec Command="bash $(SolutionDir)/get-plugins.sh" WorkingDirectory="$(OutputPath)" />
+  </Target>
 
 </Project>

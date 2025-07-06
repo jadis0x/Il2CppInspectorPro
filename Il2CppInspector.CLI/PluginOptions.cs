@@ -70,10 +70,8 @@ namespace Il2CppInspector.CLI
             pluginOptionClass.DefineDefaultConstructor(MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
 
             // Create VerbAttribute with plugin ID
-            var verbCtorInfo = typeof(VerbAttribute).GetConstructor(new Type[] { typeof(string) });
-            var verbHelpPropInfo = typeof(VerbAttribute).GetProperty("HelpText");
-            var verbAttBuilder = new CustomAttributeBuilder(verbCtorInfo, new object[] { plugin.Id },
-                                        new PropertyInfo[] { verbHelpPropInfo }, new object[] { plugin.Description });
+            var verbCtorInfo = typeof(VerbAttribute).GetConstructor(new[] { typeof(string), typeof(bool), typeof(string[]) });
+            var verbAttBuilder = new CustomAttributeBuilder(verbCtorInfo, new object[] { plugin.Id, false, null });
             pluginOptionClass.SetCustomAttribute(verbAttBuilder);
 
             // Create auto-property for each option

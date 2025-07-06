@@ -1,0 +1,13 @@
+﻿{
+  "solution": {
+    "path": "Il2CppInspector.sln",
+    "projects": [
+      "Bin2Object\\Bin2Object\\Bin2Object.csproj",
+      "Il2CppInspector.CLI\\Il2CppInspector.CLI.csproj",
+      "Il2CppInspector.Common\\Il2CppInspector.csproj",
+      "Il2CppTests\\Il2CppTests.csproj",
+      "VersionedSerialization.Generator\\VersionedSerialization.Generator.csproj",
+      "VersionedSerialization\\VersionedSerialization.csproj"
+    ]
+  }
+}
