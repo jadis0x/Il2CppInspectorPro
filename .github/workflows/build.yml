@@ -19,14 +19,14 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10
-          run_install: false
+          package_json_file: Il2CppInspector.Redux.GUI.UI/package.json
 
       - name: Setup Node.JS
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: "pnpm"
+          cache-dependency-path: Il2CppInspector.Redux.GUI.UI/pnpm-lock.yaml
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
