@@ -26,6 +26,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          cache: "pnpm"
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
@@ -42,7 +43,8 @@ jobs:
         run: pnpm install
         working-directory: ./Il2CppInspector.Redux.GUI.UI
   
-      - uses: actions/cache@v4
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-redux-gui-${{ hashFiles('**/packages.lock.json') }}
@@ -80,22 +82,18 @@ jobs:
           with:
             submodules: true
 
-        - name: Setup .NET SDK
+        - name: Setup .NET SDK ${{ matrix.dotnet-version }}
           uses: actions/setup-dotnet@v4
           with:
-            dotnet-version: '9.0.x'
+            dotnet-version: ${{ matrix.dotnet-version }}
   
-        - uses: actions/cache@v3
+        - name: Cache NuGet packages 
+          uses: actions/cache@v4
           with:
             path: ~/.nuget/packages
             key: ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-${{ hashFiles('**/packages.lock.json') }}
             restore-keys: |
                 ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-
-
-        - name: Setup .NET SDK ${{ matrix.dotnet-version }}
-          uses: actions/setup-dotnet@v3
-          with:
-            dotnet-version: ${{ matrix.dotnet-version }}
 
         - name: Install dependencies
           run: dotnet restore -r ${{ matrix.rid }} ./Il2CppInspector.Redux.CLI
@@ -153,10 +151,10 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup .NET SDK
+      - name: Setup .NET SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: ${{ matrix.dotnet-version }}
   
       - uses: actions/cache@v3
         with:
@@ -164,11 +162,6 @@ jobs:
           key: ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
               ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-
-
-      - name: Setup .NET SDK ${{ matrix.dotnet-version }}
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: ${{ matrix.dotnet-version }}
 
       - name: Install dependencies
         run: dotnet restore -r ${{ matrix.rid }} ./Il2CppInspector.CLI
