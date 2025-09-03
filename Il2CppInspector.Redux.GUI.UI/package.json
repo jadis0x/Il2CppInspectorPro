@@ -14,16 +14,16 @@
   "license": "MIT",
   "dependencies": {
     "@microsoft/signalr": "^8.0.7",
-    "@tauri-apps/api": "^2",
-    "@tauri-apps/plugin-dialog": "~2",
-    "@tauri-apps/plugin-opener": "^2"
+    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/plugin-dialog": "~2.2.0",
+    "@tauri-apps/plugin-opener": "^2.2.5"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "^3.0.6",
-    "@sveltejs/kit": "^2.9.0",
-    "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "@sveltejs/adapter-static": "^3.0.8",
+    "@sveltejs/kit": "^2.16.0",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tailwindcss/typography": "^0.5.16",
-    "@tauri-apps/cli": "^2",
+    "@tauri-apps/cli": "^2.2.5",
     "autoprefixer": "^10.4.20",
     "bits-ui": "1.0.0-next.78",
     "clsx": "^2.1.1",
@@ -32,15 +32,15 @@
     "prettier": "^3.4.2",
     "prettier-plugin-svelte": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.10",
-    "svelte": "^5.0.0",
-    "svelte-check": "^4.0.0",
+    "svelte": "^5.19.0",
+    "svelte-check": "^4.1.4",
     "svelte-sonner": "^0.3.28",
     "tailwind-merge": "^2.6.0",
     "tailwind-variants": "^0.3.1",
     "tailwindcss": "^3.4.17",
     "tailwindcss-animate": "^1.0.7",
-    "typescript": "~5.6.2",
-    "vite": "^6.0.3"
+    "typescript": "~5.6.3",
+    "vite": "^6.0.7"
   },
   "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b"
 }
