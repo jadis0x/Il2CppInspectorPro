@@ -35,4 +35,8 @@ public static class MetadataVersions
     // Unity 6000.3.0a5
     public static readonly StructVersion V380 = new(38);
     // NOTE: This version uses tags to specify the size of TypeIndex, TypeDefinitionIndex, and GenericContainerIndex.
+
+    // Unity 6000.3.0b1
+    public static readonly StructVersion V390 = new(39);
+    // NOTE This version additionally uses a tag to specify the size of ParameterIndex.
 }

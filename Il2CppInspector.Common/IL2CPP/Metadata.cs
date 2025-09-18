@@ -95,7 +95,7 @@ namespace Il2CppInspector
             // Set object versioning for Bin2Object from metadata version
             Version = new StructVersion(Header.Version);
 
-            if (Version < MetadataVersions.V160 || Version > MetadataVersions.V380) {
+            if (Version < MetadataVersions.V160 || Version > MetadataVersions.V390) {
                 throw new InvalidOperationException($"The supplied metadata file is not of a supported version ({Header.Version}).");
             }
 
@@ -142,6 +142,13 @@ namespace Il2CppInspector
                     throw new InvalidOperationException("Could not determine TypeIndex size based on the metadata header");
 
                 var fullTag = $"{tag}_{TypeIndex.TagPrefix}{typeIndexSize}";
+
+                if (Version >= MetadataVersions.V390)
+                {
+                    var parameterIndexSize = GetIndexSize(Header.Parameters.Count);
+                    fullTag += $"_{ParameterIndex.TagPrefix}{parameterIndexSize}";
+                }
+
                 Version = new StructVersion(Version.Major, Version.Minor, fullTag);
             }
 
@@ -154,8 +161,11 @@ namespace Il2CppInspector
             // in the header after the sanity and version fields, and since it will always point directly to the first byte after the end of the header,
             // we can use this value to determine the actual header length and therefore narrow down the metadata version to 24.0/24.1 or 24.2.
 
-            if (!pluginResult.SkipValidation) {
-                var realHeaderLength = Header.StringLiteralOffset;
+            if (!pluginResult.SkipValidation)
+            {
+                var realHeaderLength = Version >= MetadataVersions.V380
+                    ? Header.StringLiterals.Offset
+                    : Header.StringLiteralOffset;
 
                 if (realHeaderLength != Sizeof<Il2CppGlobalMetadataHeader>()) {
                     if (Version == MetadataVersions.V240) {
@@ -255,10 +265,17 @@ namespace Il2CppInspector
                 Strings = pluginGetStringsResult.Strings;
 
             else {
-                Position = Header.StringOffset;
+                var stringOffset = Version >= MetadataVersions.V380
+                    ? Header.Strings.Offset
+                    : Header.StringOffset;
+                var stringLength = Version >= MetadataVersions.V380
+                    ? Header.Strings.SectionSize
+                    : Header.StringSize;
 
-                while (Position < Header.StringOffset + Header.StringSize)
-                    Strings.Add((int) Position - Header.StringOffset, ReadNullTerminatedString());
+                Position = stringOffset;
+
+                while (Position < stringOffset + stringLength)
+                    Strings.Add((int)Position - stringOffset, ReadNullTerminatedString());
             }
 
             // Get all string literals
@@ -277,15 +294,17 @@ namespace Il2CppInspector
 
                 if (Version >= MetadataVersions.V350)
                 {
-                    StringLiterals = new string[stringLiteralList.Length - 1];
-                    for (var i = 0; i < stringLiteralList.Length; i++)
+                    var literals = new string[stringLiteralList.Length - 1];
+                    for (var i = 0; i < literals.Length; i++)
                     {
                         var currentStringDataIndex = stringLiteralList[i].DataIndex;
                         var nextStringDataIndex = stringLiteralList[i + 1].DataIndex;
                         var stringLength = nextStringDataIndex - currentStringDataIndex;
 
-                        StringLiterals[i] = ReadFixedLengthString(dataOffset + currentStringDataIndex, stringLength);
+                        literals[i] = ReadFixedLengthString(dataOffset + currentStringDataIndex, stringLength);
                     }
+
+                    StringLiterals = literals;
                 }
                 else
                 {

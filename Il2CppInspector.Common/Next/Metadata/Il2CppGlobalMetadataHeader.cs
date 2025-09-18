@@ -66,7 +66,7 @@ public partial record struct Il2CppGlobalMetadataHeader
     [VersionCondition(LessThan = "35.0")]
     public int MethodsSize { get; private set; }
 
-    [VersionCondition(GreaterThan = "16.0")]
+    [VersionCondition(GreaterThan = "16.0", LessThan = "35.0")]
     [VersionCondition(EqualTo = "16.0")]
     public int ParameterDefaultValuesOffset { get; private set; }
 

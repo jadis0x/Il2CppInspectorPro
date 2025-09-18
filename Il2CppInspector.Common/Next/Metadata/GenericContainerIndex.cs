@@ -2,58 +2,27 @@
 
 namespace Il2CppInspector.Next.Metadata;
 
-public struct GenericContainerIndex(int value) : IReadable, IEquatable<GenericContainerIndex>
+public struct GenericContainerIndex(int value) : IIndexType<GenericContainerIndex>, IReadable, IEquatable<GenericContainerIndex>
 {
-    public const string TagPrefix = nameof(GenericContainerIndex); 
+    public const string TagPrefix = nameof(GenericContainerIndex);
+
+    static string IIndexType<GenericContainerIndex>.TagPrefix => TagPrefix;
+    static StructVersion IIndexType<GenericContainerIndex>.AddedVersion => MetadataVersions.V390;
 
     private int _value = value;
 
-    public static implicit operator int(GenericContainerIndex idx) => idx._value;
-    public static implicit operator GenericContainerIndex(int idx) => new(idx);
-
     public static int Size(in StructVersion version = default, bool is32Bit = false)
-    {
-        if (version >= MetadataVersions.V380
-            && version.Tag != null
-            && version.Tag.Contains(TagPrefix)
-            && !version.Tag.Contains($"{TagPrefix}4"))
-        {
-            if (version.Tag.Contains($"{TagPrefix}2"))
-                return sizeof(ushort);
-
-            if (version.Tag.Contains($"{TagPrefix}1"))
-                return sizeof(byte);
-        }
-
-        return sizeof(int);
-    }
+        => IIndexType<GenericContainerIndex>.IndexSize(version, is32Bit);
 
     public void Read<TReader>(ref TReader reader, in StructVersion version = default) where TReader : IReader, allows ref struct
     {
-        if (version >= MetadataVersions.V380
-            && version.Tag != null
-            && version.Tag.Contains(TagPrefix)
-            && !version.Tag.Contains($"{TagPrefix}4"))
-        {
-            if (version.Tag.Contains($"{TagPrefix}2"))
-            {
-                _value = reader.ReadPrimitive<short>();
-                _value = _value == ushort.MaxValue ? -1 : _value;
-                return;
-            }
-
-            if (version.Tag.Contains($"{TagPrefix}1"))
-            {
-                _value = reader.ReadPrimitive<byte>();
-                _value = _value == byte.MaxValue ? -1 : _value;
-                return;
-            }
-        }
-
-        _value = reader.ReadPrimitive<int>();
+        _value = IIndexType<GenericContainerIndex>.ReadIndex(ref reader, in version);
     }
 
-    #region Equality operators + ToString
+    #region Operators + ToString
+
+    public static implicit operator int(GenericContainerIndex idx) => idx._value;
+    public static implicit operator GenericContainerIndex(int idx) => new(idx);
 
     public static bool operator ==(GenericContainerIndex left, GenericContainerIndex right)
         => left._value == right._value;
@@ -61,7 +30,7 @@ public struct GenericContainerIndex(int value) : IReadable, IEquatable<GenericCo
     public static bool operator !=(GenericContainerIndex left, GenericContainerIndex right)
         => !(left == right);
 
-    public readonly override bool Equals(object? obj)
+    public readonly override bool Equals(object obj)
         => obj is GenericContainerIndex other && Equals(other);
 
     public readonly bool Equals(GenericContainerIndex other)
