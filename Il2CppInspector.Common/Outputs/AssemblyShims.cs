@@ -298,6 +298,10 @@ namespace Il2CppInspector.Outputs
         private PropertyDef AddProperty(ModuleDef module, TypeDef mType, PropertyInfo prop) {
             PropertySig s;
 
+            // Example: ZstdSharp MEM_32Bit which gets inlined using weaving and all accessors removed
+            if (prop.GetMethod == null && prop.SetMethod == null)
+                return null;
+
             // Static or instance
             if (prop.GetMethod?.IsStatic ?? prop.SetMethod.IsStatic)
                 s = PropertySig.CreateStatic(GetTypeSig(module, prop.PropertyType));
