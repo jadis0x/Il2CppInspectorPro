@@ -57,8 +57,9 @@ Unity version | IL2CPP version | Support
 Please refer to the companion repository https://github.com/nneonneo/Il2CppVersions if you would like to track the changes between each IL2CPP release version.
 
 #### Il2CppInspectorPro guides
+- [Il2cpp Reverse Engineering Guide by Jadis0x](https://github.com/jadis0x/il2cpp-reverse-engineering-guide)
+- [DevourX - Mod Menu Developed with Il2CppInspectorPro C++ Scaffold](https://github.com/jadis0x/DevourX)
 
-[Il2cpp Reverse Engineering Guide by Jadis0x](https://github.com/jadis0x/il2cpp-reverse-engineering-guide)
 
 For more detailed information about Il2CppInspectorPro, [visit here](https://github.com/djkaty/Il2CppInspector).
 
