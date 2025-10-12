@@ -332,9 +332,9 @@ The `--seperate-attributes` switch directs Il2CppInspector to put assembly-level
 
 ### Adding metadata to your IDA workflow
 
-**NOTE:** IDA 7.6+ is required, but 7.7 is recommended.
+**NOTE:** IDA 7.6+ is required, but 7.7 is recommended. You also need to use Python 3.8+ to be able to run the script.
 
-**NOTE:** Run script as-soon-as-possible after IDA loads binary into database
+**NOTE:** Run script as-soon-as-possible after IDA loads binary into database!
 
 Simply run Il2CppInspector with the `-p` switch to choose the IDA script output file. Load your binary file into IDA, press Alt+F7 and select the generated script. Observe the Output Window while IDA analyzes the file - this may take a long time.
 

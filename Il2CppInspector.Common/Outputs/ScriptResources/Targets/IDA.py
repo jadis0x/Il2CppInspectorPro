@@ -118,7 +118,7 @@ class IDADisassemblerInterface(BaseDisassemblerInterface):
 	def on_finish(self):
 		ida_ida.inf_set_genflags(self._cached_genflags)
 
-	def define_function(self, address: int, end: int | None = None):
+	def define_function(self, address: int, end: Union[int, None] = None):
 		if self._skip_function_creation:
 			return
 

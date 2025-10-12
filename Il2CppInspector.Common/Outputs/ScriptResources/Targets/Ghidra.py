@@ -51,7 +51,7 @@ class GhidraDisassemblerInterface(BaseDisassemblerInterface):
 	def on_finish(self):
 		pass
 
-	def define_function(self, address: int, end: int | None = None):
+	def define_function(self, address: int, end: Union[int, None] = None):
 		address = self._to_address(address)
 		# Don't override existing functions
 		fn = getFunctionAt(address)

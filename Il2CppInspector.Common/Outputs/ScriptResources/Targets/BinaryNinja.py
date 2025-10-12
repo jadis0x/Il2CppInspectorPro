@@ -71,7 +71,7 @@ class BinaryNinjaDisassemblerInterface(BaseDisassemblerInterface):
         self._type_cache[type] = parsed
         return parsed
 
-    def _parse_type_source(self, types: str, filename: str | None = None):
+    def _parse_type_source(self, types: str, filename: Union[str, None] = None):
         parsed_types, errors = TypeParser.default.parse_types_from_source(
             types,
             filename if filename else "types.hpp",
@@ -127,7 +127,7 @@ class BinaryNinjaDisassemblerInterface(BaseDisassemblerInterface):
         self._view.set_analysis_hold(False)
         self._view.update_analysis()
 
-    def define_function(self, address: int, end: int | None = None):
+    def define_function(self, address: int, end: Union[int, None] = None):
         if self._view.get_function_at(address) is not None:
             return
 

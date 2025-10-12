@@ -7,6 +7,7 @@
 import json
 import os
 from datetime import datetime
+from typing import Union
 import abc
 
 class BaseStatusHandler(abc.ABC):
@@ -31,7 +32,7 @@ class BaseDisassemblerInterface(abc.ABC):
 	def on_finish(self): pass
 
 	@abc.abstractmethod
-	def define_function(self, address: int, end: int | None = None): pass
+	def define_function(self, address: int, end: Union[int, None] = None): pass
 
 	@abc.abstractmethod
 	def define_data_array(self, address: int, type: str, count: int): pass
@@ -111,7 +112,7 @@ class ScriptContext:
 		self._backend.set_data_name(addr, definition['name'])
 		self._backend.set_data_comment(addr, definition['string'])
 
-	def define_field(self, addr: str, name: str, type: str, il_type: str | None = None):
+	def define_field(self, addr: str, name: str, type: str, il_type: Union[str, None] = None):
 		address = self.from_hex(addr)
 		self._backend.set_data_type(address, type)
 		self._backend.set_data_name(address, name)
