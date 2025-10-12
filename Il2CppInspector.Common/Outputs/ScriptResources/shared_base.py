@@ -1,3 +1,6 @@
+#@runtime PyGhidra
+# ^-- required for ghidra, ignored by all others
+
 # Generated script file by Il2CppInspectorRedux - https://github.com/LukeFZ (Original Il2CppInspector by http://www.djkaty.com - https://github.com/djkaty)
 # Target Unity version: %TARGET_UNITY_VERSION%
 
