@@ -83,8 +83,8 @@ class IDADisassemblerInterface(BaseDisassemblerInterface):
 		ida_ida.inf_set_genflags(self._cached_genflags & ~ida_ida.INFFL_AUTO)
 
 		# Unload type libraries we know to cause issues - like the c++ linux one
-		PLATFORMS = ["x86", "x64", "arm", "arm64"]
-		PROBLEMATIC_TYPELIBS = ["gnulnx"]
+		PLATFORMS = ["x86", "x64", "arm", "arm64", "win7"]
+		PROBLEMATIC_TYPELIBS = ["gnulnx", "mssdk64"]
 
 		for lib in PROBLEMATIC_TYPELIBS:
 			for platform in PLATFORMS:
