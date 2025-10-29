@@ -142,7 +142,20 @@ namespace Il2CppInspector.Outputs
             }
         }
 
-        public void Write(string projectPath) {
+        public void Write(string projectPath, string? projectName = null)
+        {
+            var resolvedProjectName = string.IsNullOrWhiteSpace(projectName)
+                ? "IL2CppDLL"
+                : projectName.Trim();
+
+            var invalidCharacters = Path.GetInvalidFileNameChars();
+            var sanitizedProjectName = new string(resolvedProjectName
+                .Select(ch => invalidCharacters.Contains(ch) ? '_' : ch)
+                .ToArray());
+
+            if (string.IsNullOrWhiteSpace(sanitizedProjectName))
+                sanitizedProjectName = "IL2CppDLL";
+
             // Ensure output directory exists and is not a file
             // A System.IOException will be thrown if it's a file'
             var srcUserPath = Path.Combine(projectPath, "user");
@@ -281,8 +294,7 @@ namespace Il2CppInspector.Outputs
 
             // Write Visual Studio project and solution files
             var projectGuid = Guid.NewGuid();
-            var projectName = "IL2CppDLL";
-            var projectFile = projectName + ".vcxproj";
+            var projectFile = sanitizedProjectName + ".vcxproj";
 
             WriteIfNotExists(Path.Combine(projectPath, projectFile),
                 Resources.CppProjTemplate.Replace("%PROJECTGUID%", projectGuid.ToString()));
@@ -300,11 +312,11 @@ namespace Il2CppInspector.Outputs
             WriteIfNotExists(Path.Combine(projectPath, filtersFile), filters);
 
             var solutionGuid = Guid.NewGuid();
-            var solutionFile = projectName + ".sln";
+            var solutionFile = sanitizedProjectName + ".sln";
 
             var sln = Resources.CppSlnTemplate
                 .Replace("%PROJECTGUID%", projectGuid.ToString())
-                .Replace("%PROJECTNAME%", projectName)
+                .Replace("%PROJECTNAME%", sanitizedProjectName)
                 .Replace("%PROJECTFILE%", projectFile)
                 .Replace("%SOLUTIONGUID%", solutionGuid.ToString());
 

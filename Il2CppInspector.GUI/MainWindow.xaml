@@ -377,18 +377,22 @@
                             <ComboBox Name="cboCppUnityVersion" DockPanel.Dock="Right" Margin="4"></ComboBox>
                             <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Unity version (if known):</Label>
                         </DockPanel>
-                        <DockPanel>
-                            <ComboBox Name="cboCppCompiler" DockPanel.Dock="Right" Margin="4" Width="80">
-                                <ComboBoxItem IsSelected="True">MSVC</ComboBoxItem>
-                                <ComboBoxItem>GCC</ComboBoxItem>
-                            </ComboBox>
-                            <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Target C++ compiler for output:</Label>
-                        </DockPanel>
+                            <DockPanel>
+                                <ComboBox Name="cboCppCompiler" DockPanel.Dock="Right" Margin="4" Width="80">
+                                    <ComboBoxItem IsSelected="True">MSVC</ComboBoxItem>
+                                    <ComboBoxItem>GCC</ComboBoxItem>
+                                </ComboBox>
+                                <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Target C++ compiler for output:</Label>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBox Name="txtCppProjectName" DockPanel.Dock="Right" Margin="4" Text="IL2CppDLL"/>
+                                <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Project name:</Label>
+                            </DockPanel>
 
-                        <Separator Margin="5,15,5,15"/>
-                            
-                        <!-- JSON metadata -->
-                        <RadioButton GroupName="grpOutputType" Name="rdoOutputJSON" VerticalContentAlignment="Center" FontSize="18" Foreground="{StaticResource MicrosoftGreen}">JSON metadata</RadioButton>
+                            <Separator Margin="5,15,5,15"/>
+
+                            <!-- JSON metadata -->
+                            <RadioButton GroupName="grpOutputType" Name="rdoOutputJSON" VerticalContentAlignment="Center" FontSize="18" Foreground="{StaticResource MicrosoftGreen}">JSON metadata</RadioButton>
                         <DockPanel>
                             <ComboBox Name="cboJsonUnityVersion" DockPanel.Dock="Right" Margin="4"></ComboBox>
                             <Label DockPanel.Dock="Left" Width="170" VerticalAlignment="Center" HorizontalAlignment="Left">Unity version (if known):</Label>

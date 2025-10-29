@@ -565,6 +565,7 @@ namespace Il2CppInspectorGUI
                         return;
 
                     var cppOutPath = cppSaveFolderDialog.SelectedPath;
+                    var cppProjectName = txtCppProjectName.Text;
 
                     areaBusyIndicator.Visibility = Visibility.Visible;
                     var selectedCppUnityVersion = ((UnityHeaders) cboCppUnityVersion.SelectedItem)?.VersionRange.Min;
@@ -573,8 +574,8 @@ namespace Il2CppInspectorGUI
                         OnStatusUpdate(this, $"Building application model for Unity {selectedCppUnityVersion}/{cppCompiler}");
                         model.Build(selectedCppUnityVersion, cppCompiler);
 
-                        OnStatusUpdate(this, "Generating C++ scaffolding");
-                        new CppScaffolding(model).Write(cppOutPath);
+                        OnStatusUpdate(this, "Generating C++ scaffolding project..");
+                        new CppScaffolding(model).Write(cppOutPath, cppProjectName);
                     });
                     break;
 

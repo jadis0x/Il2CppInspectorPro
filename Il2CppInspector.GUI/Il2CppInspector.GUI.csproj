@@ -10,7 +10,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Il2CppInspector</AssemblyName>
     <Version>2023.1</Version>
-    <Authors>Katy Coe, LukeFZ</Authors>
+    <Authors>Katy Coe, LukeFZ, Jadis0x</Authors>
     <Company>Noisy Cow Studios</Company>
     <Product>Il2CppInspectorRedux Windows Edition</Product>
     <ApplicationManifest>app.manifest</ApplicationManifest>
