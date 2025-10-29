@@ -3,16 +3,17 @@
 // Copyright (c) 2023 LukeFZ https://github.com/LukeFZ
 // All rights reserved
 
-using System;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using Il2CppInspector.Reflection;
 using Il2CppInspector.Cpp;
 using Il2CppInspector.Cpp.UnityHeaders;
 using Il2CppInspector.Model;
 using Il2CppInspector.Properties;
+using Il2CppInspector.Reflection;
+using System;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Il2CppInspector.Outputs
 {
@@ -25,16 +26,17 @@ namespace Il2CppInspector.Outputs
          * which makes decompilation a bit unpleasant due to it only ever checking the lower 32 bits.
          * The better array size type is a union of the actual size (int32_t) and the actual value (uintptr_t) which should hopefully improve decompilation.
          */
-        private readonly bool _useBetterArraySize = 
-            model.UnityVersion.CompareTo("2017.2.1") >= 0 
-            && model.Package.BinaryImage.Bits == 64 
+        private readonly bool _useBetterArraySize =
+            model.UnityVersion.CompareTo("2017.2.1") >= 0
+            && model.Package.BinaryImage.Bits == 64
             && useBetterArraySize;
 
         private StreamWriter _writer;
 
         // Write the type header
         // This can be used by other output modules
-        public void WriteTypes(string typeHeaderFile) {
+        public void WriteTypes(string typeHeaderFile)
+        {
             using var fs = new FileStream(typeHeaderFile, FileMode.Create);
             _writer = new StreamWriter(fs, Encoding.ASCII);
 
@@ -142,6 +144,17 @@ namespace Il2CppInspector.Outputs
             }
         }
 
+        private void ExtractIfEnabled(string sourcePath, string targetPath, string zipFileName, string targetFolderName = null)
+        {
+            var zipFilePath = Path.Combine(sourcePath, zipFileName);
+            if (!File.Exists(zipFilePath))
+                throw new FileNotFoundException($"Missing archive: {zipFilePath}");
+            var folderName = targetFolderName ?? Path.GetFileNameWithoutExtension(zipFileName);
+            var extractPath = Path.Combine(targetPath, folderName);
+            Directory.CreateDirectory(extractPath);
+            ZipFile.ExtractToDirectory(zipFilePath, extractPath, overwriteFiles: true);
+        }
+
         public void Write(string projectPath, string? projectName = null)
         {
             var resolvedProjectName = string.IsNullOrWhiteSpace(projectName)
@@ -161,11 +174,18 @@ namespace Il2CppInspector.Outputs
             var srcUserPath = Path.Combine(projectPath, "user");
             var srcFxPath = Path.Combine(projectPath, "framework");
             var srcDataPath = Path.Combine(projectPath, "appdata");
+            var srcLibraryPath = Path.Combine(projectPath, "libraries");
+            var srhcHandlersPath = Path.Combine(projectPath, "handlers");
 
             Directory.CreateDirectory(projectPath);
             Directory.CreateDirectory(srcUserPath);
             Directory.CreateDirectory(srcFxPath);
             Directory.CreateDirectory(srcDataPath);
+            Directory.CreateDirectory(srcLibraryPath);
+            Directory.CreateDirectory(srhcHandlersPath);
+
+            string inspectorBasePath = AppDomain.CurrentDomain.BaseDirectory;
+            string inspectorLibrariesPath = Path.Combine(inspectorBasePath, "libraries");
 
             // Write type definitions to il2cpp-types.h
             WriteTypes(Path.Combine(srcDataPath, "il2cpp-types.h"));
@@ -276,6 +296,13 @@ namespace Il2CppInspector.Outputs
                 writeCode($"#define __IL2CPP_METADATA_VERSION {_model.Package.Version.Major * 10 + _model.Package.Version.Minor * 10:F0}");
             }
 
+            if (Directory.Exists(inspectorLibrariesPath))
+            {
+                ExtractIfEnabled(inspectorLibrariesPath, srcLibraryPath, "imgui.zip", "imgui");
+                ExtractIfEnabled(inspectorLibrariesPath, srcLibraryPath, "detours.zip", "detours");
+                ExtractIfEnabled(inspectorLibrariesPath, projectPath, "handlers.zip", "handlers");
+            }
+
             // Write boilerplate code
             File.WriteAllText(Path.Combine(srcFxPath, "dllmain.cpp"), Resources.Cpp_DLLMainCpp);
             File.WriteAllText(Path.Combine(srcFxPath, "helpers.cpp"), Resources.Cpp_HelpersCpp);
@@ -292,6 +319,10 @@ namespace Il2CppInspector.Outputs
             WriteIfNotExists(Path.Combine(srcUserPath, "main.cpp"), Resources.Cpp_MainCpp);
             WriteIfNotExists(Path.Combine(srcUserPath, "main.h"), Resources.Cpp_MainH);
 
+            WriteIfNotExists(Path.Combine(srcUserPath, "settings.cpp"), Resources.Cpp_SettingsCpp);
+            WriteIfNotExists(Path.Combine(srcUserPath, "settings.h"), Resources.Cpp_SettingsH);
+
+
             // Write Visual Studio project and solution files
             var projectGuid = Guid.NewGuid();
             var projectFile = sanitizedProjectName + ".vcxproj";
@@ -302,12 +333,26 @@ namespace Il2CppInspector.Outputs
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
             var guid3 = Guid.NewGuid();
+            var guid4 = Guid.NewGuid();
+            var guid5 = Guid.NewGuid();
+            var guid6 = Guid.NewGuid();
+            var guid7 = Guid.NewGuid();
+            var guid8 = Guid.NewGuid();
+            var guid9 = Guid.NewGuid();
+            var guid10 = Guid.NewGuid();
             var filtersFile = projectFile + ".filters";
 
             var filters = Resources.CppProjFilters
                 .Replace("%GUID1%", guid1.ToString())
                 .Replace("%GUID2%", guid2.ToString())
-                .Replace("%GUID3%", guid3.ToString());
+                .Replace("%GUID3%", guid3.ToString())
+                .Replace("%GUID4%", guid4.ToString())
+                .Replace("%GUID5%", guid5.ToString())
+                .Replace("%GUID6%", guid6.ToString())
+                .Replace("%GUID7%", guid7.ToString())
+                .Replace("%GUID8%", guid8.ToString())
+                .Replace("%GUID9%", guid9.ToString())
+                .Replace("%GUID10%", guid10.ToString());
 
             WriteIfNotExists(Path.Combine(projectPath, filtersFile), filters);
 
@@ -323,8 +368,11 @@ namespace Il2CppInspector.Outputs
             WriteIfNotExists(Path.Combine(projectPath, solutionFile), sln);
         }
 
-        private void writeHeader() {
-            writeLine("// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty");
+        private void writeHeader()
+        {
+            writeLine("// Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x/Il2CppInspectorPro");
+            writeLine("// Modified by Jadis0x");
+            writeLine("// Original author: djkaty");
             writeLine("// Target Unity version: " + _model.UnityHeaders);
             writeLine("");
         }
@@ -336,7 +384,7 @@ namespace Il2CppInspector.Outputs
                 writeCode(cppType.ToString());
         }
 
-        private void writeTypesForGroup(string header, string group) 
+        private void writeTypesForGroup(string header, string group)
         {
             writeSectionHeader(header);
             foreach (var cppType in _model.GetDependencyOrderedCppTypeGroup(group))
@@ -356,8 +404,9 @@ namespace Il2CppInspector.Outputs
                 }
             }
         }
-        
-        private void writeCode(string text) {
+
+        private void writeCode(string text)
+        {
             if (_model.TargetCompiler == CppCompilerType.MSVC)
                 text = GccAlignRegex().Replace(text, @"__declspec(align($1))");
             else if (_model.TargetCompiler == CppCompilerType.GCC)
@@ -370,7 +419,8 @@ namespace Il2CppInspector.Outputs
                 writeLine(line);
         }
 
-        private void writeSectionHeader(string name) {
+        private void writeSectionHeader(string name)
+        {
             writeLine("// ******************************************************************************");
             writeLine("// * " + name);
             writeLine("// ******************************************************************************");

@@ -19,7 +19,7 @@ namespace Il2CppInspector.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -79,7 +79,7 @@ namespace Il2CppInspector.Properties {
         ///    {
         ///    case DLL_PROCESS_ATTACH:
         ///        init_il2cpp();
-        ///        CreateThread(NULL, 0, (LPTHREAD_S [rest of string was truncated]&quot;;.
+        ///        CreateThread(NU [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_DLLMainCpp {
             get {
@@ -107,8 +107,7 @@ namespace Il2CppInspector.Properties {
         ///    return (uintptr_t) GetModuleHandleW(L&quot;GameAssembly.dll&quot;);
         ///}
         ///
-        ///// Helper function to append text to a file
-        ///void il2cppi_l [rest of string was truncated]&quot;;.
+        ///// Helper function to append text to a  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_HelpersCpp {
             get {
@@ -135,9 +134,7 @@ namespace Il2CppInspector.Properties {
         ///void il2cppi_log_write(std::string text);
         ///
         ///// Helper function to open a new console window and redirect stdout there
-        ///void il2cppi_new_console();
-        ///
-        ///#if _MSC_V [rest of string was truncated]&quot;;.
+        ///void il2cppi_new_cons [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_HelpersH {
             get {
@@ -166,7 +163,7 @@ namespace Il2CppInspector.Properties {
         ///
         ///// Application-specific functions
         ///#define DO_APP_FUNC(a, r, n, p) extern r (*n) p
-        ///#define DO_APP_FUNC_METHODINFO(a, n) extern [rest of string was truncated]&quot;;.
+        ///#define DO_APP_FUNC_MET [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_Il2CppAppDataH {
             get {
@@ -193,9 +190,7 @@ namespace Il2CppInspector.Properties {
         ///#define DO_APP_FUNC(a, r, n, p) r (*n) p
         ///#define DO_APP_FUNC_METHODINFO(a, n) struct MethodInfo ** n
         ///namespace app {
-        ///#include &quot;il2cpp-functions.h&quot;
-        ///}
-        ///#und [rest of string was truncated]&quot;;.
+        ///#include &quot;il2cpp-f [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_Il2CppInitCpp {
             get {
@@ -239,7 +234,7 @@ namespace Il2CppInspector.Properties {
         ///void Run()
         ///{
         ///    // Initialize thread data - DO NOT REMOVE
-        ///    il2cpp_thread_attach(il2cpp [rest of string was truncated]&quot;;.
+        ///    il2cpp_ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_MainCpp {
             get {
@@ -285,7 +280,7 @@ namespace Il2CppInspector.Properties {
         ///#ifndef PCH_IL2CPP_H
         ///#define PCH_IL2CPP_H
         ///
-        ///// add headers that you [rest of string was truncated]&quot;;.
+        ///// add headers [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_PCHIl2CppH {
             get {
@@ -294,10 +289,47 @@ namespace Il2CppInspector.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;settings.h&quot;
+        ///
+        ///Settings settings;.
+        /// </summary>
+        internal static string Cpp_SettingsCpp {
+            get {
+                return ResourceManager.GetString("Cpp-SettingsCpp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///
+        ///#include &quot;handlers/keybinds.h&quot;
+        ///
+        ///class Settings {
+        ///public:
+        /// KeyBinds::Config KeyBinds = {
+        ///  VK_F12 // toggle menu
+        /// };
+        ///
+        /// bool ImGuiInitialized = false;
+        /// bool bShowMenu = false;
+        /// bool bEnableUnityLogs = true;
+        ///};
+        ///
+        ///extern Settings settings;.
+        /// </summary>
+        internal static string Cpp_SettingsH {
+            get {
+                return ResourceManager.GetString("Cpp-SettingsH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
         ///  &lt;ItemGroup&gt;
-        ///    &lt;ClCompile Include=&quot;user\main.cpp&quot;&gt;
+        ///     &lt;ClCompile Include=&quot;user\main.cpp&quot;&gt;
         ///      &lt;Filter&gt;user&lt;/Filter&gt;
         ///    &lt;/ClCompile&gt;
         ///    &lt;ClCompile Include=&quot;framework\dllmain.cpp&quot;&gt;
@@ -307,8 +339,7 @@ namespace Il2CppInspector.Properties {
         ///      &lt;Filter&gt;framework&lt;/Filter&gt;
         ///    &lt;/ClCompile&gt;
         ///    &lt;ClCompile Include=&quot;framework\il2cpp-init.cpp&quot;&gt;
-        ///      &lt;Filter&gt;framework&lt;/Filter&gt;
-        ///     [rest of string was truncated]&quot;;.
+        ///      &lt;Filter&gt;framework [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CppProjFilters {
             get {
@@ -328,7 +359,7 @@ namespace Il2CppInspector.Properties {
         ///      &lt;Configuration&gt;Release&lt;/Configuration&gt;
         ///      &lt;Platform&gt;Win32&lt;/Platform&gt;
         ///    &lt;/ProjectConfiguration&gt;
-        ///    &lt;ProjectConfiguration  [rest of string was truncated]&quot;;.
+        ///    &lt;ProjectCon [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CppProjTemplate {
             get {
@@ -350,7 +381,7 @@ namespace Il2CppInspector.Properties {
         ///		Release|x64 = Release|x64
         ///		Release|x86 = Release|x86
         ///	EndGlobalSection
-        ///	GlobalSection(ProjectConfigurationPlatfo [rest of string was truncated]&quot;;.
+        ///	GlobalSection(ProjectConfig [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CppSlnTemplate {
             get {
@@ -370,7 +401,7 @@ namespace Il2CppInspector.Properties {
         ///    &lt;ProjectGuid&gt;{%PROJECTGUID%}&lt;/ProjectGuid&gt;
         ///    &lt;!--&lt;ProductVersion/&gt;--&gt;
         ///    &lt;!--&lt;SchemaVersion/&gt;--&gt;
-        ///    &lt;OutputType&gt;Li [rest of string was truncated]&quot;;.
+        ///    &lt;Ou [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CsProjTemplate {
             get {

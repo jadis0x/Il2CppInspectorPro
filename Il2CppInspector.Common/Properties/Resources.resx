@@ -326,26 +326,87 @@ void Run()
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;Create&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;Create&lt;/PrecompiledHeader&gt;
     &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\Dx11.cpp" /&gt;
+    &lt;ClCompile Include="handlers\gui\GUITheme.cpp" /&gt;
+    &lt;ClCompile Include="handlers\gui\menu.cpp" /&gt;
+    &lt;ClCompile Include="handlers\gui\tabs\SettingsTAB.cpp" /&gt;
+    &lt;ClCompile Include="handlers\hooks\DirectX.cpp" /&gt;
+    &lt;ClCompile Include="handlers\hooks\InitHooks.cpp" /&gt;
+    &lt;ClCompile Include="handlers\keybinds.cpp" /&gt;
+    &lt;ClCompile Include="libraries\detours\detours.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\detours\disasm.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\detours\modules.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_draw.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_impl_dx11.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_impl_win32.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_tables.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_widgets.cpp"&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+      &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+    &lt;/ClCompile&gt;
     &lt;ClCompile Include="user\main.cpp" /&gt;
+    &lt;ClCompile Include="user\settings.cpp" /&gt;
   &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
     &lt;ClInclude Include="appdata\il2cpp-api-functions.h" /&gt;
     &lt;ClInclude Include="appdata\il2cpp-api-functions-ptr.h" /&gt;
     &lt;ClInclude Include="appdata\il2cpp-functions.h" /&gt;
-	  &lt;ClInclude Include="appdata\il2cpp-metadata-version.h" /&gt;
+    &lt;ClInclude Include="appdata\il2cpp-metadata-version.h" /&gt;
     &lt;ClInclude Include="appdata\il2cpp-types-ptr.h" /&gt;
     &lt;ClInclude Include="appdata\il2cpp-types.h" /&gt;
     &lt;ClInclude Include="framework\helpers.h" /&gt;
     &lt;ClInclude Include="framework\il2cpp-appdata.h" /&gt;
     &lt;ClInclude Include="framework\il2cpp-init.h" /&gt;
     &lt;ClInclude Include="framework\pch-il2cpp.h" /&gt;
+    &lt;ClInclude Include="handlers\Dx11.h" /&gt;
+    &lt;ClInclude Include="handlers\gui\GUITheme.h" /&gt;
+    &lt;ClInclude Include="handlers\gui\menu.h" /&gt;
+    &lt;ClInclude Include="handlers\gui\tabs\SettingsTAB.h" /&gt;
+    &lt;ClInclude Include="handlers\hooks\DirectX.h" /&gt;
+    &lt;ClInclude Include="handlers\hooks\InitHooks.h" /&gt;
+    &lt;ClInclude Include="handlers\keybinds.h" /&gt;
+    &lt;ClInclude Include="libraries\detours\detours.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imconfig.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui_impl_dx11.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui_impl_win32.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui_internal.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imstb_rectpack.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imstb_textedit.h" /&gt;
+    &lt;ClInclude Include="libraries\imgui\imstb_truetype.h" /&gt;
     &lt;ClInclude Include="user\main.h" /&gt;
+    &lt;ClInclude Include="user\settings.h" /&gt;
   &lt;/ItemGroup&gt;
   &lt;PropertyGroup Label="Globals"&gt;
     &lt;!--&lt;VCProjectVersion&gt;16.0&lt;/VCProjectVersion&gt;--&gt;
     &lt;Keyword&gt;Win32Proj&lt;/Keyword&gt;
     &lt;ProjectGuid&gt;{%PROJECTGUID}&lt;/ProjectGuid&gt;
-    &lt;RootNamespace&gt;Il2CppDLL&lt;/RootNamespace&gt;
+    &lt;RootNamespace&gt;{%PROJECTNAME}&lt;/RootNamespace&gt;
     &lt;!--&lt;WindowsTargetPlatformVersion&gt;10.0&lt;/WindowsTargetPlatformVersion&gt;--&gt;
   &lt;/PropertyGroup&gt;
   &lt;Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" /&gt;
@@ -354,6 +415,7 @@ void Run()
     &lt;UseDebugLibraries&gt;true&lt;/UseDebugLibraries&gt;
     &lt;!--&lt;PlatformToolset&gt;v142&lt;/PlatformToolset&gt;--&gt;
     &lt;CharacterSet&gt;Unicode&lt;/CharacterSet&gt;
+    &lt;PlatformToolset&gt;v143&lt;/PlatformToolset&gt;
   &lt;/PropertyGroup&gt;
   &lt;PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration"&gt;
     &lt;ConfigurationType&gt;DynamicLibrary&lt;/ConfigurationType&gt;
@@ -361,12 +423,14 @@ void Run()
     &lt;!--&lt;PlatformToolset&gt;v142&lt;/PlatformToolset&gt;--&gt;
     &lt;WholeProgramOptimization&gt;true&lt;/WholeProgramOptimization&gt;
     &lt;CharacterSet&gt;Unicode&lt;/CharacterSet&gt;
+    &lt;PlatformToolset&gt;v143&lt;/PlatformToolset&gt;
   &lt;/PropertyGroup&gt;
   &lt;PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration"&gt;
     &lt;ConfigurationType&gt;DynamicLibrary&lt;/ConfigurationType&gt;
     &lt;UseDebugLibraries&gt;true&lt;/UseDebugLibraries&gt;
     &lt;!--&lt;PlatformToolset&gt;v142&lt;/PlatformToolset&gt;--&gt;
     &lt;CharacterSet&gt;Unicode&lt;/CharacterSet&gt;
+    &lt;PlatformToolset&gt;v143&lt;/PlatformToolset&gt;
   &lt;/PropertyGroup&gt;
   &lt;PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration"&gt;
     &lt;ConfigurationType&gt;DynamicLibrary&lt;/ConfigurationType&gt;
@@ -374,6 +438,7 @@ void Run()
     &lt;!--&lt;PlatformToolset&gt;v142&lt;/PlatformToolset&gt;--&gt;
     &lt;WholeProgramOptimization&gt;true&lt;/WholeProgramOptimization&gt;
     &lt;CharacterSet&gt;Unicode&lt;/CharacterSet&gt;
+    &lt;PlatformToolset&gt;v143&lt;/PlatformToolset&gt;
   &lt;/PropertyGroup&gt;
   &lt;Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" /&gt;
   &lt;ImportGroup Label="ExtensionSettings"&gt;
@@ -452,7 +517,7 @@ void Run()
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
-      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user&lt;/AdditionalIncludeDirectories&gt;
+      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)handlers;$(ProjectDir)libraries&lt;/AdditionalIncludeDirectories&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
@@ -471,7 +536,7 @@ void Run()
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
-      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user&lt;/AdditionalIncludeDirectories&gt;
+      &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)handlers;$(ProjectDir)libraries&lt;/AdditionalIncludeDirectories&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
@@ -1299,7 +1364,7 @@ void Run();</value>
     <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
   &lt;ItemGroup&gt;
-    &lt;ClCompile Include="user\main.cpp"&gt;
+     &lt;ClCompile Include="user\main.cpp"&gt;
       &lt;Filter&gt;user&lt;/Filter&gt;
     &lt;/ClCompile&gt;
     &lt;ClCompile Include="framework\dllmain.cpp"&gt;
@@ -1313,6 +1378,57 @@ void Run();</value>
     &lt;/ClCompile&gt;
     &lt;ClCompile Include="framework\pch-il2cpp.cpp"&gt;
       &lt;Filter&gt;framework&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\detours\detours.cpp"&gt;
+      &lt;Filter&gt;libraries\detours&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\detours\disasm.cpp"&gt;
+      &lt;Filter&gt;libraries\detours&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\detours\modules.cpp"&gt;
+      &lt;Filter&gt;libraries\detours&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui.cpp"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_draw.cpp"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_impl_dx11.cpp"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_impl_win32.cpp"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_tables.cpp"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="libraries\imgui\imgui_widgets.cpp"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="user\settings.cpp"&gt;
+      &lt;Filter&gt;user&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\gui\GUITheme.cpp"&gt;
+      &lt;Filter&gt;handlers\gui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\gui\menu.cpp"&gt;
+      &lt;Filter&gt;handlers\gui&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\gui\tabs\SettingsTAB.cpp"&gt;
+      &lt;Filter&gt;handlers\gui\tabs&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\Dx11.cpp"&gt;
+      &lt;Filter&gt;handlers&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\keybinds.cpp"&gt;
+      &lt;Filter&gt;handlers&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\hooks\DirectX.cpp"&gt;
+      &lt;Filter&gt;handlers\hooks&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+    &lt;ClCompile Include="handlers\hooks\InitHooks.cpp"&gt;
+      &lt;Filter&gt;handlers\hooks&lt;/Filter&gt;
     &lt;/ClCompile&gt;
   &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
@@ -1349,6 +1465,57 @@ void Run();</value>
     &lt;ClInclude Include="framework\pch-il2cpp.h"&gt;
       &lt;Filter&gt;framework&lt;/Filter&gt;
     &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\detours\detours.h"&gt;
+      &lt;Filter&gt;libraries\detours&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imconfig.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui_impl_dx11.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui_impl_win32.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imgui_internal.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imstb_rectpack.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imstb_textedit.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="libraries\imgui\imstb_truetype.h"&gt;
+      &lt;Filter&gt;libraries\imgui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="user\settings.h"&gt;
+      &lt;Filter&gt;user&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="handlers\gui\GUITheme.h"&gt;
+      &lt;Filter&gt;handlers\gui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="handlers\gui\menu.h"&gt;
+      &lt;Filter&gt;handlers\gui&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="handlers\gui\tabs\SettingsTAB.h"&gt;
+      &lt;Filter&gt;handlers\gui\tabs&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="handlers\Dx11.h"&gt;
+      &lt;Filter&gt;handlers&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="handlers\keybinds.h"&gt;
+      &lt;Filter&gt;handlers&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="handlers\hooks\DirectX.h"&gt;
+      &lt;Filter&gt;handlers\hooks&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
+    &lt;ClInclude Include="handlers\hooks\InitHooks.h"&gt;
+      &lt;Filter&gt;handlers\hooks&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
   &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
     &lt;Filter Include="appdata"&gt;
@@ -1360,7 +1527,53 @@ void Run();</value>
     &lt;Filter Include="user"&gt;
       &lt;UniqueIdentifier&gt;{%GUID3%}&lt;/UniqueIdentifier&gt;
     &lt;/Filter&gt;
+ &lt;Filter Include="libraries"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID4%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
+    &lt;Filter Include="libraries\detours"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID5%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
+    &lt;Filter Include="libraries\imgui"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID6%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
+    &lt;Filter Include="handlers"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID7%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
+    &lt;Filter Include="handlers\gui"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID8%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
+    &lt;Filter Include="handlers\gui\tabs"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID9%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
+    &lt;Filter Include="handlers\hooks"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID10%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
   &lt;/ItemGroup&gt;
 &lt;/Project&gt;</value>
+  </data>
+  <data name="Cpp-SettingsH" xml:space="preserve">
+    <value>#pragma once
+
+#include "handlers/keybinds.h"
+
+class Settings {
+public:
+ KeyBinds::Config KeyBinds = {
+  VK_F12 // toggle menu
+ };
+
+ bool ImGuiInitialized = false;
+ bool bShowMenu = false;
+ bool bEnableUnityLogs = true;
+};
+
+extern Settings settings;</value>
+  </data>
+  <data name="Cpp-SettingsCpp" xml:space="preserve">
+    <value>#include "pch-il2cpp.h"
+
+#include "settings.h"
+
+Settings settings;</value>
   </data>
 </root>
