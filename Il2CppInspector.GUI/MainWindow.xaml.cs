@@ -566,6 +566,7 @@ namespace Il2CppInspectorGUI
 
                     var cppOutPath = cppSaveFolderDialog.SelectedPath;
                     var cppProjectName = txtCppProjectName.Text;
+                    var includeUnresolvedCppTypes = cbIncludeUnresolvedCppTypes.IsChecked == true;
 
                     areaBusyIndicator.Visibility = Visibility.Visible;
                     var selectedCppUnityVersion = ((UnityHeaders) cboCppUnityVersion.SelectedItem)?.VersionRange.Min;
@@ -575,7 +576,8 @@ namespace Il2CppInspectorGUI
                         model.Build(selectedCppUnityVersion, cppCompiler);
 
                         OnStatusUpdate(this, "Generating C++ scaffolding project..");
-                        new CppScaffolding(model).Write(cppOutPath, cppProjectName);
+                        new CppScaffolding(model, includeUnresolvedCppTypes: includeUnresolvedCppTypes)
+                            .Write(cppOutPath, cppProjectName);
                     });
                     break;
 

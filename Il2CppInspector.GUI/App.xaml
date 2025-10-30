@@ -4,9 +4,9 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <!-- Our favourite colours -->
-        <SolidColorBrush x:Key="MicrosoftBlue" Color="#00A2ED"/>
-        <SolidColorBrush x:Key="MicrosoftGreen" Color="#7DB700"/>
-        <SolidColorBrush x:Key="WindowsBlue" Color="#357EC7"/>
+        <SolidColorBrush x:Key="MicrosoftBlue" Color="#0078D7"/>
+        <SolidColorBrush x:Key="MicrosoftGreen" Color="#107C10"/>
+        <SolidColorBrush x:Key="WindowsBlue"   Color="#2B88D8"/>
 
         <!-- Light box button -->
         <Style x:Key="FocusVisual">
@@ -18,15 +18,16 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="Button.Static.Background" Color="#FFDDDDDD"/>
-        <SolidColorBrush x:Key="Button.Static.Border" Color="Gray"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFBEE6FD"/>
-        <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF3C7FB1"/>
-        <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FFC4E5F6"/>
-        <SolidColorBrush x:Key="Button.Pressed.Border" Color="#FF2C628B"/>
-        <SolidColorBrush x:Key="Button.Disabled.Background" Color="#FFF4F4F4"/>
-        <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFADB2B5"/>
-        <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FF838383"/>
+        <SolidColorBrush x:Key="Button.Static.Background"    Color="#FFF8F8F8"/>
+        <SolidColorBrush x:Key="Button.Static.Border"        Color="#FFCCCCCC"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FFE5F1FB"/>
+        <SolidColorBrush x:Key="Button.MouseOver.Border"     Color="#FF99C3F1"/>
+        <SolidColorBrush x:Key="Button.Pressed.Background"   Color="#FFD0E7FF"/>
+        <SolidColorBrush x:Key="Button.Pressed.Border"       Color="#FF0078D7"/>
+        <SolidColorBrush x:Key="Button.Disabled.Background"  Color="#FFF0F0F0"/>
+        <SolidColorBrush x:Key="Button.Disabled.Border"      Color="#FFD0D0D0"/>
+        <SolidColorBrush x:Key="Button.Disabled.Foreground"  Color="#FF999999"/>
+
         <Style x:Key="LightBoxButton" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
             <Setter Property="Background" Value="{StaticResource Button.Static.Background}"/>
@@ -36,11 +37,11 @@
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="1"/>
-            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontSize" Value="15"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" Background="White" BorderThickness="2" CornerRadius="2" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
+                        <Border x:Name="border" Background="#d3e6f7" BorderThickness="3" CornerRadius="15" BorderBrush="#a5d5ff" SnapsToDevicePixels="true">
                             <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                         </Border>
                         <ControlTemplate.Triggers>

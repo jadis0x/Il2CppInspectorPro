@@ -17,9 +17,10 @@ using System.Text.RegularExpressions;
 
 namespace Il2CppInspector.Outputs
 {
-    public partial class CppScaffolding(AppModel model, bool useBetterArraySize = false)
+    public partial class CppScaffolding(AppModel model, bool useBetterArraySize = false, bool includeUnresolvedCppTypes = false)
     {
         private readonly AppModel _model = model;
+        private readonly bool _includeUnresolvedCppTypes = includeUnresolvedCppTypes;
 
         /*
          * 2017.2.1 changed the type of il2cpp_array_size_t to uintptr_t from int32_t. The code, however, uses static_cast<int32_t>(maxLength) to access this value,
@@ -175,14 +176,16 @@ namespace Il2CppInspector.Outputs
             var srcFxPath = Path.Combine(projectPath, "framework");
             var srcDataPath = Path.Combine(projectPath, "appdata");
             var srcLibraryPath = Path.Combine(projectPath, "libraries");
-            var srhcHandlersPath = Path.Combine(projectPath, "handlers");
+            var srhHandlersPath = Path.Combine(projectPath, "handlers");
+            var srhDefinitionsPath = Path.Combine(projectPath, "definitions");
 
             Directory.CreateDirectory(projectPath);
             Directory.CreateDirectory(srcUserPath);
             Directory.CreateDirectory(srcFxPath);
             Directory.CreateDirectory(srcDataPath);
             Directory.CreateDirectory(srcLibraryPath);
-            Directory.CreateDirectory(srhcHandlersPath);
+            Directory.CreateDirectory(srhHandlersPath);
+            Directory.CreateDirectory(srhDefinitionsPath);
 
             string inspectorBasePath = AppDomain.CurrentDomain.BaseDirectory;
             string inspectorLibrariesPath = Path.Combine(inspectorBasePath, "libraries");
@@ -247,7 +250,9 @@ namespace Il2CppInspector.Outputs
                 writeHeader();
                 writeSectionHeader("IL2CPP application-specific type definition addresses");
 
-                foreach (var type in _model.Types.Values.Where(t => t.TypeClassAddress != 0xffffffff_ffffffff))
+                foreach (var type in _model.Types.Values.Where(t =>
+                             t.TypeClassAddress != 0xffffffff_ffffffff
+                             && (_includeUnresolvedCppTypes || t.CppType != null)))
                 {
                     writeCode($"DO_TYPEDEF(0x{type.TypeClassAddress - _model.Package.BinaryImage.ImageBase:X8}, {type.Name});");
                 }
@@ -312,12 +317,16 @@ namespace Il2CppInspector.Outputs
             File.WriteAllText(Path.Combine(srcFxPath, "il2cpp-init.h"), Resources.Cpp_Il2CppInitH);
             File.WriteAllText(Path.Combine(srcFxPath, "pch-il2cpp.cpp"), Resources.Cpp_PCHIl2Cpp);
             File.WriteAllText(Path.Combine(srcFxPath, "pch-il2cpp.h"), Resources.Cpp_PCHIl2CppH);
+            File.WriteAllText(Path.Combine(srcFxPath, "version.cpp"), Resources.CppVersion_Cpp);
+            File.WriteAllText(Path.Combine(srcFxPath, "version.h"), Resources.CppVersion_H);
 
             // Write user code without overwriting existing code
             void WriteIfNotExists(string path, string contents) { if (!File.Exists(path)) File.WriteAllText(path, contents); }
 
             WriteIfNotExists(Path.Combine(srcUserPath, "main.cpp"), Resources.Cpp_MainCpp);
             WriteIfNotExists(Path.Combine(srcUserPath, "main.h"), Resources.Cpp_MainH);
+
+            WriteIfNotExists(Path.Combine(srhDefinitionsPath, "version.def"), Resources.CppVersionDef);
 
             WriteIfNotExists(Path.Combine(srcUserPath, "settings.cpp"), Resources.Cpp_SettingsCpp);
             WriteIfNotExists(Path.Combine(srcUserPath, "settings.h"), Resources.Cpp_SettingsH);
@@ -340,6 +349,7 @@ namespace Il2CppInspector.Outputs
             var guid8 = Guid.NewGuid();
             var guid9 = Guid.NewGuid();
             var guid10 = Guid.NewGuid();
+            var guid11 = Guid.NewGuid();
             var filtersFile = projectFile + ".filters";
 
             var filters = Resources.CppProjFilters
@@ -352,7 +362,8 @@ namespace Il2CppInspector.Outputs
                 .Replace("%GUID7%", guid7.ToString())
                 .Replace("%GUID8%", guid8.ToString())
                 .Replace("%GUID9%", guid9.ToString())
-                .Replace("%GUID10%", guid10.ToString());
+                .Replace("%GUID10%", guid10.ToString())
+                .Replace("%GUID11%", guid11.ToString());
 
             WriteIfNotExists(Path.Combine(projectPath, filtersFile), filters);
 

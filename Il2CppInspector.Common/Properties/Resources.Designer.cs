@@ -61,25 +61,27 @@ namespace Il2CppInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
         ///// DLL entry point
         ///
         ///#define WIN32_LEAN_AND_MEAN
         ///#include &lt;windows.h&gt;
-        ///#include &quot;il2cpp-init.h&quot;
-        ///#include &quot;main.h&quot;
+        ///#include &quot;version.h&quot;
         ///
-        ///// DLL entry point
-        ///BOOL APIENTRY DllMain( HMODULE hModule,
-        ///                       DWORD  ul_reason_for_call,
-        ///                       LPVOID lpReserved
-        ///                     )
+        ///BOOL APIENTRY DllMain(HMODULE hModule,
+        /// DWORD  ul_reason_for_call,
+        /// LPVOID lpReserved
+        ///)
         ///{
-        ///    switch (ul_reason_for_call)
-        ///    {
-        ///    case DLL_PROCESS_ATTACH:
-        ///        init_il2cpp();
-        ///        CreateThread(NU [rest of string was truncated]&quot;;.
+        /// switch (ul_reason_for_call)
+        /// {
+        /// case DLL_PROCESS_ATTACH:
+        ///  DisableThreadLibraryCalls(hModule);
+        ///  CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Load, hModule, NULL, NULL);
+        ///  break;
+        /// case DLL_PROCESS_DETACH:
+        ///  FreeLibrary(version_dll);
+        ///  b [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_DLLMainCpp {
             get {
@@ -88,7 +90,7 @@ namespace Il2CppInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
         ///// Helper functions
         ///
         ///#include &quot;pch-il2cpp.h&quot;
@@ -104,10 +106,11 @@ namespace Il2CppInspector.Properties {
         ///
         ///// Helper function to get the module base address
         ///uintptr_t il2cppi_get_base_address() {
-        ///    return (uintptr_t) GetModuleHandleW(L&quot;GameAssembly.dll&quot;);
+        /// return (uintptr_t)GetModuleHandleW(L&quot;GameAssembly.dll&quot;);
         ///}
         ///
-        ///// Helper function to append text to a  [rest of string was truncated]&quot;;.
+        ///// Helper function to append text to a file
+        ///void il2cppi_log_w [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_HelpersCpp {
             get {
@@ -116,7 +119,7 @@ namespace Il2CppInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
         ///// Helper functions
         ///
         ///#pragma once
@@ -134,7 +137,9 @@ namespace Il2CppInspector.Properties {
         ///void il2cppi_log_write(std::string text);
         ///
         ///// Helper function to open a new console window and redirect stdout there
-        ///void il2cppi_new_cons [rest of string was truncated]&quot;;.
+        ///void il2cppi_new_console();
+        ///
+        ///#if _MSC_V [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_HelpersH {
             get {
@@ -214,27 +219,31 @@ namespace Il2CppInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
         ///// Custom injected code entry point
         ///
         ///#include &quot;pch-il2cpp.h&quot;
         ///
         ///#define WIN32_LEAN_AND_MEAN
+        ///
+        ///#include &quot;main.h&quot;
         ///#include &lt;Windows.h&gt;
         ///#include &lt;iostream&gt;
         ///#include &quot;il2cpp-appdata.h&quot;
+        ///#include &quot;il2cpp-init.h&quot;
+        ///#include &lt;cstdio&gt;
         ///#include &quot;helpers.h&quot;
-        ///
-        ///using namespace app;
+        ///#include &quot;hooks/InitHooks.h&quot;
         ///
         ///// Set the name of your log file here
-        ///extern const LPCWSTR LOG_FILE = L&quot;il2cpp-log.txt&quot;;
+        ///extern const LPCWSTR LOG_FILE = L&quot;Logs.txt&quot;;
         ///
-        ///// Custom injected code entry point
-        ///void Run()
+        ///namespace
         ///{
-        ///    // Initialize thread data - DO NOT REMOVE
-        ///    il2cpp_ [rest of string was truncated]&quot;;.
+        /// class ScopedHandle
+        /// {
+        /// public:
+        ///  ScopedHandle( [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Cpp_MainCpp {
             get {
@@ -243,13 +252,18 @@ namespace Il2CppInspector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
-        ///// Custom injected code entry point
+        ///   Looks up a localized string similar to // Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
+        ///// DLL entry point
         ///
         ///#pragma once
         ///
-        ///// Custom injected code entry point
-        ///void Run();.
+        ///#include &lt;Windows.h&gt;
+        ///
+        ///extern HMODULE hModule;
+        ///extern HANDLE hUnloadEvent;
+        ///
+        ///void Run(LPVOID lpParam);
+        ///.
         /// </summary>
         internal static string Cpp_MainH {
             get {
@@ -304,7 +318,7 @@ namespace Il2CppInspector.Properties {
         /// <summary>
         ///   Looks up a localized string similar to #pragma once
         ///
-        ///#include &quot;handlers/keybinds.h&quot;
+        ///#include &quot;keybinds.h&quot;
         ///
         ///class Settings {
         ///public:
@@ -328,6 +342,11 @@ namespace Il2CppInspector.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;Project ToolsVersion=&quot;4.0&quot; xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
+        ///   &lt;ItemGroup&gt;
+        /// &lt;None Include=&quot;definitions\version.def&quot;&gt;
+        /// &lt;Filter&gt;definitions&lt;/Filter&gt;
+        /// &lt;/None&gt;
+        ///  &lt;/ItemGroup&gt;
         ///  &lt;ItemGroup&gt;
         ///     &lt;ClCompile Include=&quot;user\main.cpp&quot;&gt;
         ///      &lt;Filter&gt;user&lt;/Filter&gt;
@@ -336,10 +355,7 @@ namespace Il2CppInspector.Properties {
         ///      &lt;Filter&gt;framework&lt;/Filter&gt;
         ///    &lt;/ClCompile&gt;
         ///    &lt;ClCompile Include=&quot;framework\helpers.cpp&quot;&gt;
-        ///      &lt;Filter&gt;framework&lt;/Filter&gt;
-        ///    &lt;/ClCompile&gt;
-        ///    &lt;ClCompile Include=&quot;framework\il2cpp-init.cpp&quot;&gt;
-        ///      &lt;Filter&gt;framework [rest of string was truncated]&quot;;.
+        ///      &lt;Filte [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string CppProjFilters {
             get {
@@ -386,6 +402,74 @@ namespace Il2CppInspector.Properties {
         internal static string CppSlnTemplate {
             get {
                 return ResourceManager.GetString("CppSlnTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #include &quot;pch-il2cpp.h&quot;
+        ///
+        ///#include &quot;main.h&quot;
+        ///#include &quot;version.h&quot;
+        ///#include &lt;chrono&gt;
+        ///#include &lt;filesystem&gt;
+        ///#include &lt;thread&gt;
+        ///
+        ///HMODULE version_dll;
+        ///
+        ///#define WRAPPER_GENFUNC(name) \
+        ///    FARPROC o##name; \
+        ///    void _##name() \
+        ///    { \
+        ///        if (o##name) \
+        ///            ((void(*)())o##name)(); \
+        ///    }
+        ///
+        ///WRAPPER_GENFUNC(GetFileVersionInfoA)
+        ///WRAPPER_GENFUNC(GetFileVersionInfoByHandle)
+        ///WRAPPER_GENFUNC(GetFileVersionInfoExW)
+        ///WRAPPER_GENFUNC(GetFileVersionInfoExA)
+        ///WRAPPER_GENFUNC(GetFileVersionInfo [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CppVersion_Cpp {
+            get {
+                return ResourceManager.GetString("CppVersion_Cpp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #pragma once
+        ///#define WIN32_LEAN_AND_MEAN
+        ///
+        ///#include &lt;windows.h&gt;
+        ///
+        ///extern HMODULE version_dll;
+        ///
+        ///DWORD WINAPI Load(LPVOID lpParam);.
+        /// </summary>
+        internal static string CppVersion_H {
+            get {
+                return ResourceManager.GetString("CppVersion_H", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LIBRARY &quot;VERSION&quot;
+        ///EXPORTS
+        ///
+        ///GetFileVersionInfoA = _GetFileVersionInfoA
+        ///GetFileVersionInfoByHandle = _GetFileVersionInfoByHandle
+        ///GetFileVersionInfoExA = _GetFileVersionInfoExA
+        ///GetFileVersionInfoExW = _GetFileVersionInfoExW
+        ///GetFileVersionInfoSizeA = _GetFileVersionInfoSizeA
+        ///GetFileVersionInfoSizeExA = _GetFileVersionInfoSizeExA
+        ///GetFileVersionInfoSizeExW = _GetFileVersionInfoSizeExW
+        ///GetFileVersionInfoSizeW = _GetFileVersionInfoSizeW
+        ///GetFileVersionInfoW = _GetFileVersionInfoW
+        ///VerFindFileA = _VerFindF [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CppVersionDef {
+            get {
+                return ResourceManager.GetString("CppVersionDef", resourceCulture);
             }
         }
         

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Il2CppInspectorGUI"
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
-        Title="Il2CppInspectorRedux" Height="850" Width="1100" Background="White"
+        Title="Il2CppInspectorPro" Height="850" Width="1100" Background="White"
         WindowStartupLocation="CenterScreen"
         ContentRendered="MainWindow_OnContentRendered"
         Drop="MainWindow_OnDrop">
@@ -66,15 +66,15 @@
                 <!-- Footer text -->
                 <TextBlock DockPanel.Dock="Bottom" TextWrapping="WrapWithOverflow" Margin="5">
                     If you find this tool useful, please donate to help support its continued development!<LineBreak/>
+                    Donate to Jadis0x via <Hyperlink NavigateUri="http://buymeacoffee.com/Jadis0x" RequestNavigate="Hyperlink_OnRequestNavigate">BuyMeACoffee</Hyperlink><LineBreak/>
                     Donate to LukeFZ via <Hyperlink NavigateUri="http://buymeacoffee.com/LukeFZ" RequestNavigate="Hyperlink_OnRequestNavigate">BuyMeACoffee</Hyperlink><LineBreak/>
                     Donate to LukeFZ via <Hyperlink NavigateUri="http://patreon.com/LukeFZ" RequestNavigate="Hyperlink_OnRequestNavigate">Patreon</Hyperlink><LineBreak/>
                     Donate to djkaty via <Hyperlink NavigateUri="http://paypal.me/djkaty" RequestNavigate="Hyperlink_OnRequestNavigate">PayPal</Hyperlink><LineBreak/>
                     Donate to djkaty with bitcoin:<LineBreak/><TextBox IsReadOnly="True">3FoRUqUXgYj8NY8sMQfhX6vv9LqR3e2kzz</TextBox><LineBreak/>
                     <LineBreak/>
-                    <Hyperlink NavigateUri="https://github.com/LukeFZ/Il2CppInspectorRedux" RequestNavigate="Hyperlink_OnRequestNavigate">Il2CppInspectorRedux on GitHub</Hyperlink><LineBreak/>
-                    <Hyperlink NavigateUri="https://github.com/LukeFZ" RequestNavigate="Hyperlink_OnRequestNavigate">https://github.com/LukeFZ</Hyperlink><LineBreak/>
-                    <Hyperlink NavigateUri="http://www.djkaty.com" RequestNavigate="Hyperlink_OnRequestNavigate">www.djkaty.com</Hyperlink><LineBreak/>
-                    &#169; Katy Coe 2017-2021, LukeFZ 2023
+                    <Hyperlink NavigateUri="https://github.com/jadis0x/Il2CppInspectorPro" RequestNavigate="Hyperlink_OnRequestNavigate">Il2CppInspectorPro on GitHub</Hyperlink><LineBreak/>
+                    <Hyperlink NavigateUri="https://github.com/jadis0x" RequestNavigate="Hyperlink_OnRequestNavigate">https://github.com/jadis0x</Hyperlink><LineBreak/>
+                    &#169; Katy Coe 2017-2021, LukeFZ 2023, Jadis0x 2025
                 </TextBlock>
 
                 <!-- Image details view -->
@@ -385,10 +385,13 @@
                                 <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Target C++ compiler for output:</Label>
                             </DockPanel>
                             <DockPanel>
-                                <TextBox Name="txtCppProjectName" DockPanel.Dock="Right" Margin="4" Text="IL2CppDLL"/>
+                                <TextBox Name="txtCppProjectName" Width="90" DockPanel.Dock="Right" Margin="4" Text="il2cpp-dll-injection"/>
                                 <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Project name:</Label>
                             </DockPanel>
-
+                            <CheckBox Name="cbIncludeUnresolvedCppTypes" Margin="2,2,2,2"
+                                  ToolTip="Also emit open generic and other unresolved IL2CPP types so their addresses appear in the generated headers.">
+                                Include types without generated C++ definitions
+                            </CheckBox>
                             <Separator Margin="5,15,5,15"/>
 
                             <!-- JSON metadata -->
@@ -405,7 +408,7 @@
         </Grid>
 
         <!-- Background dimmer -->
-        <Rectangle Name="rectModalLightBoxBackground" Fill="Black" Opacity="0.4">
+        <Rectangle Name="rectModalLightBoxBackground" Fill="Black" Opacity="0.8">
             <Rectangle.Style>
                 <Style>
                     <Setter Property="Rectangle.Visibility" Value="Hidden"></Setter>
@@ -432,7 +435,7 @@
                 <RowDefinition Height ="Auto" />
             </Grid.RowDefinitions>
 
-            <Button Grid.Row="0" Name="btnSelectMetadataFile" Style="{StaticResource LightBoxButton}" Margin="100,100,100,25" Click="BtnSelectMetadataFile_OnClick">
+            <Button Grid.Row="0" Name="btnSelectMetadataFile" Style="{StaticResource LightBoxButton}" Margin="200,200,200,25" Click="BtnSelectMetadataFile_OnClick">
                 <TextBlock TextAlignment="Center">
                     <TextBlock FontSize="22">Option 1</TextBlock>
                     <LineBreak/>
@@ -441,7 +444,7 @@
                     <TextBlock FontSize="16">You can drag &amp; drop both the metadata and binary together</TextBlock>
                 </TextBlock>
             </Button>
-            <Button Grid.Row="1" Name="btnSelectPackageFile" Style="{StaticResource LightBoxButton}" Margin="100,75,100,50" Click="BtnSelectPackageFile_OnClick">
+            <Button Grid.Row="1" Name="btnSelectPackageFile" Style="{StaticResource LightBoxButton}" Margin="200,175,200,50" Click="BtnSelectPackageFile_OnClick">
                 <TextBlock TextAlignment="Center">
                     <TextBlock FontSize="22">Option 2</TextBlock>
                     <LineBreak/>
@@ -453,10 +456,10 @@
 
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 <!-- Plugin options -->
-                <Button Name="btnPluginOptions" Style="{StaticResource LightBoxButton}" Click="BtnPluginOptions_Click" Margin="0,0,10,10" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="18" Width="180" Content="Manage plugins..."/>
+                <Button Name="btnPluginOptions" Style="{StaticResource LightBoxButton}" Click="BtnPluginOptions_Click" Margin="0,0,10,10" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="15" Width="140" Content="Plugins"/>
 
                 <!-- Load options -->
-                <Button Name="btnLoadOptions" Style="{StaticResource LightBoxButton}" Click="BtnLoadOptions_Click" Margin="0,0,10,10" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="18" Width="180" Content="Import options..."/>
+                <Button Name="btnLoadOptions" Style="{StaticResource LightBoxButton}" Click="BtnLoadOptions_Click" Margin="0,0,10,10" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="15" Width="140" Content="Import Options"/>
             </StackPanel>
         </Grid>
         <Button Name="btnSelectBinaryFile" Style="{StaticResource LightBoxButton}" Margin="100" Click="BtnSelectBinaryFile_OnClick" Visibility="Hidden">

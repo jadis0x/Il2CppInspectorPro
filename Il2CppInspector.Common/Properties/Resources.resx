@@ -118,36 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Cpp-DLLMainCpp" xml:space="preserve">
-    <value>// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+    <value>// Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
 // DLL entry point
 
 #define WIN32_LEAN_AND_MEAN
 #include &lt;windows.h&gt;
-#include "il2cpp-init.h"
-#include "main.h"
+#include "version.h"
 
-// DLL entry point
-BOOL APIENTRY DllMain( HMODULE hModule,
-                       DWORD  ul_reason_for_call,
-                       LPVOID lpReserved
-                     )
+BOOL APIENTRY DllMain(HMODULE hModule,
+ DWORD  ul_reason_for_call,
+ LPVOID lpReserved
+)
 {
-    switch (ul_reason_for_call)
-    {
-    case DLL_PROCESS_ATTACH:
-        init_il2cpp();
-        CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE) Run, NULL, 0, NULL);
-        break;
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
-    }
-    return TRUE;
+ switch (ul_reason_for_call)
+ {
+ case DLL_PROCESS_ATTACH:
+  DisableThreadLibraryCalls(hModule);
+  CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Load, hModule, NULL, NULL);
+  break;
+ case DLL_PROCESS_DETACH:
+  FreeLibrary(version_dll);
+  break;
+ }
+ return TRUE;
 }</value>
   </data>
   <data name="Cpp-HelpersCpp" xml:space="preserve">
-    <value>// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+    <value>// Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
 // Helper functions
 
 #include "pch-il2cpp.h"
@@ -163,43 +160,74 @@ extern const LPCWSTR LOG_FILE;
 
 // Helper function to get the module base address
 uintptr_t il2cppi_get_base_address() {
-    return (uintptr_t) GetModuleHandleW(L"GameAssembly.dll");
+ return (uintptr_t)GetModuleHandleW(L"GameAssembly.dll");
 }
 
 // Helper function to append text to a file
 void il2cppi_log_write(std::string text) {
-    HANDLE hfile = CreateFileW(LOG_FILE, FILE_APPEND_DATA, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+ HANDLE hfile = CreateFileW(LOG_FILE, FILE_APPEND_DATA, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    if (hfile == INVALID_HANDLE_VALUE)
-        MessageBoxW(0, L"Could not open log file", 0, 0);
+ if (hfile == INVALID_HANDLE_VALUE)
+  MessageBoxW(0, L"Could not open log file", 0, 0);
 
-    DWORD written;
-    WriteFile(hfile, text.c_str(), (DWORD) text.length(), &amp;written, NULL);
-    WriteFile(hfile, "\r\n", 2, &amp;written, NULL);
-    CloseHandle(hfile);
+ DWORD written;
+ WriteFile(hfile, text.c_str(), (DWORD)text.length(), &amp;written, NULL);
+ WriteFile(hfile, "\r\n", 2, &amp;written, NULL);
+ CloseHandle(hfile);
 }
 
 // Helper function to open a new console window and redirect stdout there
 void il2cppi_new_console() {
-    AllocConsole();
-    freopen_s((FILE**) stdout, "CONOUT$", "w", stdout);
+ AllocConsole();
+ freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 }
 
 #if _MSC_VER &gt;= 1920
 // Helper function to convert Il2CppString to std::string
 std::string il2cppi_to_string(Il2CppString* str) {
-    std::u16string u16(reinterpret_cast&lt;const char16_t*&gt;(str-&gt;chars));
-    return std::wstring_convert&lt;std::codecvt_utf8_utf16&lt;char16_t&gt;, char16_t&gt;{}.to_bytes(u16);
+ if (!str)
+  return std::string{};
+
+ const auto length = str-&gt;length;
+ if (length &lt;= 0)
+  return std::string{};
+
+ const auto* begin = reinterpret_cast&lt;const char16_t*&gt;(str-&gt;chars);
+ const auto* end = begin + static_cast&lt;size_t&gt;(length);
+
+ return std::wstring_convert&lt;std::codecvt_utf8_utf16&lt;char16_t&gt;, char16_t&gt;{}.to_bytes(begin, end);
 }
 
 // Helper function to convert System.String to std::string
 std::string il2cppi_to_string(app::String* str) {
-    return il2cppi_to_string(reinterpret_cast&lt;Il2CppString*&gt;(str));
+ return il2cppi_to_string(reinterpret_cast&lt;Il2CppString*&gt;(str));
+}
+app::String* convert_to_system_string(const char* str)
+{
+ Il2CppString* il2cpp_str = il2cpp_string_new(str);
+
+ if (!il2cpp_str) return nullptr;
+
+ return reinterpret_cast&lt;app::String*&gt;(il2cpp_str);
+}
+
+std::string ToString(app::Object* Object)
+{
+ std::string type = il2cppi_to_string(app::Object_ToString(Object, NULL));
+ if (type == "System.String") {
+  return il2cppi_to_string((app::String*)Object);
+ }
+ return type;
+}
+
+app::String* ToString(app::Object_1* Object)
+{
+ return app::Object_1_GetName(Object, nullptr);
 }
 #endif</value>
   </data>
   <data name="Cpp-HelpersH" xml:space="preserve">
-    <value>// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+    <value>// Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
 // Helper functions
 
 #pragma once
@@ -225,23 +253,28 @@ std::string il2cppi_to_string(Il2CppString* str);
 
 // Helper function to convert System.String to std::string
 std::string il2cppi_to_string(app::String* str);
+
+app::String* convert_to_system_string(const char* str);
+
+std::string ToString(app::Object* Object);
+app::String* ToString(app::Object_1* Object);
 #endif
 
 // Helper function to check if a metadata usage pointer is initialized
 template&lt;typename T&gt; bool il2cppi_is_initialized(T* metadataItem) {
 #if __IL2CPP_METADATA_VERISON &lt; 270
-    return *metadataItem != 0;
+ return *metadataItem != 0;
 #else
-    // Metadata &gt;=27 (Unity 2020.2)
-    return !((uintptr_t) *metadataItem &amp; 1);
+ // Metadata &gt;=27 (Unity 2020.2)
+ return !((uintptr_t)*metadataItem &amp; 1);
 #endif
 }
 
 // Helper function to convert a pointer to hex
 template&lt;typename T&gt; std::string to_hex_string(T i) {
-    std::stringstream stream;
-    stream &lt;&lt; "0x" &lt;&lt; std::setfill('0') &lt;&lt; std::setw(sizeof(T) * 2) &lt;&lt; std::hex &lt;&lt; i;
-    return stream.str();
+ std::stringstream stream;
+ stream &lt;&lt; "0x" &lt;&lt; std::setfill('0') &lt;&lt; std::setw(sizeof(T) * 2) &lt;&lt; std::hex &lt;&lt; i;
+ return stream.str();
 }</value>
   </data>
   <data name="Cpp_Il2CppInitH" xml:space="preserve">
@@ -254,36 +287,178 @@ template&lt;typename T&gt; std::string to_hex_string(T i) {
 void init_il2cpp();</value>
   </data>
   <data name="Cpp-MainCpp" xml:space="preserve">
-    <value>// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
+    <value>// Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
 // Custom injected code entry point
 
 #include "pch-il2cpp.h"
 
 #define WIN32_LEAN_AND_MEAN
+
+#include "main.h"
 #include &lt;Windows.h&gt;
 #include &lt;iostream&gt;
 #include "il2cpp-appdata.h"
+#include "il2cpp-init.h"
+#include &lt;cstdio&gt;
 #include "helpers.h"
-
-using namespace app;
+#include "hooks/InitHooks.h"
 
 // Set the name of your log file here
-extern const LPCWSTR LOG_FILE = L"il2cpp-log.txt";
+extern const LPCWSTR LOG_FILE = L"Logs.txt";
 
-// Custom injected code entry point
-void Run()
+namespace
 {
-    // Initialize thread data - DO NOT REMOVE
-    il2cpp_thread_attach(il2cpp_domain_get());
+ class ScopedHandle
+ {
+ public:
+  ScopedHandle() = default;
+  explicit ScopedHandle(HANDLE handle) noexcept : handle_(handle) {}
+  ~ScopedHandle() { reset(); }
 
-    // If you would like to write to a log file, specify the name above and use il2cppi_log_write()
-    // il2cppi_log_write("Startup");
+  ScopedHandle(const ScopedHandle&amp;) = delete;
+  ScopedHandle&amp; operator=(const ScopedHandle&amp;) = delete;
 
-    // If you would like to output to a new console window, use il2cppi_new_console() to open one and redirect stdout
-    // il2cppi_new_console();
+  ScopedHandle(ScopedHandle&amp;&amp; other) noexcept : handle_(other.release()) {}
+  ScopedHandle&amp; operator=(ScopedHandle&amp;&amp; other) noexcept
+  {
+   if (this != &amp;other)
+   {
+    reset(other.release());
+   }
+   return *this;
+  }
 
-    // Place your custom code here
-}</value>
+  void reset(HANDLE newHandle = nullptr) noexcept
+  {
+   if (handle_ &amp;&amp; handle_ != INVALID_HANDLE_VALUE)
+   {
+    CloseHandle(handle_);
+   }
+   handle_ = newHandle;
+  }
+
+  [[nodiscard]] HANDLE get() const noexcept { return handle_; }
+  [[nodiscard]] bool valid() const noexcept { return handle_ &amp;&amp; handle_ != INVALID_HANDLE_VALUE; }
+  HANDLE release() noexcept
+  {
+   HANDLE tmp = handle_;
+   handle_ = nullptr;
+   return tmp;
+  }
+
+ private:
+  HANDLE handle_ = nullptr;
+ };
+
+ void ShowWarning(const char* title, const std::string&amp; message)
+ {
+  MessageBoxA(nullptr, message.c_str(), title, MB_OK | MB_ICONWARNING);
+ }
+
+ void LogAndShow(const char* logMessage, const char* boxTitle, const std::string&amp; userMessage)
+ {
+  if (logMessage &amp;&amp; *logMessage)
+  {
+   il2cppi_log_write(logMessage);
+  }
+  if (!userMessage.empty())
+  {
+   ShowWarning(boxTitle, userMessage);
+  }
+ }
+
+ [[nodiscard]] bool AttachIl2Cpp(Il2CppDomain*&amp; outDomain, Il2CppThread*&amp; outThread)
+ {
+  outDomain = il2cpp_domain_get();
+  if (!outDomain)
+  {
+   LogAndShow("IL2CPP Domain Not Found!", "DevourX", "[ERROR] IL2CPP Domain Not Found!");
+   return false;
+  }
+
+  outThread = il2cpp_thread_attach(outDomain);
+  if (!outThread)
+  {
+   LogAndShow("Failed to Attach IL2CPP Thread!", "DevourX", "[ERROR] Failed to Attach IL2CPP Thread!");
+   return false;
+  }
+
+  return true;
+ }
+
+} // namespace
+
+HMODULE hModule;
+HANDLE hUnloadEvent;
+
+DWORD WINAPI UnloadWatcherThread(LPVOID lpParam)
+{
+ const HANDLE eventHandle = static_cast&lt;HANDLE&gt;(lpParam);
+ if (!eventHandle)
+ {
+  return 0;
+ }
+
+ if (WaitForSingleObject(eventHandle, INFINITE) == WAIT_OBJECT_0)
+ {
+  std::cout &lt;&lt; "[WARNING] Unload signal received.." &lt;&lt; std::endl;
+  DetourUninitialization();
+  fclose(stdout);
+  FreeConsole();
+  if (hUnloadEvent)
+  {
+   CloseHandle(hUnloadEvent);
+   hUnloadEvent = nullptr;
+  }
+  FreeLibraryAndExitThread(hModule, 0);
+ }
+
+ return 0;
+}
+
+void Run(LPVOID lpParam)
+{
+ hModule = static_cast&lt;HMODULE&gt;(lpParam);
+
+ il2cppi_log_write("Initializing..");
+
+#ifdef _DEBUG
+ il2cppi_new_console();
+ SetConsoleTitleA("Title Goes Here");
+#endif
+ init_il2cpp();
+
+ Il2CppDomain* domain = nullptr;
+ Il2CppThread* thread = nullptr;
+ if (!AttachIl2Cpp(domain, thread))
+ {
+  return;
+ }
+
+ il2cppi_log_write("IL2CPP Thread Attached Successfully.");
+
+ DetourInitilization();
+
+ hUnloadEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+ if (!hUnloadEvent)
+ {
+  const DWORD error = GetLastError();
+  std::cout &lt;&lt; "Failed to create unload event! Error code: " &lt;&lt; error &lt;&lt; std::endl;
+  il2cppi_log_write("Failed to create unload event!");
+  return;
+ }
+
+ ScopedHandle watcherThread{ CreateThread(nullptr, 0, UnloadWatcherThread, hUnloadEvent, 0, nullptr) };
+ if (!watcherThread.valid())
+ {
+  const DWORD error = GetLastError();
+  std::cout &lt;&lt; "[ERROR] Unable to create unload monitor thread! Error code: " &lt;&lt; error &lt;&lt; std::endl;
+  il2cppi_log_write("Unable to create unload monitor thread!");
+  return;
+ }
+}
+
+</value>
   </data>
   <data name="CppProjTemplate" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
@@ -307,6 +482,7 @@ void Run()
     &lt;/ProjectConfiguration&gt;
   &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
+ &lt;None Include="definitions\version.def" /&gt;
     &lt;ClCompile Include="framework\dllmain.cpp"&gt;
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
@@ -326,6 +502,10 @@ void Run()
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;Create&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;Create&lt;/PrecompiledHeader&gt;
     &lt;/ClCompile&gt;
+ &lt;ClCompile Include="framework\version.cpp"&gt;
+ &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+ &lt;PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;NotUsing&lt;/PrecompiledHeader&gt;
+&lt;/ClCompile&gt;
     &lt;ClCompile Include="handlers\Dx11.cpp" /&gt;
     &lt;ClCompile Include="handlers\gui\GUITheme.cpp" /&gt;
     &lt;ClCompile Include="handlers\gui\menu.cpp" /&gt;
@@ -383,6 +563,7 @@ void Run()
     &lt;ClInclude Include="framework\il2cpp-appdata.h" /&gt;
     &lt;ClInclude Include="framework\il2cpp-init.h" /&gt;
     &lt;ClInclude Include="framework\pch-il2cpp.h" /&gt;
+ &lt;ClInclude Include="framework\version.h" /&gt;
     &lt;ClInclude Include="handlers\Dx11.h" /&gt;
     &lt;ClInclude Include="handlers\gui\GUITheme.h" /&gt;
     &lt;ClInclude Include="handlers\gui\menu.h" /&gt;
@@ -466,9 +647,11 @@ void Run()
   &lt;/PropertyGroup&gt;
   &lt;PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"&gt;
     &lt;LinkIncremental&gt;true&lt;/LinkIncremental&gt;
+ &lt;TargetName&gt;version&lt;/TargetName&gt;
   &lt;/PropertyGroup&gt;
   &lt;PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;
     &lt;LinkIncremental&gt;false&lt;/LinkIncremental&gt;
+ &lt;TargetName&gt;version&lt;/TargetName&gt;
   &lt;/PropertyGroup&gt;
   &lt;ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"&gt;
     &lt;ClCompile&gt;
@@ -512,17 +695,20 @@ void Run()
     &lt;ClCompile&gt;
       &lt;WarningLevel&gt;Level3&lt;/WarningLevel&gt;
       &lt;SDLCheck&gt;true&lt;/SDLCheck&gt;
-      &lt;PreprocessorDefinitions&gt;_DEBUG;IL2CPPDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)&lt;/PreprocessorDefinitions&gt;
+      &lt;PreprocessorDefinitions&gt;_DEBUG;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_VERSION;IL2CPPDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)&lt;/PreprocessorDefinitions&gt;
       &lt;ConformanceMode&gt;true&lt;/ConformanceMode&gt;
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
       &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)handlers;$(ProjectDir)libraries&lt;/AdditionalIncludeDirectories&gt;
+   &lt;LanguageStandard&gt;stdcpp20&lt;/LanguageStandard&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
       &lt;GenerateDebugInformation&gt;true&lt;/GenerateDebugInformation&gt;
       &lt;EnableUAC&gt;false&lt;/EnableUAC&gt;
+   &lt;AdditionalDependencies&gt;d3d11.lib;d3dcompiler.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)&lt;/AdditionalDependencies&gt;
+      &lt;ModuleDefinitionFile&gt;definitions\version.def&lt;/ModuleDefinitionFile&gt;
     &lt;/Link&gt;
   &lt;/ItemDefinitionGroup&gt;
   &lt;ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'"&gt;
@@ -531,12 +717,13 @@ void Run()
       &lt;FunctionLevelLinking&gt;true&lt;/FunctionLevelLinking&gt;
       &lt;IntrinsicFunctions&gt;true&lt;/IntrinsicFunctions&gt;
       &lt;SDLCheck&gt;true&lt;/SDLCheck&gt;
-      &lt;PreprocessorDefinitions&gt;NDEBUG;IL2CPPDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)&lt;/PreprocessorDefinitions&gt;
+      &lt;PreprocessorDefinitions&gt;NDEBUG;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_VERSION;IL2CPPDLL_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)&lt;/PreprocessorDefinitions&gt;
       &lt;ConformanceMode&gt;true&lt;/ConformanceMode&gt;
       &lt;PrecompiledHeader&gt;Use&lt;/PrecompiledHeader&gt;
       &lt;PrecompiledHeaderFile&gt;pch-il2cpp.h&lt;/PrecompiledHeaderFile&gt;
       &lt;MultiProcessorCompilation&gt;true&lt;/MultiProcessorCompilation&gt;
       &lt;AdditionalIncludeDirectories&gt;$(ProjectDir)appdata;$(ProjectDir)framework;$(ProjectDir)user;$(ProjectDir)handlers;$(ProjectDir)libraries&lt;/AdditionalIncludeDirectories&gt;
+   &lt;LanguageStandard&gt;stdcpp20&lt;/LanguageStandard&gt;
     &lt;/ClCompile&gt;
     &lt;Link&gt;
       &lt;SubSystem&gt;Windows&lt;/SubSystem&gt;
@@ -544,6 +731,8 @@ void Run()
       &lt;OptimizeReferences&gt;true&lt;/OptimizeReferences&gt;
       &lt;GenerateDebugInformation&gt;true&lt;/GenerateDebugInformation&gt;
       &lt;EnableUAC&gt;false&lt;/EnableUAC&gt;
+   &lt;AdditionalDependencies&gt;d3d11.lib;d3dcompiler.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;%(AdditionalDependencies)&lt;/AdditionalDependencies&gt;
+      &lt;ModuleDefinitionFile&gt;definitions\version.def&lt;/ModuleDefinitionFile&gt;
     &lt;/Link&gt;
   &lt;/ItemDefinitionGroup&gt;
   &lt;Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" /&gt;
@@ -1330,13 +1519,18 @@ void init_il2cpp()
 }</value>
   </data>
   <data name="Cpp-MainH" xml:space="preserve">
-    <value>// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty
-// Custom injected code entry point
+    <value>// Generated C++ file by Il2CppInspectorPro - https://github.com/jadis0x
+// DLL entry point
 
 #pragma once
 
-// Custom injected code entry point
-void Run();</value>
+#include &lt;Windows.h&gt;
+
+extern HMODULE hModule;
+extern HANDLE hUnloadEvent;
+
+void Run(LPVOID lpParam);
+</value>
   </data>
   <data name="Cpp-PCHIl2Cpp" xml:space="preserve">
     <value>// pch.cpp: source file corresponding to the pre-compiled header
@@ -1363,6 +1557,11 @@ void Run();</value>
   <data name="CppProjFilters" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
 &lt;Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
+   &lt;ItemGroup&gt;
+ &lt;None Include="definitions\version.def"&gt;
+ &lt;Filter&gt;definitions&lt;/Filter&gt;
+ &lt;/None&gt;
+  &lt;/ItemGroup&gt;
   &lt;ItemGroup&gt;
      &lt;ClCompile Include="user\main.cpp"&gt;
       &lt;Filter&gt;user&lt;/Filter&gt;
@@ -1377,6 +1576,9 @@ void Run();</value>
       &lt;Filter&gt;framework&lt;/Filter&gt;
     &lt;/ClCompile&gt;
     &lt;ClCompile Include="framework\pch-il2cpp.cpp"&gt;
+      &lt;Filter&gt;framework&lt;/Filter&gt;
+    &lt;/ClCompile&gt;
+ &lt;ClCompile Include="framework\version.cpp"&gt;
       &lt;Filter&gt;framework&lt;/Filter&gt;
     &lt;/ClCompile&gt;
     &lt;ClCompile Include="libraries\detours\detours.cpp"&gt;
@@ -1465,6 +1667,9 @@ void Run();</value>
     &lt;ClInclude Include="framework\pch-il2cpp.h"&gt;
       &lt;Filter&gt;framework&lt;/Filter&gt;
     &lt;/ClInclude&gt;
+ &lt;ClInclude Include="framework\version.h"&gt;
+      &lt;Filter&gt;framework&lt;/Filter&gt;
+    &lt;/ClInclude&gt;
     &lt;ClInclude Include="libraries\detours\detours.h"&gt;
       &lt;Filter&gt;libraries\detours&lt;/Filter&gt;
     &lt;/ClInclude&gt;
@@ -1548,13 +1753,16 @@ void Run();</value>
     &lt;Filter Include="handlers\hooks"&gt;
       &lt;UniqueIdentifier&gt;{%GUID10%}&lt;/UniqueIdentifier&gt;
     &lt;/Filter&gt;
+ &lt;Filter Include="definitions"&gt;
+      &lt;UniqueIdentifier&gt;{%GUID11%}&lt;/UniqueIdentifier&gt;
+    &lt;/Filter&gt;
   &lt;/ItemGroup&gt;
 &lt;/Project&gt;</value>
   </data>
   <data name="Cpp-SettingsH" xml:space="preserve">
     <value>#pragma once
 
-#include "handlers/keybinds.h"
+#include "keybinds.h"
 
 class Settings {
 public:
@@ -1575,5 +1783,148 @@ extern Settings settings;</value>
 #include "settings.h"
 
 Settings settings;</value>
+  </data>
+  <data name="CppVersionDef" xml:space="preserve">
+    <value>LIBRARY "VERSION"
+EXPORTS
+
+GetFileVersionInfoA = _GetFileVersionInfoA
+GetFileVersionInfoByHandle = _GetFileVersionInfoByHandle
+GetFileVersionInfoExA = _GetFileVersionInfoExA
+GetFileVersionInfoExW = _GetFileVersionInfoExW
+GetFileVersionInfoSizeA = _GetFileVersionInfoSizeA
+GetFileVersionInfoSizeExA = _GetFileVersionInfoSizeExA
+GetFileVersionInfoSizeExW = _GetFileVersionInfoSizeExW
+GetFileVersionInfoSizeW = _GetFileVersionInfoSizeW
+GetFileVersionInfoW = _GetFileVersionInfoW
+VerFindFileA = _VerFindFileA
+VerFindFileW = _VerFindFileW
+VerInstallFileA = _VerInstallFileA
+VerInstallFileW = _VerInstallFileW
+VerLanguageNameA = _VerLanguageNameA
+VerLanguageNameW = _VerLanguageNameW
+VerQueryValueA = _VerQueryValueA
+VerQueryValueW = _VerQueryValueW</value>
+  </data>
+  <data name="CppVersion_H" xml:space="preserve">
+    <value>#pragma once
+#define WIN32_LEAN_AND_MEAN
+
+#include &lt;windows.h&gt;
+
+extern HMODULE version_dll;
+
+DWORD WINAPI Load(LPVOID lpParam);</value>
+  </data>
+  <data name="CppVersion_Cpp" xml:space="preserve">
+    <value>#include "pch-il2cpp.h"
+
+#include "main.h"
+#include "version.h"
+#include &lt;chrono&gt;
+#include &lt;filesystem&gt;
+#include &lt;thread&gt;
+
+HMODULE version_dll;
+
+#define WRAPPER_GENFUNC(name) \
+    FARPROC o##name; \
+    void _##name() \
+    { \
+        if (o##name) \
+            ((void(*)())o##name)(); \
+    }
+
+WRAPPER_GENFUNC(GetFileVersionInfoA)
+WRAPPER_GENFUNC(GetFileVersionInfoByHandle)
+WRAPPER_GENFUNC(GetFileVersionInfoExW)
+WRAPPER_GENFUNC(GetFileVersionInfoExA)
+WRAPPER_GENFUNC(GetFileVersionInfoSizeA)
+WRAPPER_GENFUNC(GetFileVersionInfoSizeExA)
+WRAPPER_GENFUNC(GetFileVersionInfoSizeExW)
+WRAPPER_GENFUNC(GetFileVersionInfoSizeW)
+WRAPPER_GENFUNC(GetFileVersionInfoW)
+WRAPPER_GENFUNC(VerFindFileA)
+WRAPPER_GENFUNC(VerFindFileW)
+WRAPPER_GENFUNC(VerInstallFileA)
+WRAPPER_GENFUNC(VerInstallFileW)
+WRAPPER_GENFUNC(VerLanguageNameA)
+WRAPPER_GENFUNC(VerLanguageNameW)
+WRAPPER_GENFUNC(VerQueryValueA)
+WRAPPER_GENFUNC(VerQueryValueW)
+
+#define WRAPPER_FUNC(name) o##name = GetProcAddress(version_dll, ###name);
+
+void load_version() {
+ char systemPath[MAX_PATH];
+ GetSystemDirectoryA(systemPath, MAX_PATH);
+ strcat_s(systemPath, "\\version.dll");
+ version_dll = LoadLibraryA(systemPath);
+
+ if (!version_dll) {
+  std::string message = "Unable to load " + std::string(systemPath);
+  MessageBoxA(NULL, message.c_str(), "Title", MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
+ }
+
+ if (!version_dll) return;
+
+ WRAPPER_FUNC(GetFileVersionInfoA);
+ WRAPPER_FUNC(GetFileVersionInfoByHandle);
+ WRAPPER_FUNC(GetFileVersionInfoExW);
+ WRAPPER_FUNC(GetFileVersionInfoExA);
+ WRAPPER_FUNC(GetFileVersionInfoSizeA);
+ WRAPPER_FUNC(GetFileVersionInfoSizeExW);
+ WRAPPER_FUNC(GetFileVersionInfoSizeExA);
+ WRAPPER_FUNC(GetFileVersionInfoSizeW);
+ WRAPPER_FUNC(GetFileVersionInfoW);
+ WRAPPER_FUNC(VerFindFileA);
+ WRAPPER_FUNC(VerFindFileW);
+ WRAPPER_FUNC(VerInstallFileA);
+ WRAPPER_FUNC(VerInstallFileW);
+ WRAPPER_FUNC(VerLanguageNameA);
+ WRAPPER_FUNC(VerLanguageNameW);
+ WRAPPER_FUNC(VerQueryValueA);
+ WRAPPER_FUNC(VerQueryValueW);
+}
+
+std::filesystem::path getApplicationPath() {
+ TCHAR buff[MAX_PATH];
+ GetModuleFileName(NULL, buff, MAX_PATH);
+ return std::filesystem::path(buff);
+}
+
+DWORD WINAPI Load(LPVOID lpParam) {
+
+ auto checkDependency = [](const char* dll, const char* runtime) -&gt; bool {
+  HMODULE mod = LoadLibraryA(dll);
+  if (mod) {
+   FreeLibrary(mod);
+   return true;
+  }
+  std::string msg = std::string("Missing dependency: ") + dll +
+   "\nPlease install " + runtime + ".";
+  MessageBoxA(NULL, msg.c_str(), "Title Goes Here", MB_OK | MB_ICONERROR | MB_SYSTEMMODAL);
+  OutputDebugStringA(msg.c_str());
+  return false;
+  };
+
+ if (!checkDependency("d3d11.dll", "The DirectX 11 runtime") ||
+  !checkDependency("dxgi.dll", "The DirectX 11 runtime") ||
+  !checkDependency("vcruntime140.dll", "The Microsoft Visual C++ Redistributable") ||
+  !checkDependency("vcruntime140_1.dll", "The Microsoft Visual C++ Redistributable") ||
+  !checkDependency("msvcp140.dll", "The Microsoft Visual C++ Redistributable")) {
+  return 0;
+ }
+
+ load_version();
+ if (!version_dll)
+  return 0;
+
+ std::this_thread::sleep_for(std::chrono::seconds(5));
+ Run(lpParam);
+
+ return 0;
+}
+</value>
   </data>
 </root>
