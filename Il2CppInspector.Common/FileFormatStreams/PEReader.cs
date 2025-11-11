@@ -197,7 +197,27 @@ namespace Il2CppInspector
 
             return exports.Values;
         }
-         
+
+        public override bool TryMapVATR(ulong uiAddr, out uint fileOffset)
+        {
+            if (uiAddr == 0)
+            {
+                fileOffset = 0;
+                return true;
+            }
+
+            var section = sections.FirstOrDefault(x => uiAddr - pe.ImageBase >= x.VirtualAddress &&
+                                              uiAddr - pe.ImageBase < x.VirtualAddress + x.SizeOfRawData);
+            if (section == null)
+            {
+                fileOffset = 0;
+                return false;
+            }
+
+            fileOffset = (uint)(uiAddr - section.VirtualAddress - pe.ImageBase + section.PointerToRawData);
+            return true;
+        }
+
         public override uint MapVATR(ulong uiAddr) {
             if (uiAddr == 0)
                 return 0;

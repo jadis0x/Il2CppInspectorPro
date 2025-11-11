@@ -277,21 +277,12 @@ namespace Il2CppInspector
 
             vas = FindAllMappedWords(imageBytes, typesLength).Select(a => a - mrSize + ptrSize * 4);
 
-            // >= 19 && < 27
-            if (Image.Version < MetadataVersions.V270)
-                foreach (var va in vas)
-                {
-                    var mr = Image.ReadMappedVersionedObject<Il2CppMetadataRegistration>(va);
-                    if (mr.MetadataUsagesCount == (ulong) metadata.MetadataUsageLists.Length)
-                        metadataRegistration = va;
-                }
-
-            // plagiarism. noun - https://www.lexico.com/en/definition/plagiarism
-            //   the practice of taking someone else's work or ideas and passing them off as one's own.
-            // Synonyms: copying, piracy, theft, strealing, infringement of copyright
-
-            // >= 27
-            else
+            // >= 19
+            // Luke: Previously, a check comparing MetadataUsagesCount was used here, 
+            // but I know of at least one binary where this will break detection.
+            // Testing showed that we can just use the same heuristic used for v27+
+            // on older versions as well, so we'll just use it for all cases.
+            if (Image.Version >= MetadataVersions.V190)
             {
                 foreach (var va in vas)
                 {
@@ -304,6 +295,7 @@ namespace Il2CppInspector
                     }
                 }
             }
+
             if (metadataRegistration == 0)
                 return (0, 0);
 
