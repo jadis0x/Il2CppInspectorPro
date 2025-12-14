@@ -36,10 +36,10 @@ namespace Il2CppInspector
         public ImmutableArray<Il2CppMetadataUsagePair> MetadataUsagePairs { get; set; }
         public ImmutableArray<Il2CppFieldRef> FieldRefs { get; set; }
 
-        public ImmutableArray<int> InterfaceUsageIndices { get; set; }
+        public ImmutableArray<TypeIndex> InterfaceUsageIndices { get; set; }
         public ImmutableArray<int> NestedTypeIndices { get; set; }
         public ImmutableArray<int> AttributeTypeIndices { get; set; }
-        public ImmutableArray<int> GenericConstraintIndices { get; set; }
+        public ImmutableArray<TypeIndex> GenericConstraintIndices { get; set; }
         public ImmutableArray<uint> VTableMethodIndices { get; set; }
         public string[] StringLiterals { get; set; }
 
@@ -205,11 +205,11 @@ namespace Il2CppInspector
             FieldDefaultValues = ReadMetadataArray<Il2CppFieldDefaultValue>(Header.FieldDefaultValuesOffset, Header.FieldDefaultValuesSize, Header.FieldDefaultValues);
             Properties = ReadMetadataArray<Il2CppPropertyDefinition>(Header.PropertiesOffset, Header.PropertiesSize, Header.Properties);
             Events = ReadMetadataArray<Il2CppEventDefinition>(Header.EventsOffset, Header.EventsSize, Header.Events);
-            InterfaceUsageIndices = ReadMetadataPrimitiveArray<int>(Header.InterfacesOffset, Header.InterfacesSize, Header.Interfaces);
+            InterfaceUsageIndices = ReadMetadataArray<TypeIndex>(Header.InterfacesOffset, Header.InterfacesSize, Header.Interfaces);
             NestedTypeIndices = ReadMetadataPrimitiveArray<int>(Header.NestedTypesOffset, Header.NestedTypesSize, Header.NestedTypes);
             GenericContainers = ReadMetadataArray<Il2CppGenericContainer>(Header.GenericContainersOffset, Header.GenericContainersSize, Header.GenericContainers);
             GenericParameters = ReadMetadataArray<Il2CppGenericParameter>(Header.GenericParametersOffset, Header.GenericParametersSize, Header.GenericParameters);
-            GenericConstraintIndices = ReadMetadataPrimitiveArray<int>(Header.GenericParameterConstraintsOffset, Header.GenericParameterConstraintsSize, Header.GenericParameterConstraints);
+            GenericConstraintIndices = ReadMetadataArray<TypeIndex>(Header.GenericParameterConstraintsOffset, Header.GenericParameterConstraintsSize, Header.GenericParameterConstraints);
             InterfaceOffsets = ReadMetadataArray<Il2CppInterfaceOffsetPair>(Header.InterfaceOffsetsOffset, Header.InterfaceOffsetsSize, Header.InterfaceOffsets);
             VTableMethodIndices = ReadMetadataPrimitiveArray<uint>(Header.VTableMethodsOffset, Header.VTableMethodsSize, Header.VtableMethods);
 

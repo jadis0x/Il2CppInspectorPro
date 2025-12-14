@@ -53,11 +53,11 @@ namespace Il2CppInspector
         public ImmutableArray<Il2CppEventDefinition> Events => Metadata.Events;
         public ImmutableArray<Il2CppGenericContainer> GenericContainers => Metadata.GenericContainers;
         public ImmutableArray<Il2CppGenericParameter> GenericParameters => Metadata.GenericParameters;
-        public ImmutableArray<int> GenericConstraintIndices => Metadata.GenericConstraintIndices;
+        public ImmutableArray<TypeIndex> GenericConstraintIndices => Metadata.GenericConstraintIndices;
         public ImmutableArray<Il2CppCustomAttributeTypeRange> AttributeTypeRanges => Metadata.AttributeTypeRanges;
         public ImmutableArray<Il2CppCustomAttributeDataRange> AttributeDataRanges => Metadata.AttributeDataRanges;
         public ImmutableArray<Il2CppInterfaceOffsetPair> InterfaceOffsets => Metadata.InterfaceOffsets;
-        public ImmutableArray<int> InterfaceUsageIndices => Metadata.InterfaceUsageIndices;
+        public ImmutableArray<TypeIndex> InterfaceUsageIndices => Metadata.InterfaceUsageIndices;
         public ImmutableArray<int> NestedTypeIndices => Metadata.NestedTypeIndices;
         public ImmutableArray<int> AttributeTypeIndices => Metadata.AttributeTypeIndices;
         public ImmutableArray<uint> VTableMethodIndices => Metadata.VTableMethodIndices;
