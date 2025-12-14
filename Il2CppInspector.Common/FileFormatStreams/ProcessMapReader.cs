@@ -106,7 +106,7 @@ namespace Il2CppInspector
                     // Can't use Stream.CopyTo as it doesn't support length parameter
                     var buffer = new byte[length];
                     source.Position = fileStart;
-                    source.Read(buffer, 0, (int) length);
+                    source.ReadExactly(buffer);
                     il2cpp.Write(buffer);
 
                     memoryNext += length;
