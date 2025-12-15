@@ -1,13 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
 	<ImplicitUsings>enable</ImplicitUsings>
-	<LangVersion>preview</LangVersion>
     <AssemblyName>Il2CppInspector.Common</AssemblyName>
-    <Authors>Katy Coe</Authors>
-    <Version>2023.1</Version>
-    <Company>Noisy Cow Studios</Company>
     <Product>Il2CppInspector Shared Library</Product>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <PackageId>NoisyCowStudios.Il2CppInspector</PackageId>
@@ -15,9 +9,9 @@
 </Description>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageProjectUrl>https://github.com/djkaty/Il2CppInspector</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/LukeFZ/Il2CppInspectorRedux</PackageProjectUrl>
     <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/djkaty/Il2CppInspector</RepositoryUrl>
+    <RepositoryUrl>https://github.com/LukeFZ/Il2CppInspectorRedux</RepositoryUrl>
     <PackageTags>IL2CPP;Unity;Reverse Engineering;Metadata</PackageTags>
   </PropertyGroup>
 

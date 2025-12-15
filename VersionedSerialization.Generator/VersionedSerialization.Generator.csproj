@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<LangVersion>latest</LangVersion>
 		<AnalyzerRoslynVersion>4.10</AnalyzerRoslynVersion>
 		<RoslynApiVersion>4.10.0</RoslynApiVersion>
 		<Nullable>enable</Nullable>

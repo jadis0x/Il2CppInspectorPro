@@ -1,5 +1,12 @@
 <Project>
   <PropertyGroup>
-    <EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
+	  <TargetFramework>net10.0</TargetFramework>
+	  <Version>2023.2</Version>
+	  <AssemblyVersion>$(Version).0.0</AssemblyVersion>
+	  <FileVersion>$(AssemblyVersion)</FileVersion>
+	  <Authors>Katy Coe, LukeFZ</Authors>
+	  <Company>Noisy Cow Studios, LukeFZ</Company>
+	  <LangVersion>preview</LangVersion>
+	  <EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
   </PropertyGroup>
 </Project>

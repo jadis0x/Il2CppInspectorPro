@@ -2,21 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
     <!-- Plugins may require bass class library assemblies we're not using so disable trimming -->
     <PublishTrimmed>false</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <UseWPF>true</UseWPF>
     <AssemblyName>Il2CppInspector</AssemblyName>
-    <Version>2023.1</Version>
-    <Authors>Katy Coe, LukeFZ</Authors>
-    <Company>Noisy Cow Studios</Company>
     <Product>Il2CppInspectorRedux Windows Edition</Product>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Il2CppInspector.ico</ApplicationIcon>
-    <AssemblyVersion>2023.1.0.0</AssemblyVersion>
-    <FileVersion>2023.1.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -34,7 +29,6 @@
 
   <ItemGroup>
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="XamlAnimatedGif" Version="2.3.0">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>

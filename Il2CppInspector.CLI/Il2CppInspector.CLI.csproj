@@ -2,19 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
-
     <PublishSingleFile>true</PublishSingleFile>
     <!-- Plugins may require bass class library assemblies we're not using so disable trimming -->
     <PublishTrimmed>false</PublishTrimmed>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <Version>2023.1</Version>
-    <Company>LukeFZ, Noisy Cow Studios</Company>
     <Product>Il2CppInspectorRedux Command-Line Edition</Product>
-    <Copyright>(c) 2023-2024 LukeFZ - https://github.com/LukeFZ, original (c) 2017-2021 Katy Coe - www.djkaty.com - www.github.com/djkaty</Copyright>
+    <Copyright>(c) 2023-2025 LukeFZ - https://github.com/LukeFZ, original (c) 2017-2021 Katy Coe - www.djkaty.com - www.github.com/djkaty</Copyright>
     <PackageId>Il2CppInspectorRedux.CLI</PackageId>
-    <Authors>LukeFZ, Katy Coe</Authors>
     <AssemblyName>Il2CppInspector</AssemblyName>
   </PropertyGroup>
 
