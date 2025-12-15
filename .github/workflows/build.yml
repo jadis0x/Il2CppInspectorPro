@@ -14,13 +14,12 @@ jobs:
         with:
           submodules: true
           sparse-checkout: |
-            'Bin2Object'
-            'VersionedSerialization'
-            'VersionedSerialization.Generator'
-            'Il2CppInspector.Common'
-            'Il2CppInspector.Redux.FrontendCore'
-            'Il2CppInspector.Redux.GUI'
-            'Il2CppInspector.Redux.GUI.UI'
+            VersionedSerialization
+            VersionedSerialization.Generator
+            Il2CppInspector.Common
+            Il2CppInspector.Redux.FrontendCore
+            Il2CppInspector.Redux.GUI
+            Il2CppInspector.Redux.GUI.UI
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -88,12 +87,11 @@ jobs:
         with:
           submodules: true
           sparse-checkout: |
-            'Bin2Object'
-            'VersionedSerialization'
-            'VersionedSerialization.Generator'
-            'Il2CppInspector.Common'
-            'Il2CppInspector.Redux.FrontendCore'
-            'Il2CppInspector.Redux.CLI'
+            VersionedSerialization
+            VersionedSerialization.Generator
+            Il2CppInspector.Common
+            Il2CppInspector.Redux.FrontendCore
+            Il2CppInspector.Redux.CLI
 
       - name: Setup .NET SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v4
@@ -128,11 +126,10 @@ jobs:
         with:
           submodules: true
           sparse-checkout: |
-            'Bin2Object'
-            'VersionedSerialization'
-            'VersionedSerialization.Generator'
-            'Il2CppInspector.Common'
-            'Il2CppInspector.GUI'
+            VersionedSerialization
+            VersionedSerialization.Generator
+            Il2CppInspector.Common
+            Il2CppInspector.GUI
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -170,11 +167,10 @@ jobs:
         with:
           submodules: true
           sparse-checkout: |
-            'Bin2Object'
-            'VersionedSerialization'
-            'VersionedSerialization.Generator'
-            'Il2CppInspector.Common'
-            'Il2CppInspector.CLI'
+            VersionedSerialization
+            VersionedSerialization.Generator
+            Il2CppInspector.Common
+            Il2CppInspector.CLI
 
       - name: Setup .NET SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v4
