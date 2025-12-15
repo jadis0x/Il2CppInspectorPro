@@ -17,7 +17,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
@@ -60,24 +60,19 @@ jobs:
         # note: we embed the exe directly into the c# component, and it it is built alongside it
         # in another msbuild target.
       - name: Build GUI
-        run: dotnet publish ./Il2CppInspector.Redux.GUI/Il2CppInspector.Redux.GUI.csproj -r win-x64 --no-self-contained
-
-      - name: Copy components to output directory
-        run: |
-           mkdir ./build_output
-           cp ./Il2CppInspector.Redux.GUI/bin/Release/net9.0/win-x64/publish/Il2CppInspector.Redux.GUI.exe ./build_output/
+        run: dotnet publish -c Release --no-self-contained --no-restore -o ./win-x64 -r win-x64 ./Il2CppInspector.Redux.GUI/Il2CppInspector.Redux.GUI.csproj
 
       - name: Upload GUI Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Il2CppInspectorRedux.GUI
-          path: build_output
+          path: ./win-x64
 
   build-redux-cli:
       runs-on: ubuntu-latest
       strategy:
         matrix:
-          dotnet-version: [ '9.0.x' ]
+          dotnet-version: [ '10.0.x' ]
           rid: ['win-x64', 'linux-x64', 'linux-arm64', 'osx-x64', 'osx-arm64']
 
       steps:
@@ -121,7 +116,7 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.x'
+          dotnet-version: '10.0.x'
   
       - uses: actions/cache@v4
         with:
@@ -140,13 +135,13 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Il2CppInspectorRedux.Legacy.GUI
-          path: Il2CppInspector.GUI/bin/Release/net9.0-windows/win-x64/publish
+          path: Il2CppInspector.GUI/bin/Release/net10.0-windows/win-x64/publish
 
   build-old-cli:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: [ '9.0.x' ]
+        dotnet-version: [ '10.0.x' ]
         rid: ['win-x64', 'linux-x64', 'linux-arm64', 'osx-x64', 'osx-arm64']
 
     steps:
