@@ -58,8 +58,8 @@ namespace Il2CppInspectorGUI
 
             // Find Unity paths
             var programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
-            txtUnityPath.Text = Utils.FindPath($@"{programFiles}\Unity\Hub\Editor\*") ?? "<not set>";
-            txtUnityScriptPath.Text = Utils.FindPath($@"{programFiles}\Unity\Hub\Editor\*\Editor\Data\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-*\ScriptAssemblies") ?? "<not set>";
+            txtUnityPath.Text = PathUtils.FindPath($@"{programFiles}\Unity\Hub\Editor\*") ?? "<not set>";
+            txtUnityScriptPath.Text = PathUtils.FindPath($@"{programFiles}\Unity\Hub\Editor\*\Editor\Data\Resources\PackageManager\ProjectTemplates\libcache\com.unity.template.3d-*\ScriptAssemblies") ?? "<not set>";
 
             // Populate script target combo box and select IDA by default
             cboPyTarget.ItemsSource = PythonScript.GetAvailableTargets();

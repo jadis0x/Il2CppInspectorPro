@@ -172,11 +172,10 @@ namespace Il2CppInspector.CLI
         }
 
         private static int Run(Options options) {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) 
+            {
                 // Banner
-                var location = Assembly.GetEntryAssembly().Location;
-                if (location == "") // Single file executables don't have an assembly location
-                    location = Path.Join(AppContext.BaseDirectory, "Il2CppInspector.exe");
+                var location = Path.Join(AppContext.BaseDirectory, "Il2CppInspector.exe");
 
                 var asmInfo = FileVersionInfo.GetVersionInfo(location);
                 Console.WriteLine(asmInfo.ProductName);
@@ -189,7 +188,7 @@ namespace Il2CppInspector.CLI
             try {
                 PluginManager.EnsureInit();
             }
-            catch (Exception ex) when (ex is InvalidOperationException || ex is DirectoryNotFoundException) {
+            catch (Exception ex) when (ex is InvalidOperationException or DirectoryNotFoundException) {
                 Console.Error.WriteLine(ex.Message);
                 return 1;
             }
@@ -260,8 +259,8 @@ namespace Il2CppInspector.CLI
             var unityAssembliesPath = string.Empty;
 
             if (options.CreateSolution) {
-                unityPath = Utils.FindPath(options.UnityPath);
-                unityAssembliesPath = Utils.FindPath(options.UnityAssembliesPath);
+                unityPath = PathUtils.FindPath(options.UnityPath);
+                unityAssembliesPath = PathUtils.FindPath(options.UnityAssembliesPath);
 
                 if (!Directory.Exists(unityPath)) {
                     Console.Error.WriteLine($"Unity path {unityPath} does not exist");
