@@ -17,8 +17,16 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           path: ./artifacts/
+      - name: Create artifact ZIPs
+        shell: pwsh
+        working-directory: ./artifacts
+        run: 'Get-ChildItem -Path . -Directory | ForEach-Object { Compress-Archive -Path $_.Name -DestinationPath "$($_.Name).zip"  }'
+      - name: Delete unzipped artifact folders
+        shell: pwsh
+        working-directory: ./artifacts
+        run: 'Get-ChildItem -Path . -Directory | ForEach-Object { Remove-Item $_.Name -Recurse }'
       - name: Make release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.4.2
         with:
           files: ./artifacts/**/*
           name: Il2CppInspectorRedux ${{ github.ref_name }}

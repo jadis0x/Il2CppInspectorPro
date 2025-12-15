@@ -74,16 +74,11 @@ jobs:
       - name: Build GUI
         run: dotnet publish -c Release --no-self-contained --no-restore -o ./win-x64 -r win-x64 ./Il2CppInspector.Redux.GUI/Il2CppInspector.Redux.GUI.csproj
 
-      - name: Zip artifacts
-        shell: pwsh
-        run: |
-          Compress-Archive -Path ./win-x64/* -DestinationPath ./win-x64.zip
-
       - name: Upload GUI Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Il2CppInspectorRedux.GUI
-          path: ./win-x64.zip
+          path: ./win-x64
 
   build-redux-cli:
     runs-on: ubuntu-latest
@@ -122,16 +117,11 @@ jobs:
       - name: Build & Publish
         run: dotnet publish -c Release --no-self-contained --no-restore -o ./${{ matrix.rid }} -r ${{ matrix.rid }} ./Il2CppInspector.Redux.CLI/Il2CppInspector.Redux.CLI.csproj
 
-      - name: Zip artifacts
-        shell: pwsh
-        run: |
-          Compress-Archive -Path ./${{ matrix.rid }}/* -DestinationPath ./${{ matrix.rid }}.zip
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
            name: Il2CppInspectorRedux.CLI-${{ matrix.rid }}
-           path: ./${{ matrix.rid }}.zip
+           path: ./${{ matrix.rid }}
 
   build-old-gui:
     runs-on: windows-latest
@@ -164,16 +154,11 @@ jobs:
       - name: Build GUI
         run: dotnet publish -c Release --no-self-contained --no-restore -o ./win-x64 -r win-x64 ./Il2CppInspector.GUI/Il2CppInspector.GUI.csproj
 
-      - name: Zip artifacts
-        shell: pwsh
-        run: |
-          Compress-Archive -Path ./win-x64/* -DestinationPath ./win-x64.zip
-
       - name: Upload GUI artifact
         uses: actions/upload-artifact@v4
         with:
           name: Il2CppInspectorRedux.Legacy.GUI
-          path: ./win-x64.zip
+          path: ./win-x64
 
   build-old-cli:
     runs-on: ubuntu-latest
@@ -210,13 +195,8 @@ jobs:
       - name: Build & Publish
         run: dotnet publish -c Release --no-self-contained --no-restore -o ./${{ matrix.rid }} -r ${{ matrix.rid }} ./Il2CppInspector.CLI/Il2CppInspector.CLI.csproj
 
-      - name: Zip artifacts
-        shell: pwsh
-        run: |
-          Compress-Archive -Path ./${{ matrix.rid }}/* -DestinationPath ./${{ matrix.rid }}.zip
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
            name: Il2CppInspectorRedux.Legacy.CLI-${{ matrix.rid }}
-           path: ./${{ matrix.rid }}.zip
+           path: ./${{ matrix.rid }}
