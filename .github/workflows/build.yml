@@ -136,7 +136,7 @@ jobs:
       - name: Upload GUI Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Il2CppInspectorRedux.Old.GUI
+          name: Il2CppInspectorRedux.Legacy.GUI
           path: Il2CppInspector.GUI/bin/Release/net9.0-windows/win-x64/publish
 
   build-old-cli:
@@ -172,5 +172,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-           name: Il2CppInspectorRedux.Old.CLI-${{ matrix.rid }}
+           name: Il2CppInspectorRedux.Legacy.CLI-${{ matrix.rid }}
            path: ./${{ matrix.rid }}
