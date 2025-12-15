@@ -4,7 +4,7 @@ on: [push, workflow_dispatch, workflow_call]
 
 jobs:
   build-redux-gui: # this already includes stuff only relevant for linux/macos for when the gui is released on those platforms
-    runs-on: ${{ matrix.platform }}}
+    runs-on: windows-latest
     strategy:
       matrix:
         platform: ['windows-latest']
