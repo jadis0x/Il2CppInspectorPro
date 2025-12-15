@@ -8,7 +8,6 @@
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Product>Il2CppInspectorRedux Command-Line Edition</Product>
-    <Copyright>(c) 2023-2025 LukeFZ - https://github.com/LukeFZ, original (c) 2017-2021 Katy Coe - www.djkaty.com - www.github.com/djkaty</Copyright>
     <PackageId>Il2CppInspectorRedux.CLI</PackageId>
     <AssemblyName>Il2CppInspector</AssemblyName>
   </PropertyGroup>

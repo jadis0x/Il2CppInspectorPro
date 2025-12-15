@@ -1,12 +1,13 @@
 <Project>
   <PropertyGroup>
 	  <TargetFramework>net10.0</TargetFramework>
-	  <Version>2023.2</Version>
+	  <LangVersion>preview</LangVersion>
+	  <EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
+	  <Version>2023.1</Version>
 	  <AssemblyVersion>$(Version).0.0</AssemblyVersion>
 	  <FileVersion>$(AssemblyVersion)</FileVersion>
 	  <Authors>Katy Coe, LukeFZ</Authors>
 	  <Company>Noisy Cow Studios, LukeFZ</Company>
-	  <LangVersion>preview</LangVersion>
-	  <EnableSourceControlManagerQueries>true</EnableSourceControlManagerQueries>
+	  <Copyright>(c) 2023-2025 LukeFZ - https://github.com/LukeFZ, original (c) 2017-2021 Katy Coe - www.djkaty.com - www.github.com/djkaty</Copyright>
   </PropertyGroup>
 </Project>
