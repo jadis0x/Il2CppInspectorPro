@@ -38,20 +38,25 @@ jobs:
           cache: "pnpm"
           cache-dependency-path: Il2CppInspector.Redux.GUI.UI/pnpm-lock.yaml
 
+      - name: Install frontend dependencies
+        run: pnpm install
+        working-directory: ./Il2CppInspector.Redux.GUI.UI
+
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Setup Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "./Il2CppInspector.Redux.GUI.UI/src-tauri"
 
       - name: Setup Tauri dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
-
-      - name: Install frontend dependencies
-        run: pnpm install
-        working-directory: ./Il2CppInspector.Redux.GUI.UI
   
       - name: Cache NuGet packages
         uses: actions/cache@v4
