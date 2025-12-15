@@ -72,49 +72,55 @@ jobs:
           path: ./win-x64
 
   build-redux-cli:
-      runs-on: ubuntu-latest
-      strategy:
-        matrix:
-          dotnet-version: [ '10.0.x' ]
-          rid: ['win-x64', 'linux-x64', 'linux-arm64', 'osx-x64', 'osx-arm64']
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '10.0.x' ]
+        rid: ['win-x64', 'linux-x64', 'linux-arm64', 'osx-x64', 'osx-arm64']
 
-      steps:
-        - uses: actions/checkout@v4
-          with:
-            submodules: true
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: true
+          sparse-checkout: |
+            '!Il2CppTests/*'
+            '/*'
 
-        - name: Setup .NET SDK ${{ matrix.dotnet-version }}
-          uses: actions/setup-dotnet@v4
-          with:
-            dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Setup .NET SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
   
-        - name: Cache NuGet packages 
-          uses: actions/cache@v4
-          with:
-            path: ~/.nuget/packages
-            key: ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-${{ hashFiles('**/packages.lock.json') }}
-            restore-keys: |
-                ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-
+      - name: Cache NuGet packages 
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+              ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-
 
-        - name: Install dependencies
-          run: dotnet restore -r ${{ matrix.rid }} ./Il2CppInspector.Redux.CLI
+      - name: Install dependencies
+        run: dotnet restore -r ${{ matrix.rid }} ./Il2CppInspector.Redux.CLI
 
-        - name: Build & Publish
-          run: dotnet publish -c Release --no-self-contained --no-restore -o ./${{ matrix.rid }} -r ${{ matrix.rid }} ./Il2CppInspector.Redux.CLI/Il2CppInspector.Redux.CLI.csproj
+      - name: Build & Publish
+        run: dotnet publish -c Release --no-self-contained --no-restore -o ./${{ matrix.rid }} -r ${{ matrix.rid }} ./Il2CppInspector.Redux.CLI/Il2CppInspector.Redux.CLI.csproj
 
-        - name: Upload artifacts
-          uses: actions/upload-artifact@v4
-          with:
-             name: Il2CppInspectorRedux.CLI-${{ matrix.rid }}
-             path: ./${{ matrix.rid }}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+           name: Il2CppInspectorRedux.CLI-${{ matrix.rid }}
+           path: ./${{ matrix.rid }}
 
   build-old-gui:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
+          sparse-checkout: |
+            '!Il2CppTests/*'
+            '/*'
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
@@ -148,9 +154,12 @@ jobs:
         rid: ['win-x64', 'linux-x64', 'linux-arm64', 'osx-x64', 'osx-arm64']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
+          sparse-checkout: |
+            '!Il2CppTests/*'
+            '/*'
 
       - name: Setup .NET SDK ${{ matrix.dotnet-version }}
         uses: actions/setup-dotnet@v4
