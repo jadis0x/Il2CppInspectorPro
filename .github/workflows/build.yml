@@ -1,10 +1,13 @@
 name: Il2CppInspectorRedux Build
 
-on: [push, workflow_dispatch]
+on: [push, workflow_dispatch, workflow_call]
 
 jobs:
   build-redux-gui: # this already includes stuff only relevant for linux/macos for when the gui is released on those platforms
-    runs-on: windows-latest
+    runs-on: ${{ matrix.platform }}}
+    strategy:
+      matrix:
+        platform: ['windows-latest']
 
     steps:
       - uses: actions/checkout@v4
@@ -156,7 +159,7 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
   
-      - uses: actions/cache@v3
+      - uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-cli-${{ matrix.rid }}-${{ hashFiles('**/packages.lock.json') }}

@@ -1,0 +1,25 @@
+name: Il2CppInspectorRedux Release
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build_artifacts:
+    name: Build artifacts
+    uses: ./.github/workflows/build.yml
+  make_release:
+    name: Create release
+    needs: build_artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifacts@v7
+        with:
+          path: ./artifacts/
+      - name: Make release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./artifacts/**/*
+          name: Il2CppInspectorRedux ${{ github.ref_name }}
+          generate_release_notes: false
