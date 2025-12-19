@@ -726,6 +726,9 @@ namespace Il2CppInspector.Reflection
             set => @namespace = value;
         }
 
+        public bool HasInlineArray => Definition.Bitfield.HasInlineArray;
+        public int InlineArrayLength => Assembly.Model.Package.TypeInlineArrays[Index];
+
         // Number of dimensions of an array
         private readonly int arrayRank;
         public int GetArrayRank() => arrayRank;

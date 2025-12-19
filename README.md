@@ -8,7 +8,7 @@ This is a continuation of [Il2CppInspector, by djkaty](https://github.com/djkaty
 
 ### Redux only features
 
-* Support for metadata version 29/29.1/31/35/38/39, with full reconstruction of custom attributes
+* Support for metadata version 29/29.1/31/35/38/39/104, with full reconstruction of custom attributes
 * Proper extraction of static array initializer contents with their correct length
 * Proper support for v27.2+ Il2CppType
 * Fixed support for v24.5
@@ -769,6 +769,8 @@ Unity version | IL2CPP version | Support
 2022.3.33-6000.2.x | 31(.1) | Working
 6000.3.0a2 | 35 | Working
 6000.3.0a5 | 38 | Working
+6000.3.0b1 | 39 | Working
+6000.5.0a3 | 104 | Working
 
 Please refer to the companion repository https://github.com/nneonneo/Il2CppVersions if you would like to track the changes between each IL2CPP release version.
 

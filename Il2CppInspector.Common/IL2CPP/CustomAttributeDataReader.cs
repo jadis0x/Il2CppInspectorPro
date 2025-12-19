@@ -52,7 +52,9 @@ namespace Il2CppInspector
                 ctors[i] = new CustomAttributeCtor();
 
                 var ctorIndex = _data.ReadUInt32();
-                ctors[i].Ctor = _assembly.Model.MethodsByDefinitionIndex[ctorIndex];
+                ctors[i].Ctor = _assembly.Model.Package.Version >= MetadataVersions.V1040 
+                    ? _assembly.Model.GetMetadataUsageMethod(MetadataUsage.FromEncodedIndex(_assembly.Model.Package, ctorIndex)) 
+                    : _assembly.Model.MethodsByDefinitionIndex[ctorIndex];
             }
 
             _data.Position = _dataBufferStart;
@@ -158,7 +160,9 @@ namespace Il2CppInspector
             memberIndex = -(memberIndex + 1);
 
             var typeDefIndex = _data.ReadCompressedUInt32();
-            var typeInfo = _assembly.Model.TypesByDefinitionIndex[typeDefIndex];
+            var typeInfo = _assembly.Model.Package.Version >= MetadataVersions.V1040 
+                ? _assembly.Model.TypesByReferenceIndex[typeDefIndex] 
+                : _assembly.Model.TypesByDefinitionIndex[typeDefIndex];
 
             return (typeInfo, memberIndex);
         }

@@ -88,6 +88,9 @@ namespace Il2CppInspector.Outputs
         private TypeDef metadataPreviewAttribute;
         private TypeDef tokenAttribute;
 
+        // Runtime attributes we need to add
+        private TypeInfo inlineArrayAttribute;
+
         // The namespace for our custom types
         private const string rootNamespace = "Il2CppInspector.DLL";
 
@@ -160,6 +163,14 @@ namespace Il2CppInspector.Outputs
             tokenAttribute.AddDefaultConstructor(attributeCtorRef);
 
             return module;
+        }
+
+        private void GetBuiltinAttributes()
+        {
+            if (model.Package.Version >= MetadataVersions.V1040)
+            {
+                inlineArrayAttribute = model.TypesByFullName["System.Runtime.CompilerServices.InlineArrayAttribute"];
+            }
         }
 
         // Create a new DLL assembly definition
@@ -244,6 +255,20 @@ namespace Il2CppInspector.Outputs
             // Add token attribute
             if (type.Definition.IsValid)
                 mType.AddAttribute(module, tokenAttribute, ("Token", $"0x{type.MetadataToken:X8}"));
+
+            if (model.Package.Version >= MetadataVersions.V1040)
+            {
+                // L-TODO: Verify if we actually need to add the attribute ourselves; it might just be preserved
+                if (type.HasInlineArray)
+                {
+                    var typeRef = GetTypeRef(module, inlineArrayAttribute);
+                    var ctorRef = new MemberRefUser(typeRef.Module, ".ctor",
+                        MethodSig.CreateInstance(module.CorLibTypes.Void, module.CorLibTypes.Int32), typeRef);
+                    mType.CustomAttributes.Add(new CustomAttribute(ctorRef, new CAArgument[] {
+                        new(module.CorLibTypes.Int32, type.InlineArrayLength)
+                    }));
+                }
+            }
 
             // Add custom attribute attributes
             foreach (var ca in type.CustomAttributes)
@@ -635,6 +660,10 @@ namespace Il2CppInspector.Outputs
                 // Write base assembly to disk
                 baseDll.Write(Path.Combine(outputPath, baseDll.Name));
             }
+
+            // Initialize required builtin attributes we might need to add
+            // ourselves
+            GetBuiltinAttributes();
 
             // Add all types
             foreach (var asm in model.Assemblies) {

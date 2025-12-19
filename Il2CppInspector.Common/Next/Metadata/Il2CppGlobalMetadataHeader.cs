@@ -310,6 +310,9 @@ public partial record struct Il2CppGlobalMetadataHeader
     [VersionCondition(GreaterThan = "38.0")]
     public Il2CppSectionMetadata TypeDefinitions { get; private set; }
 
+    [VersionCondition(GreaterThan = "104.0")]
+    public Il2CppSectionMetadata TypeInlineArrays { get; private set; }
+
     [VersionCondition(GreaterThan = "38.0")]
     public Il2CppSectionMetadata Images { get; private set; }
 

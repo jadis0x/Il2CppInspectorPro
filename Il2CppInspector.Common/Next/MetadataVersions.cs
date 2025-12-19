@@ -27,7 +27,7 @@ public static class MetadataVersions
     public static readonly StructVersion V310 = new(31);
 
     // No tag - 29.0/31.0
-    public static readonly string Tag2022 = "2022"; // 29.1/31.1
+    public const string Tag2022 = "2022"; // 29.1/31.1
 
     // Unity 6000.3.0a2
     public static readonly StructVersion V350 = new(35);
@@ -38,5 +38,10 @@ public static class MetadataVersions
 
     // Unity 6000.3.0b1
     public static readonly StructVersion V390 = new(39);
-    // NOTE This version additionally uses a tag to specify the size of ParameterIndex.
+    // NOTE: This version additionally uses a tag to specify the size of ParameterIndex.
+
+    // Unity 6000.5.0a3
+    public static readonly StructVersion V1040 = new(104);
+    // NOTE: This version additionally uses tags to specify the size of InterfaceIndex, EventIndex, PropertyIndex, NestedTypeIndex,
+    // alongside a new metadata section for Il2CppInlineArrayLength and a bitfield flag indicating an inline array.
 }

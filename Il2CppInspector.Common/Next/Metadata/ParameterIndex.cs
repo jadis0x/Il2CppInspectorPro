@@ -1,5 +1,4 @@
-﻿using NoisyCowStudios.Bin2Object;
-using VersionedSerialization;
+﻿using VersionedSerialization;
 
 namespace Il2CppInspector.Next.Metadata;
 

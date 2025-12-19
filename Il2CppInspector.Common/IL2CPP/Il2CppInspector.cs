@@ -75,6 +75,7 @@ namespace Il2CppInspector
         public Dictionary<Il2CppMethodSpec, ulong> GenericMethodPointers { get; }
         public Dictionary<Il2CppMethodSpec, int> GenericMethodInvokerIndices => Binary.GenericMethodInvokerIndices;
         public ImmutableArray<Il2CppTypeDefinitionSizes> TypeDefinitionSizes => Binary.TypeDefinitionSizes;
+        public Dictionary<TypeIndex, int> TypeInlineArrays { get; } = new();
 
         // TODO: Finish all file access in the constructor and eliminate the need for this
         public IFileFormatStream BinaryImage => Binary.Image;
@@ -285,6 +286,11 @@ namespace Il2CppInspector
                     if (attsByToken.Count > 0)
                         AttributeIndicesByToken.Add(image.CustomAttributeStart, attsByToken);
                 }
+            }
+
+            if (Version >= MetadataVersions.V1040)
+            {
+                TypeInlineArrays = Metadata.TypeInlineArrays.ToDictionary(x => x.TypeIndex, x => x.Length);
             }
 
             // Merge all metadata usage references into a single distinct list

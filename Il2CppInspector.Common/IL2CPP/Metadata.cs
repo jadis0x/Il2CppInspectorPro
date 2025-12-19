@@ -43,6 +43,8 @@ namespace Il2CppInspector
         public ImmutableArray<uint> VTableMethodIndices { get; set; }
         public string[] StringLiterals { get; set; }
 
+        public ImmutableArray<Il2CppInlineArrayLength> TypeInlineArrays { get; set; }
+
         public int FieldAndParameterDefaultValueDataOffset => Version >= MetadataVersions.V380
             ? Header.FieldAndParameterDefaultValueData.Offset
             : Header.FieldAndParameterDefaultValueDataOffset;
@@ -95,7 +97,7 @@ namespace Il2CppInspector
             // Set object versioning for Bin2Object from metadata version
             Version = new StructVersion(Header.Version);
 
-            if (Version < MetadataVersions.V160 || Version > MetadataVersions.V390) {
+            if (Version < MetadataVersions.V160 || Version > MetadataVersions.V1040) {
                 throw new InvalidOperationException($"The supplied metadata file is not of a supported version ({Header.Version}).");
             }
 
@@ -147,6 +149,18 @@ namespace Il2CppInspector
                 {
                     var parameterIndexSize = GetIndexSize(Header.Parameters.Count);
                     fullTag += $"_{ParameterIndex.TagPrefix}{parameterIndexSize}";
+                }
+
+                if (Version >= MetadataVersions.V1040)
+                {
+                    var eventIndexSize = GetIndexSize(Header.Events.Count);
+                    var interfacesIndexSize = GetIndexSize(Header.InterfaceOffsets.Count);
+                    var nestedTypeIndexSize = GetIndexSize(Header.NestedTypes.Count);
+                    var propertyIndexSize = GetIndexSize(Header.Properties.Count);
+                    fullTag += $"_{EventIndex.TagPrefix}{eventIndexSize}"
+                        + $"_{InterfacesIndex.TagPrefix}{interfacesIndexSize}"
+                        + $"_{NestedTypeIndex.TagPrefix}{nestedTypeIndexSize}"
+                        + $"_{PropertyIndex.TagPrefix}{propertyIndexSize}";
                 }
 
                 Version = new StructVersion(Version.Major, Version.Minor, fullTag);
@@ -257,6 +271,11 @@ namespace Il2CppInspector
             {
                 AttributeDataRanges = ReadMetadataArray<Il2CppCustomAttributeDataRange>(Header.AttributeDataRangeOffset,
                     Header.AttributeDataRangeSize, Header.AttributeDataRanges);
+            }
+
+            if (Version >= MetadataVersions.V1040)
+            {
+                TypeInlineArrays = ReadMetadataArray<Il2CppInlineArrayLength>(0, 0, Header.TypeInlineArrays);
             }
 
             // Get all metadata strings
