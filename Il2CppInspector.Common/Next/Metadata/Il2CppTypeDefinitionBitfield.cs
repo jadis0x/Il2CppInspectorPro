@@ -17,6 +17,6 @@ public partial record struct Il2CppTypeDefinitionBitfield
     public bool DefaultPackingSize => ((_value >> 10) & 1) == 1;
     public bool DefaultClassSize => ((_value >> 11) & 1) == 1;
     public PackingSize ClassSize => (PackingSize)((_value >> 12) & 0b1111);
-    public bool IsByRefLike => ((_value >> 13) & 1) == 1;
-    public bool HasInlineArray => ((_value >> 14) & 1) == 1;
+    public bool IsByRefLike => ((_value >> 16) & 1) == 1;
+    public bool HasInlineArray => ((_value >> 17) & 1) == 1;
 }
