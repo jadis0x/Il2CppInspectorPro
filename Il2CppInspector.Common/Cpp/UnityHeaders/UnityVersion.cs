@@ -176,9 +176,9 @@ namespace Il2CppInspector.Cpp.UnityHeaders
             var bits = headerFilename.Split("-");
 
             // Metadata version supplied
-            // Note: This relies on the metadata version being either 2 or 4 characters,
+            // Note: This relies on the metadata version being 2/3/4 characters,
             // and that the smallest Unity version must be 5 characters or more
-            if (headerFilename[2] == '-' || headerFilename[4] == '-')
+            if (headerFilename.Substring(2, 3).Contains('-'))
                 bits = bits.Skip(1).ToArray();
 
             var Min = new UnityVersion(bits[0]);
