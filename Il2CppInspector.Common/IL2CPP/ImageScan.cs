@@ -282,13 +282,18 @@ namespace Il2CppInspector
             // but I know of at least one binary where this will break detection.
             // Testing showed that we can just use the same heuristic used for v27+
             // on older versions as well, so we'll just use it for all cases.
+
+            // On some 32-bit (arm) binaries, just checking fields with the type count is not sufficient
+            // for uniquely identifying the metareg. We assume that all binaries have at least one generic class + inst
+            // and use this for an additional heuristic, though this is kinda jank and might not be enough for all binaries
             if (Image.Version >= MetadataVersions.V190)
             {
                 foreach (var va in vas)
                 {
                     var mr = Image.ReadMappedVersionedObject<Il2CppMetadataRegistration>(va);
                     if (mr.TypeDefinitionsSizesCount == metadata.Types.Length
-                        && mr.FieldOffsetsCount == metadata.Types.Length)
+                        && mr.FieldOffsetsCount == metadata.Types.Length
+                        && mr is { GenericInstsCount: > 0, GenericClassesCount: > 0 })
                     {
                         metadataRegistration = va;
                         break;
