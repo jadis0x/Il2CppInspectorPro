@@ -85,7 +85,7 @@ public class CppDeclarationGenerator
 
     // Resets the cache of visited types and pending types to output, but preserve any names we have already generated
     public void Reset() {
-        _visitedFieldStructs.Clear();
+        _cppTypeDependencyGraph.Reset();
         _visitedTypes.Clear();
         _todoFieldStructs.Clear();
         _todoTypeStructs.Clear();
@@ -98,124 +98,17 @@ public class CppDeclarationGenerator
      * (For example: structures for value types must precede any usage of those value types for layout reasons).
      */
 
-    // A cache of field structures that have already been generated, to eliminate duplicate definitions
-    private readonly HashSet<TypeInfo> _visitedFieldStructs = [];
-
     // A queue of field structures that need to be generated.
     private readonly List<TypeInfo> _todoFieldStructs = [];
 
-    private readonly HashSet<TypeInfo> _requiredForwardDefinitionsForFields = [];
-
-    private readonly HashSet<TypeInfo> _currentVisitedFieldStructs = [];
-    private readonly HashSet<TypeInfo> _currentTodoFieldStructs = [];
-    private readonly HashSet<TypeInfo> _currentRequiredForwardDefinitions = [];
-    private readonly HashSet<TypeInfo> _currentlyVisitingFieldStructs = [];
-
-    private class CircularReferenceException(TypeInfo circularType, TypeInfo parentType) : Exception("Circular reference detected")
-    {
-        public TypeInfo CircularReferencedType { get; } = circularType;
-        public TypeInfo ParentType { get; } = parentType;
-    }
-
-    // Walk over dependencies of the given type, to figure out what field structures it depends on
-    private void VisitFieldStructsInner(TypeInfo ti) 
-    {
-        if (_visitedFieldStructs.Contains(ti) || _currentVisitedFieldStructs.Contains(ti))
-            return;
-
-        if (ti.IsByRef || ti.ContainsGenericParameters)
-            return;
-
-        _currentVisitedFieldStructs.Add(ti);
-        _currentlyVisitingFieldStructs.Add(ti);
-
-        if (ti.BaseType != null)
-            VisitFieldStructsInner(ti.BaseType);
-
-        if (ti.IsArray)
-            VisitFieldStructsInner(ti.ElementType);
-
-        if (ti.IsEnum)
-            VisitFieldStructsInner(ti.GetEnumUnderlyingType());
-
-        foreach (var fi in ti.DeclaredFields.Where(fi => !fi.IsStatic && !fi.IsLiteral))
-            ProcessTypeField(fi);
-
-        _currentTodoFieldStructs.Add(ti);
-        _currentlyVisitingFieldStructs.Remove(ti);
-
-        return;
-
-        void ProcessTypeField(FieldInfo fi)
-        {
-            if (fi.FieldType.IsEnum || fi.FieldType.IsValueType)
-            {
-                VisitFieldStructsInner(fi.FieldType);
-            }
-            else if (fi.FieldType.HasElementType)
-            {
-                var elementType = fi.FieldType.ElementType;
-                if (!fi.FieldType.IsPointer || !_currentRequiredForwardDefinitions.Contains(elementType))
-                {
-                    VisitFieldStructsInner(elementType);
-
-                    if (elementType.IsValueType
-                        && elementType != ti
-                        && _currentlyVisitingFieldStructs.Contains(elementType)
-                        && !_currentRequiredForwardDefinitions.Contains(elementType))
-                    {
-                        // this is now an issue: there is a loop, and we need to resolve it
-                        // if the field type is a pointer, we can make a forward declaration and be done with it
-                        // otherwise, we cannot generate these types
-                        if (!fi.FieldType.IsPointer)
-                            Debugger.Break();
-
-                        throw new CircularReferenceException(elementType, ti);
-                    }
-                }
-            }
-        }
-    }
-
-    private void ClearCurrentFieldStructVisitState()
-    {
-        _currentTodoFieldStructs.Clear();
-        _currentVisitedFieldStructs.Clear();
-        _currentlyVisitingFieldStructs.Clear();
-    }
+    private readonly CppTypeDependencyGraph _cppTypeDependencyGraph = new();
 
     private void VisitFieldStructs(TypeInfo ti)
     {
-        ClearCurrentFieldStructVisitState();
+        if (ti.ContainsGenericParameters)
+            return;
 
-        var requiredTypesToVisit = new Stack<TypeInfo>([ti]);
-
-        while (true)
-        {
-            try
-            {
-                foreach (var typeToVisit in requiredTypesToVisit)
-                    VisitFieldStructsInner(typeToVisit);
-            }
-            catch (CircularReferenceException ex)
-            {
-                ClearCurrentFieldStructVisitState();
-
-                _currentRequiredForwardDefinitions.Add(ex.CircularReferencedType);
-                requiredTypesToVisit.Push(ex.ParentType);
-
-                continue;
-            }
-
-            break;
-        }
-
-        _todoFieldStructs.AddRange(_currentTodoFieldStructs);
-        foreach (var visitedType in _currentVisitedFieldStructs)
-            _visitedFieldStructs.Add(visitedType);
-        
-        foreach (var requiredType in _currentRequiredForwardDefinitions)
-            _requiredForwardDefinitionsForFields.Add(requiredType);
+        _todoFieldStructs.AddRange(_cppTypeDependencyGraph.DeriveDependencyOrderedTypes(ti));
     }
 
     // Generate the fields for the base class of all objects (Il2CppObject)
@@ -569,10 +462,15 @@ public class CppDeclarationGenerator
     }
 
     public List<CppType> GenerateRequiredForwardDefinitions()
+        // L-TODO: With the move to the new dependency graph
+        // we might not need this anymore. maybe remove it in the future?
+        => [];
+        /*
         => _requiredForwardDefinitionsForFields
             .Select(x => new CppForwardDefinitionType(TypeNamer.GetName(x)))
             .Cast<CppType>()
             .ToList();
+        */
 
     #endregion
 
