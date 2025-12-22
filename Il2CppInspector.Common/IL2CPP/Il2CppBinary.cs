@@ -334,21 +334,38 @@ namespace Il2CppInspector
                     // If a module contains only interfaces, abstract methods and/or non-concrete generic methods,
                     // the entire method pointer array will be NULL values, causing the methodPointer to be mapped to .bss
                     // and therefore out of scope of the binary image
-                    try {
-                        ModuleMethodPointers.Add(module, Image.ReadMappedUWordArray(module.MethodPointers, (int) module.MethodPointerCount));
-                    } catch (InvalidOperationException) {
+                    if (Image.TryMapVATR(module.MethodPointers, out _))
+                    {
+                        try
+                        {
+                            ModuleMethodPointers.Add(module, Image.ReadMappedUWordArray(module.MethodPointers, (int)module.MethodPointerCount));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            ModuleMethodPointers.Add(module, new ulong[module.MethodPointerCount]);
+                        }
+                    }
+                    else
+                    {
                         ModuleMethodPointers.Add(module, new ulong[module.MethodPointerCount]);
                     }
 
                     // Read method invoker pointer indices - one per method
-                    try
+                    if (Image.TryMapVATR(module.InvokerIndices, out _))
                     {
-                        MethodInvokerIndices.Add(module,
-                            Image.ReadMappedPrimitiveArray<int>(module.InvokerIndices, (int)module.MethodPointerCount));
+                        try
+                        {
+                            MethodInvokerIndices.Add(module,
+                                Image.ReadMappedPrimitiveArray<int>(module.InvokerIndices, (int)module.MethodPointerCount));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            MethodInvokerIndices.Add(module, [.. new int[(int)module.MethodPointerCount]]);
+                        }
                     }
-                    catch (InvalidOperationException)
+                    else
                     {
-                        MethodInvokerIndices.Add(module, [..new int[(int)module.MethodPointerCount]]);
+                        MethodInvokerIndices.Add(module, [.. new int[(int)module.MethodPointerCount]]);
                     }
                 }
             }
