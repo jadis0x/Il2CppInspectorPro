@@ -10,19 +10,16 @@ import ida_ua
 import ida_segment
 import ida_funcs
 import ida_xref
+import ida_pro
 
-try: # 7.7+
+if ida_pro.IDA_SDK_VERSION > 770:
 	import ida_srclang
-	IDACLANG_AVAILABLE = True
-	print("IDACLANG available")
-except ImportError:
-	IDACLANG_AVAILABLE = False
-
-try:
 	import ida_dirtree
+	IDACLANG_AVAILABLE = True
 	FOLDERS_AVAILABLE = True
-	print("folders available")
-except ImportError:
+	print("IDACLANG available")
+else:
+	IDACLANG_AVAILABLE = False
 	FOLDERS_AVAILABLE = False
 
 #try:
@@ -179,7 +176,7 @@ class IDADisassemblerInterface(BaseDisassemblerInterface):
 
 	# optional
 	def add_function_to_group(self, address: int, group: str):
-		if not FOLDERS_AVAILABLE or True: # enable at your own risk - this is slow
+		if not FOLDERS_AVAILABLE or ida_pro.IDA_SDK_VERSION < 930: # enable at your own risk on pre 9.3 - this is slow
 				return
 
 		if group not in self._folders:
