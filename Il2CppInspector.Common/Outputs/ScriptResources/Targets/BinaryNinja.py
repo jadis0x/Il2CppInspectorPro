@@ -15,18 +15,22 @@ from binaryninja import (
 )
 from binaryninja.log import log_error
 
-# try:
-# from typing import TYPE_CHECKING
-# if TYPE_CHECKING:
-# from ..shared_base import BaseStatusHandler, BaseDisassemblerInterface, ScriptContext
-# import json
-# import os
-# import sys
-# from datetime import datetime
-# from typing import Literal
-# bv: BinaryView = None # type: ignore
-# except:
-# pass
+try:
+    from typing import TYPE_CHECKING
+
+    if TYPE_CHECKING:
+        from ..shared_base import (
+            BaseStatusHandler,
+            BaseDisassemblerInterface,
+            ScriptContext,
+        )
+        import os
+        from datetime import datetime
+        from typing import Literal, Union
+
+        bv: BinaryView = None  # type: ignore
+except ImportError:
+    pass
 
 CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
 
