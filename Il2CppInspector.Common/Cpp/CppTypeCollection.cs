@@ -497,6 +497,7 @@ namespace Il2CppInspector.Cpp
                 // Allow auto-generation of forward declarations
                 // This will break type generation unless the ultimate wanted type is a pointer
                 // Note this can still be the case with indirectionCount == 0 if .AsPointer() is called afterwards
+
                 if (!Types.ContainsKey(baseName))
                     Struct(baseName);
 
