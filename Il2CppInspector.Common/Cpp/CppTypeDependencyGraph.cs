@@ -82,7 +82,24 @@ public class CppTypeDependencyGraph
         // finally, process all instance fields.
         // the reference type depends on the type of the field
         foreach (var field in typeInfo.DeclaredFields.Where(f => f.IsInstanceField))
-            AddReference(typeNode, GetNode(field.FieldType), field.FieldType.IsPassedByReference);
+        {
+            // if the field type is a pointer and the element type an enum, we have to add a reference to the enum.
+            // this is a workaround for type emitting only being able to generate forward definitions for *struct* types, and not enum types
+            if (field.FieldType.IsPointer)
+            {
+                // support multiple pointer levels
+                var type = field.FieldType;
+                while (type.IsPointer)
+                    type = type.ElementType;
+
+                if (type.IsEnum)
+                    AddReference(typeNode, GetNode(type), false);
+            }
+            else
+            {
+                AddReference(typeNode, GetNode(field.FieldType), field.FieldType.IsPassedByReference);
+            }
+        }
     }
 
     public List<TypeInfo> DeriveDependencyOrderedTypes(TypeInfo typeInfo)

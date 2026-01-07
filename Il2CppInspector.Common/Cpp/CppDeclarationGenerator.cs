@@ -435,30 +435,22 @@ public class CppDeclarationGenerator
     /// <returns>A string containing C type declarations</returns>
     public List<(TypeInfo ilType, CppComplexType valueType, CppComplexType referenceType, CppComplexType fieldsType,
         CppComplexType vtableType, CppComplexType staticsType)> GenerateRemainingTypeDeclarations() {
-        try
-        {
-            var decl = GenerateVisitedFieldStructs().Select(s =>
-                    (s.ilType, s.valueType, s.referenceType, s.fieldsType, (CppComplexType)null,
-                        (CppComplexType)null))
-                .ToList();
 
-            foreach (var ti in _todoTypeStructs)
-            {
-                var (cls, statics, vtable) = GenerateTypeStruct(ti);
-                decl.Add((ti, null, cls, null, vtable, statics));
-            }
+        var decl = GenerateVisitedFieldStructs().Select(s =>
+                   (s.ilType, s.valueType, s.referenceType, s.fieldsType, (CppComplexType)null,
+                       (CppComplexType)null))
+               .ToList();
 
-            return decl;
-        }
-        catch (Exception)
+        foreach (var ti in _todoTypeStructs)
         {
-            return null;
+            var (cls, statics, vtable) = GenerateTypeStruct(ti);
+            decl.Add((ti, null, cls, null, vtable, statics));
         }
-        finally
-        {
-            _todoTypeStructs.Clear();
-            _todoFieldStructs.Clear();
-        }
+
+        _todoTypeStructs.Clear();
+        _todoFieldStructs.Clear();
+
+        return decl;
     }
 
     public List<CppType> GenerateRequiredForwardDefinitions()
