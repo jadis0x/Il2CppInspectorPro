@@ -49,7 +49,7 @@ class IDADisassemblerInterface(BaseDisassemblerInterface):
     _status: BaseStatusHandler
 
     _type_cache: dict
-    _folders: list
+    _folders: list[str]
 
     _function_dirtree: "ida_dirtree.dirtree_t"
     _cached_genflags: int
