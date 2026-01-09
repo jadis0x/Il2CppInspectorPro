@@ -1,1 +1,3 @@
 Il2CppTests/TestExpectedResults/* linguist-vendored
+Il2CppInspector.Common/Cpp/Il2CppAPIHeaders/* linguist-vendored
+Il2CppInspector.Common/Cpp/UnityHeaders/* linguist-vendored
