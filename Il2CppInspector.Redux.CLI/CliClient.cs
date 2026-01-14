@@ -61,6 +61,11 @@ public class CliClient : IDisposable
     public async ValueTask<string> GetInspectorVersion(CancellationToken cancellationToken = default) 
         => await _connection.InvokeAsync<string>(nameof(Il2CppHub.GetInspectorVersion), cancellationToken);
 
+    public async ValueTask SetSettings(InspectorSettings settings, CancellationToken cancellationToken = default)
+    {
+        await _connection.InvokeAsync(nameof(Il2CppHub.SetSettings), settings, cancellationToken);
+    }
+
     public async ValueTask WaitForLoadingToFinishAsync(CancellationToken cancellationToken = default)
     {
         var currentLoadingCount = _finishedLoadingCount;

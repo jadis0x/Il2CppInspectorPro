@@ -1,16 +1,18 @@
-﻿using Il2CppInspector.Cpp;
+﻿using System.Globalization;
+using Il2CppInspector.Cpp;
+using Il2CppInspector.Redux.FrontendCore;
 using Il2CppInspector.Redux.FrontendCore.Outputs;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace Il2CppInspector.Redux.CLI.Commands;
 
-internal class ProcessCommand(PortProvider portProvider) : ManualCommand<ProcessCommand.Option>(portProvider)
+internal sealed class ProcessCommand(PortProvider portProvider) : ManualCommand<ProcessCommand.Settings>(portProvider)
 {
     // NOTE: There might be a better option than replicating all available flags here (and in the TS UI).
     // Investigate this in the future.
 
-    public class Option : ManualCommandOptions
+    public sealed class Settings : ManualCommandSettings
     {
         // C++ Scaffolding
         [CommandOption("--output-cpp-scaffolding")]
@@ -67,12 +69,26 @@ internal class ProcessCommand(PortProvider portProvider) : ManualCommand<Process
 
         [CommandOption("--extract-il2cpp-files")]
         public string? ExtractIl2CppFilesPath { get; init; }
+
+        [CommandOption("--image-base")]
+        public string? ImageBase { get; init; }
     }
 
-    protected override async Task<int> ExecuteAsync(CliClient client, Option settings)
+    protected override async Task<int> ExecuteAsync(CliClient client, Settings settings)
     {
         var inspectorVersion = await client.GetInspectorVersion();
         AnsiConsole.MarkupLineInterpolated($"Using inspector [gray]{inspectorVersion}[/]");
+
+        if (settings.ImageBase != null)
+        {
+            var imageBase = ulong.Parse(settings.ImageBase,
+                settings.ImageBase.StartsWith("0x") 
+                    ? NumberStyles.HexNumber 
+                    : NumberStyles.Integer);
+
+            AnsiConsole.MarkupLineInterpolated($"Setting image base to [white]0x{imageBase:x}[/]");
+            await client.SetSettings(new InspectorSettings(imageBase));
+        }
 
         await client.SubmitInputFiles(settings.InputPaths.ToList());
         await client.WaitForLoadingToFinishAsync();
@@ -148,7 +164,7 @@ internal class ProcessCommand(PortProvider portProvider) : ManualCommand<Process
         return 0;
     }
 
-    public override ValidationResult Validate(CommandContext context, Option settings)
+    public override ValidationResult Validate(CommandContext context, Settings settings)
     {
         if (settings.UnityPath != null && !Path.Exists(settings.UnityPath))
             return ValidationResult.Error($"Provided Unity path {settings.UnityPath} does not exist.");

@@ -1,14 +1,13 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using Spectre.Console;
+﻿using Spectre.Console;
 using Spectre.Console.Cli;
 
 namespace Il2CppInspector.Redux.CLI.Commands;
 
-internal class InteractiveCommand(PortProvider portProvider) : BaseCommand<InteractiveCommand.Options>(portProvider)
+internal sealed class InteractiveCommand(PortProvider portProvider) : BaseCommand<InteractiveCommand.Settings>(portProvider)
 {
-    public class Options : CommandSettings;
+    public sealed class Settings : CommandSettings;
 
-    protected override async Task<int> ExecuteAsync(CliClient client, Options settings)
+    protected override async Task<int> ExecuteAsync(CliClient client, Settings settings)
     {
         await Task.Delay(1000);
         await AnsiConsole.AskAsync<string>("meow?");

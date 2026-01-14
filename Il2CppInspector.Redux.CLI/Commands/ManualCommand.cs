@@ -3,7 +3,7 @@ using Spectre.Console.Cli;
 
 namespace Il2CppInspector.Redux.CLI.Commands;
 
-internal abstract class ManualCommand<T>(PortProvider portProvider) : BaseCommand<T>(portProvider) where T : ManualCommandOptions
+internal abstract class ManualCommand<T>(PortProvider portProvider) : BaseCommand<T>(portProvider) where T : ManualCommandSettings
 {
     public override ValidationResult Validate(CommandContext context, T settings)
     {

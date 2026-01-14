@@ -26,7 +26,7 @@ public class UiContext
 
     private readonly List<(string FormatId, string OutputDirectory, Dictionary<string, string> Settings)> _queuedExports = [];
 
-    private async Task<bool> TryLoadMetadataFromStream(UiClient client, MemoryStream stream)
+    private async Task<bool> TryLoadMetadataFromStreamAsync(UiClient client, MemoryStream stream)
     {
         try
         {
@@ -41,7 +41,7 @@ public class UiContext
         return false;
     }
 
-    private async Task<bool> TryLoadBinaryFromStream(UiClient client, MemoryStream stream)
+    private async Task<bool> TryLoadBinaryFromStreamAsync(UiClient client, MemoryStream stream)
     {
         await client.ShowLogMessage("Processing binary");
 
@@ -64,7 +64,7 @@ public class UiContext
         return false;
     }
 
-    private async Task<bool> TryInitializeInspector(UiClient client)
+    private async Task<bool> TryInitializeInspectorAsync(UiClient client)
     {
         Debug.Assert(_binary != null);
         Debug.Assert(_metadata != null);
@@ -117,12 +117,12 @@ public class UiContext
         return true;
     }
 
-    public async Task Initialize(UiClient client, CancellationToken cancellationToken = default)
+    public async Task InitializeAsync(UiClient client, CancellationToken cancellationToken = default)
     {
         await client.ShowSuccessToast("SignalR initialized!", cancellationToken);
     }
 
-    public async Task LoadInputFiles(UiClient client, List<string> inputFiles,
+    public async Task LoadInputFilesAsync(UiClient client, List<string> inputFiles,
         CancellationToken cancellationToken = default)
     {
         await using (await LoadingSession.Start(client))
@@ -132,10 +132,10 @@ public class UiContext
             {
                 // The input files contained a package that provides the metadata and binary.
                 // Use these instead of parsing all files individually.
-                if (!await TryLoadMetadataFromStream(client, streams.Value.Metadata))
+                if (!await TryLoadMetadataFromStreamAsync(client, streams.Value.Metadata))
                     return;
 
-                if (!await TryLoadBinaryFromStream(client, streams.Value.Binary))
+                if (!await TryLoadBinaryFromStreamAsync(client, streams.Value.Binary))
                     return;
             }
             else
@@ -152,7 +152,7 @@ public class UiContext
 
                     if ( _metadata == null && PathHeuristics.IsMetadataPath(inputFile))
                     {
-                        if (await TryLoadMetadataFromStream(client, stream))
+                        if (await TryLoadMetadataFromStreamAsync(client, stream))
                         {
                             await client.ShowSuccessToast($"Loaded metadata (v{_metadata!.Version}) from {inputFile}", cancellationToken);
                         }
@@ -162,7 +162,7 @@ public class UiContext
                         stream.Position = 0;
                         _loadOptions.BinaryFilePath = inputFile;
 
-                        if (await TryLoadBinaryFromStream(client, stream))
+                        if (await TryLoadBinaryFromStreamAsync(client, stream))
                         {
                             await client.ShowSuccessToast($"Loaded binary from {inputFile}", cancellationToken);
                         }
@@ -172,7 +172,7 @@ public class UiContext
 
             if (_metadata != null && _binary != null)
             {
-                if (await TryInitializeInspector(client))
+                if (await TryInitializeInspectorAsync(client))
                 {
                     await client.ShowSuccessToast($"Successfully loaded IL2CPP (v{_appModels[0].Package.Version}) data!", cancellationToken);
                     await client.OnImportCompleted(cancellationToken);
@@ -181,14 +181,14 @@ public class UiContext
         }
     }
 
-    public Task QueueExport(UiClient client, string exportFormatId, string outputDirectory,
+    public Task QueueExportAsync(UiClient client, string exportFormatId, string outputDirectory,
         Dictionary<string, string> settings, CancellationToken cancellationToken = default)
     {
         _queuedExports.Add((exportFormatId, outputDirectory, settings));
         return Task.CompletedTask;
     }
 
-    public async Task StartExport(UiClient client, CancellationToken cancellationToken = default)
+    public async Task StartExportAsync(UiClient client, CancellationToken cancellationToken = default)
     {
         // todo: support different app model selection (when loading packages)
         Debug.Assert(_appModels.Count > 0);
@@ -217,12 +217,12 @@ public class UiContext
         await client.ShowSuccessToast("Export finished", cancellationToken);
     }
 
-    public Task<List<string>> GetPotentialUnityVersions()
+    public Task<List<string>> GetPotentialUnityVersionsAsync()
     {
         return Task.FromResult(_potentialUnityVersions.Select(x => x.VersionRange.Min.ToString()).ToList());
     }
 
-    public async Task ExportIl2CppFiles(UiClient client, string outputDirectory, CancellationToken cancellationToken = default)
+    public async Task ExportIl2CppFilesAsync(UiClient client, string outputDirectory, CancellationToken cancellationToken = default)
     {
         Debug.Assert(_appModels.Count > 0);
         var pkg = _appModels[0].Package;
@@ -244,8 +244,14 @@ public class UiContext
         }
     }
 
-    public static Task<string> GetInspectorVersion()
+    public static Task<string> GetInspectorVersionAsync()
     {
         return Task.FromResult(typeof(UiContext).Assembly.GetAssemblyVersion() ?? "<unknown>");
+    }
+
+    public Task SetSettingsAsync(UiClient client, InspectorSettings settings)
+    {
+        _loadOptions.ImageBase = settings.ImageBase;
+        return Task.CompletedTask;
     }
 }

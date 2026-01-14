@@ -3,7 +3,7 @@ using Spectre.Console.Cli;
 
 namespace Il2CppInspector.Redux.CLI.Commands;
 
-internal class ManualCommandOptions : CommandSettings
+internal class ManualCommandSettings : CommandSettings
 {
     [CommandArgument(0, "<InputPath>")]
     [Description("Paths to the input files. Will be subsequently loaded until binary and metadata were found.")]
