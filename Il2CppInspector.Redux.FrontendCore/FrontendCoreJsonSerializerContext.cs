@@ -5,4 +5,5 @@ namespace Il2CppInspector.Redux.FrontendCore;
 [JsonSerializable(typeof(string))]
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(Dictionary<string, string>))]
+[JsonSerializable(typeof(InspectorSettings))]
 public partial class FrontendCoreJsonSerializerContext : JsonSerializerContext;
