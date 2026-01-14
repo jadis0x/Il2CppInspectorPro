@@ -11,6 +11,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Il2CppInspector.Next.BinaryMetadata;
+using Il2CppInspector.Next.NameTranslation;
 
 namespace Il2CppInspector.Reflection
 {
@@ -185,6 +186,19 @@ namespace Il2CppInspector.Reflection
 
             // Post-processing hook
             PluginHooks.PostProcessTypeModel(this);
+        }
+
+        public void ApplyNameTranslationFromFile(string nameTranslationMapPath)
+        {
+            var lines = File.ReadAllLines(nameTranslationMapPath);
+            ApplyNameTranslation(lines);
+        }
+
+        public void ApplyNameTranslation(ReadOnlySpan<string> nameTranslationLines)
+        {
+            var info = NameTranslationParserContext.Parse(nameTranslationLines);
+            foreach (var assembly in Assemblies)
+                NameTranslationApplierContext.Process(assembly, info);
         }
 
         // Get generic arguments from either a type or method instanceIndex from a MethodSpec

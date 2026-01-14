@@ -72,6 +72,9 @@ internal sealed class ProcessCommand(PortProvider portProvider) : ManualCommand<
 
         [CommandOption("--image-base")]
         public string? ImageBase { get; init; }
+
+        [CommandOption("--name-translation-map")]
+        public string? NameTranslationMap { get; init; }
     }
 
     protected override async Task<int> ExecuteAsync(CliClient client, Settings settings)
@@ -79,16 +82,18 @@ internal sealed class ProcessCommand(PortProvider portProvider) : ManualCommand<
         var inspectorVersion = await client.GetInspectorVersion();
         AnsiConsole.MarkupLineInterpolated($"Using inspector [gray]{inspectorVersion}[/]");
 
+        var imageBase = 0uL;
         if (settings.ImageBase != null)
         {
-            var imageBase = ulong.Parse(settings.ImageBase,
+            imageBase = ulong.Parse(settings.ImageBase,
                 settings.ImageBase.StartsWith("0x") 
                     ? NumberStyles.HexNumber 
                     : NumberStyles.Integer);
 
             AnsiConsole.MarkupLineInterpolated($"Setting image base to [white]0x{imageBase:x}[/]");
-            await client.SetSettings(new InspectorSettings(imageBase));
         }
+
+        await client.SetSettings(new InspectorSettings(imageBase, settings.NameTranslationMap));
 
         await client.SubmitInputFiles(settings.InputPaths.ToList());
         await client.WaitForLoadingToFinishAsync();
@@ -175,6 +180,9 @@ internal sealed class ProcessCommand(PortProvider portProvider) : ManualCommand<
         if (settings.ExtractIl2CppFilesPath != null && File.Exists(settings.ExtractIl2CppFilesPath))
             return ValidationResult.Error(
                 $"Provided extracted IL2CPP files path {settings.ExtractIl2CppFilesPath} already exists as a file.");
+
+        if (settings.NameTranslationMap != null && !File.Exists(settings.NameTranslationMap))
+            return ValidationResult.Error($"Provided name translation map {settings.NameTranslationMap} does not exist.");
 
         if (settings is
             {

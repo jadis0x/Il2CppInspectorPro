@@ -48,7 +48,7 @@ namespace Il2CppInspector.Reflection
         public int MetadataToken { get; }
 
         // Name of parameter
-        public string Name { get; }
+        public string Name { get; set; }
         public string CSharpName => Constants.Keywords.Contains(Name) ? "@" + Name : Name.ToCIdentifier();
 
         // Type of this parameter

@@ -23,6 +23,7 @@ public class UiContext
     private readonly List<UnityHeaders> _potentialUnityVersions = [];
 
     private readonly LoadOptions _loadOptions = new();
+    private InspectorSettings _settings = new();
 
     private readonly List<(string FormatId, string OutputDirectory, Dictionary<string, string> Settings)> _queuedExports = [];
 
@@ -96,6 +97,12 @@ public class UiContext
             {
                 var typeModel = new TypeModel(inspector);
 
+                if (_settings.NameTranslationMapPath != null)
+                {
+                    await client.ShowLogMessage("Applying name translation map");
+                    typeModel.ApplyNameTranslationFromFile(_settings.NameTranslationMapPath);
+                }
+
                 // Just create the app model, do not initialize it - this is done lazily depending on the exports
                 _appModels.Add(new AppModel(typeModel, makeDefaultBuild: false));
             }
@@ -127,6 +134,8 @@ public class UiContext
     {
         await using (await LoadingSession.Start(client))
         {
+            _loadOptions.ImageBase = _settings.ImageBase;
+
             var streams = Inspector.GetStreamsFromPackage(inputFiles);
             if (streams != null)
             {
@@ -160,6 +169,7 @@ public class UiContext
                     else if (_binary == null && PathHeuristics.IsBinaryPath(inputFile))
                     {
                         stream.Position = 0;
+
                         _loadOptions.BinaryFilePath = inputFile;
 
                         if (await TryLoadBinaryFromStreamAsync(client, stream))
@@ -251,7 +261,7 @@ public class UiContext
 
     public Task SetSettingsAsync(UiClient client, InspectorSettings settings)
     {
-        _loadOptions.ImageBase = settings.ImageBase;
+        _settings = settings;
         return Task.CompletedTask;
     }
 }
