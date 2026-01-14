@@ -14,7 +14,8 @@ public ref struct NameTranslationParserContext
         Fields,
         Properties,
         Events,
-        Parameters
+        Parameters,
+        Hashes,
     }
 
     private CurrentSection _currentSection;
@@ -61,6 +62,11 @@ public ref struct NameTranslationParserContext
             case "#Parameters":
                 _currentSection = CurrentSection.Parameters;
                 break;
+            // Used in some variations of the standard name translation map.
+            // This doesn't seperate data by sections, but is easier to parse overall
+            case not null when line.StartsWith("#Hashes"):
+                _currentSection = CurrentSection.Hashes;
+                break;
             default:
                 Debug.Assert(false);
                 break;
@@ -91,7 +97,7 @@ public ref struct NameTranslationParserContext
 
             string deobfuscatedName;
             string? deobfuscatedNamespace;
-            if (_currentSection != CurrentSection.Classes)
+            if (_currentSection != CurrentSection.Classes && _currentSection != CurrentSection.Hashes)
             {
                 deobfuscatedNamespace = null;
                 deobfuscatedName = ParseFullName(deobfuscatedFullName);
