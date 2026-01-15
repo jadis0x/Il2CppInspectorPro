@@ -6,7 +6,6 @@ namespace Il2CppInspector.Next.Metadata;
 
 using StringIndex = int;
 using FieldIndex = int;
-using MethodIndex = int;
 using VTableIndex = int;
 
 [VersionedStruct]

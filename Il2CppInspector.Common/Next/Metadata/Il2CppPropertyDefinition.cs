@@ -4,7 +4,6 @@ using VersionedSerialization.Attributes;
 namespace Il2CppInspector.Next.Metadata;
 
 using StringIndex = int;
-using MethodIndex = int;
 
 [VersionedStruct]
 public partial record struct Il2CppPropertyDefinition

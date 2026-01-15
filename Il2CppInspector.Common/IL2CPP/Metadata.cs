@@ -97,7 +97,7 @@ namespace Il2CppInspector
             // Set object versioning for Bin2Object from metadata version
             Version = new StructVersion(Header.Version);
 
-            if (Version < MetadataVersions.V160 || Version > MetadataVersions.V1040) {
+            if (Version < MetadataVersions.V160 || Version > MetadataVersions.V1050) {
                 throw new InvalidOperationException($"The supplied metadata file is not of a supported version ({Header.Version}).");
             }
 
@@ -161,6 +161,12 @@ namespace Il2CppInspector
                         + $"_{InterfacesIndex.TagPrefix}{interfacesIndexSize}"
                         + $"_{NestedTypeIndex.TagPrefix}{nestedTypeIndexSize}"
                         + $"_{PropertyIndex.TagPrefix}{propertyIndexSize}";
+                }
+
+                if (Version >= MetadataVersions.V1050)
+                {
+                    var methodIndexSize = GetIndexSize(Header.Methods.Count);
+                    fullTag += $"_{MethodIndex.TagPrefix}{methodIndexSize}";
                 }
 
                 Version = new StructVersion(Version.Major, Version.Minor, fullTag);

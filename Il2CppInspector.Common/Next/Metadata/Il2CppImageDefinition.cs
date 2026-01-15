@@ -2,7 +2,6 @@
 
 using StringIndex = int;
 using AssemblyIndex = int;
-using MethodIndex = int;
 using CustomAttributeIndex = int;
 using VersionedSerialization.Attributes;
 

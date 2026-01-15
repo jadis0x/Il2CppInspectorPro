@@ -1,7 +1,6 @@
 ﻿namespace Il2CppInspector.Next.Metadata;
 
 using StringIndex = int;
-using MethodIndex = int;
 using VersionedSerialization.Attributes;
 
 [VersionedStruct]

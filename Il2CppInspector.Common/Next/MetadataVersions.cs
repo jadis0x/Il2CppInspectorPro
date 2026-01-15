@@ -44,4 +44,8 @@ public static class MetadataVersions
     public static readonly StructVersion V1040 = new(104);
     // NOTE: This version additionally uses tags to specify the size of InterfaceIndex, EventIndex, PropertyIndex, NestedTypeIndex,
     // alongside a new metadata section for Il2CppInlineArrayLength and a bitfield flag indicating an inline array.
+
+    // Unity 6000.5.0a5
+    public static readonly StructVersion V1050 = new(105);
+    // NOTE: This version additionally uses a tag to specify the size of MethodIndex.
 }
