@@ -56,7 +56,14 @@ namespace Il2CppInspector.Reflection
                     return null;
                 if (IsArray)
                     return Assembly.Model.TypesByFullName["System.Array"];
+                if (IsEnum)
+                    return Assembly.Model.TypesByFullName["System.Enum"];
+
                 if (Definition.IsValid) {
+                    // L-NOTE: On metadata v35 and above, enums store their element type in the parent index field
+                    // This means that we either have to implement a version check here, or handle enums in general.
+                    // I chose to do the latter, which is why there is an if (IsEnum) check above.
+
                     if (Definition.ParentIndex >= 0)
                         return Assembly.Model.TypesByReferenceIndex[Definition.ParentIndex];
                 }
