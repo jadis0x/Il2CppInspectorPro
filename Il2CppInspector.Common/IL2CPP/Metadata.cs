@@ -54,6 +54,7 @@ namespace Il2CppInspector
             : Header.AttributeDataOffset;
 
         public Dictionary<int, string> Strings { get; private set; } = [];
+        public Dictionary<int, byte[]> AssemblyPublicKeys { get; private set; } = [];
 
         // Set if something in the metadata has been modified / decrypted
         public bool IsModified { get; private set; } = false;
@@ -338,6 +339,22 @@ namespace Il2CppInspector
                         StringLiterals[i] = ReadFixedLengthString(dataOffset + stringLiteralList[i].DataIndex, 
                             (int)stringLiteralList[i].Length);
 
+                }
+            }
+
+            // These are stored in a special way, so we read them in advance.
+            if (Version == MetadataVersions.V242 || Version >= MetadataVersions.V244)
+            {
+                var stringOffset = Version >= MetadataVersions.V380
+                    ? Header.Strings.Offset
+                    : Header.StringOffset;
+
+                foreach (var assembly in Assemblies)
+                {
+                    Position = stringOffset + assembly.Aname.PublicKeyIndex;
+                    var length = ReadCompressedUInt32();
+
+                    AssemblyPublicKeys[assembly.Aname.PublicKeyIndex] = ReadBytes((int)length).ToArray();
                 }
             }
 

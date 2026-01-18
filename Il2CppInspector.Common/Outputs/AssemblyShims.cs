@@ -5,15 +5,14 @@
     All rights reserved.
 */
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using dnlib.DotNet;
 using dnlib.DotNet.Emit;
 using Il2CppInspector.Next;
+using Il2CppInspector.Next.Metadata;
 using Il2CppInspector.Reflection;
+using AssemblyNameFlags = System.Reflection.AssemblyNameFlags;
+
 
 namespace Il2CppInspector.Outputs
 {
@@ -184,6 +183,34 @@ namespace Il2CppInspector.Outputs
 
             // Add module to assembly
             asm.Modules.Add(module);
+            return module;
+        }
+
+        private AssemblyDefUser CreateAssembly(Il2CppAssemblyNameDefinition nameDefinition)
+        {
+            var name = model.Package.Strings[nameDefinition.NameIndex];
+            var version = new Version(nameDefinition.Major, nameDefinition.Minor, nameDefinition.Build,
+                nameDefinition.Revision);
+
+            return new AssemblyDefUser(name, version)
+            {
+                PublicKey = new PublicKey(model.Package.AssemblyPublicKeys[nameDefinition.PublicKeyIndex]),
+                Culture = model.Package.Strings[nameDefinition.CultureIndex],
+                HashAlgorithm = (AssemblyHashAlgorithm)nameDefinition.HashAlg,
+                HasPublicKey = nameDefinition.Flags.HasFlag(AssemblyNameFlags.PublicKey)
+            };
+        }
+
+        private ModuleDefUser CreateAssembly(Assembly assembly)
+        {
+            var module = new ModuleDefUser(assembly.ShortName)
+            {
+                Kind = ModuleKind.Dll
+            };
+
+            var asm = CreateAssembly(assembly.AssemblyDefinition.Aname);
+            asm.Modules.Add(module);
+
             return module;
         }
 
@@ -648,7 +675,7 @@ namespace Il2CppInspector.Outputs
 
             foreach (var asm in model.Assemblies) {
                 // Create assembly and add primary module to list
-                var module = CreateAssembly(asm.ShortName);
+                var module = CreateAssembly(asm);
                 module.Context = ctx;
                 modules.Add(asm, module);
             }

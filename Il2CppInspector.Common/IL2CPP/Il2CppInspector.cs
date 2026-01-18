@@ -62,6 +62,7 @@ namespace Il2CppInspector
         public ImmutableArray<int> AttributeTypeIndices => Metadata.AttributeTypeIndices;
         public ImmutableArray<uint> VTableMethodIndices => Metadata.VTableMethodIndices;
         public ImmutableArray<Il2CppFieldRef> FieldRefs => Metadata.FieldRefs;
+        public Dictionary<int, byte[]> AssemblyPublicKeys => Metadata.AssemblyPublicKeys;
         public Dictionary<int, (ulong, object)> FieldDefaultValue { get; } = new Dictionary<int, (ulong, object)>();
         public Dictionary<int, (ulong, object)> ParameterDefaultValue { get; } = new Dictionary<int, (ulong, object)>();
         public List<long> FieldOffsets { get; }
