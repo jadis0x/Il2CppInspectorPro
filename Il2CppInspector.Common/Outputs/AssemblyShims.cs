@@ -189,12 +189,28 @@ namespace Il2CppInspector.Outputs
         private AssemblyDefUser CreateAssembly(Il2CppAssemblyNameDefinition nameDefinition)
         {
             var name = model.Package.Strings[nameDefinition.NameIndex];
-            var version = new Version(nameDefinition.Major, nameDefinition.Minor, nameDefinition.Build,
-                nameDefinition.Revision);
+
+            Version version;
+            if (nameDefinition.Major != -1 && nameDefinition.Minor != -1 && nameDefinition.Build != -1 &&
+                nameDefinition.Revision != -1)
+            {
+                version = new Version(nameDefinition.Major, nameDefinition.Minor, nameDefinition.Build,
+                    nameDefinition.Revision);
+            }
+            else
+            {
+                version = new Version(0, 0, 0, 0);
+            }
+
+            PublicKey? publicKey = null;
+            if (nameDefinition.Flags.HasFlag(AssemblyNameFlags.PublicKey))
+            {
+                publicKey = new PublicKey(model.Package.AssemblyPublicKeys[nameDefinition.PublicKeyIndex]);
+            }
 
             return new AssemblyDefUser(name, version)
             {
-                PublicKey = new PublicKey(model.Package.AssemblyPublicKeys[nameDefinition.PublicKeyIndex]),
+                PublicKey = publicKey,
                 Culture = model.Package.Strings[nameDefinition.CultureIndex],
                 HashAlgorithm = (AssemblyHashAlgorithm)nameDefinition.HashAlg,
                 HasPublicKey = nameDefinition.Flags.HasFlag(AssemblyNameFlags.PublicKey)
