@@ -379,6 +379,7 @@ namespace Il2CppInspector
                         {
                             case '\\':
                                 publicKey[publicKeyCurrentIndex++] = publicKeyCurrentByte;
+                                publicKeyCurrentByte = 0;
                                 continue;
                             case 'x':
                                 continue;
