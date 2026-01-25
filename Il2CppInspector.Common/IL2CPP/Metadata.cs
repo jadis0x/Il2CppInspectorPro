@@ -6,6 +6,9 @@
 */
 
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Il2CppInspector.Next;
 using Il2CppInspector.Next.Metadata;
@@ -349,12 +352,46 @@ namespace Il2CppInspector
                     ? Header.Strings.Offset
                     : Header.StringOffset;
 
-                foreach (var assembly in Assemblies)
+                foreach (var assembly in Assemblies.Where(x => x.Aname.Flags.HasFlag(AssemblyNameFlags.PublicKey)))
                 {
                     Position = stringOffset + assembly.Aname.PublicKeyIndex;
                     var length = ReadCompressedUInt32();
 
                     AssemblyPublicKeys[assembly.Aname.PublicKeyIndex] = ReadBytes((int)length).ToArray();
+                }
+            }
+            else
+            {
+                foreach (var assembly in Assemblies.Where(x => x.Aname.Flags.HasFlag(AssemblyNameFlags.PublicKey)))
+                {
+                    var escapedPublicKey = Strings[assembly.Aname.PublicKeyIndex];
+                    Debug.Assert(escapedPublicKey[0] == '"' && escapedPublicKey[^1] == '"');
+
+                    var publicKeyHex = escapedPublicKey.AsSpan(1, escapedPublicKey.Length - 2);
+
+                    // Upper bound for the public key length, this could also be decreased
+                    var publicKey = new byte[publicKeyHex.Length];
+                    var publicKeyCurrentIndex = 0;
+                    var publicKeyCurrentByte = byte.MinValue;
+                    foreach (var val in publicKeyHex)
+                    {
+                        switch (val)
+                        {
+                            case '\\':
+                                publicKey[publicKeyCurrentIndex++] = publicKeyCurrentByte;
+                                continue;
+                            case 'x':
+                                continue;
+                            default:
+                                var currentCharValue =
+                                    byte.Parse(new ReadOnlySpan<char>(in val), NumberStyles.HexNumber);
+                                publicKeyCurrentByte = (byte)((publicKeyCurrentByte << 4) | currentCharValue);
+                                break;
+                        }
+                    }
+
+                    publicKey[publicKeyCurrentIndex++] = publicKeyCurrentByte;
+                    AssemblyPublicKeys[assembly.Aname.PublicKeyIndex] = publicKey[..(publicKeyCurrentIndex + 1)];
                 }
             }
 
