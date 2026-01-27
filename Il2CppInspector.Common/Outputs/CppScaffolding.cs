@@ -1,24 +1,27 @@
 ﻿// Copyright 2020 Robert Xiao - https://robertxiao.ca/
 // Copyright (c) 2020-2021 Katy Coe - http://www.djkaty.com - https://github.com/djkaty
 // Copyright (c) 2023 LukeFZ https://github.com/LukeFZ
+// Copyright (c) 2024 Jadis0x https://github.com/LukeFZ
 // All rights reserved
 
-using System;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using Il2CppInspector.Reflection;
 using Il2CppInspector.Cpp;
 using Il2CppInspector.Cpp.UnityHeaders;
 using Il2CppInspector.Model;
 using Il2CppInspector.Properties;
+using Il2CppInspector.Reflection;
+using System;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Il2CppInspector.Outputs
 {
-    public partial class CppScaffolding(AppModel model, bool useBetterArraySize = false)
+    public partial class CppScaffolding(AppModel model, bool useBetterArraySize = false, bool includeUnresolvedCppTypes = false)
     {
         private readonly AppModel _model = model;
+        private readonly bool _includeUnresolvedCppTypes = includeUnresolvedCppTypes;
 
         /*
          * 2017.2.1 changed the type of il2cpp_array_size_t to uintptr_t from int32_t. The code, however, uses static_cast<int32_t>(maxLength) to access this value,
@@ -142,17 +145,52 @@ namespace Il2CppInspector.Outputs
             }
         }
 
-        public void Write(string projectPath) {
+        private void ExtractIfEnabled(string sourcePath, string targetPath, string zipFileName, string targetFolderName = null)
+        {
+            var zipFilePath = Path.Combine(sourcePath, zipFileName);
+            if (!File.Exists(zipFilePath))
+                throw new FileNotFoundException($"Missing archive: {zipFilePath}");
+            var folderName = targetFolderName ?? Path.GetFileNameWithoutExtension(zipFileName);
+            var extractPath = Path.Combine(targetPath, folderName);
+            Directory.CreateDirectory(extractPath);
+            ZipFile.ExtractToDirectory(zipFilePath, extractPath, overwriteFiles: true);
+        }
+
+        public void Write(string projectPath, string projectName = null) {
+
+            var resolvedProjectName = string.IsNullOrWhiteSpace(projectName)
+                ? "Il2CppDll"
+                : projectName.Trim();
+
+            var invalidCharacters = Path.GetInvalidFileNameChars();
+            var sanitizedProjectName = new string(resolvedProjectName
+                .Select(ch => invalidCharacters.Contains(ch) ? '_' : ch)
+                .ToArray());
+
+            if (string.IsNullOrWhiteSpace(sanitizedProjectName))
+                sanitizedProjectName = "Il2CppDll";
+
             // Ensure output directory exists and is not a file
             // A System.IOException will be thrown if it's a file'
             var srcUserPath = Path.Combine(projectPath, "user");
             var srcFxPath = Path.Combine(projectPath, "framework");
             var srcDataPath = Path.Combine(projectPath, "appdata");
 
+            var srcLibraryPath = Path.Combine(projectPath, "libraries");
+            var srhHandlersPath = Path.Combine(projectPath, "handlers");
+            var srhDefinitionsPath = Path.Combine(projectPath, "definitions");
+
             Directory.CreateDirectory(projectPath);
             Directory.CreateDirectory(srcUserPath);
             Directory.CreateDirectory(srcFxPath);
             Directory.CreateDirectory(srcDataPath);
+
+            Directory.CreateDirectory(srcLibraryPath);
+            Directory.CreateDirectory(srhHandlersPath);
+            Directory.CreateDirectory(srhDefinitionsPath);
+
+            string inspectorBasePath = AppDomain.CurrentDomain.BaseDirectory;
+            string inspectorLibrariesPath = Path.Combine(inspectorBasePath, "libraries");
 
             // Write type definitions to il2cpp-types.h
             WriteTypes(Path.Combine(srcDataPath, "il2cpp-types.h"));
@@ -263,6 +301,13 @@ namespace Il2CppInspector.Outputs
                 writeCode($"#define __IL2CPP_METADATA_VERSION {_model.Package.Version.Major * 10 + _model.Package.Version.Minor * 10:F0}");
             }
 
+            if (Directory.Exists(inspectorLibrariesPath))
+            {
+                ExtractIfEnabled(inspectorLibrariesPath, srcLibraryPath, "imgui.zip", "imgui");
+                ExtractIfEnabled(inspectorLibrariesPath, srcLibraryPath, "detours.zip", "detours");
+                ExtractIfEnabled(inspectorLibrariesPath, projectPath, "handlers.zip", "handlers");
+            }
+
             // Write boilerplate code
             File.WriteAllText(Path.Combine(srcFxPath, "dllmain.cpp"), Resources.Cpp_DLLMainCpp);
             File.WriteAllText(Path.Combine(srcFxPath, "helpers.cpp"), Resources.Cpp_HelpersCpp);
@@ -272,6 +317,8 @@ namespace Il2CppInspector.Outputs
             File.WriteAllText(Path.Combine(srcFxPath, "il2cpp-init.h"), Resources.Cpp_Il2CppInitH);
             File.WriteAllText(Path.Combine(srcFxPath, "pch-il2cpp.cpp"), Resources.Cpp_PCHIl2Cpp);
             File.WriteAllText(Path.Combine(srcFxPath, "pch-il2cpp.h"), Resources.Cpp_PCHIl2CppH);
+            File.WriteAllText(Path.Combine(srcFxPath, "version.cpp"), Resources.CppVersion_Cpp);
+            File.WriteAllText(Path.Combine(srcFxPath, "version.h"), Resources.CppVersion_H);
 
             // Write user code without overwriting existing code
             void WriteIfNotExists(string path, string contents) { if (!File.Exists(path)) File.WriteAllText(path, contents); }
@@ -279,9 +326,13 @@ namespace Il2CppInspector.Outputs
             WriteIfNotExists(Path.Combine(srcUserPath, "main.cpp"), Resources.Cpp_MainCpp);
             WriteIfNotExists(Path.Combine(srcUserPath, "main.h"), Resources.Cpp_MainH);
 
+            WriteIfNotExists(Path.Combine(srhDefinitionsPath, "version.def"), Resources.CppVersionDef);
+
+            WriteIfNotExists(Path.Combine(srcUserPath, "settings.cpp"), Resources.Cpp_SettingsCpp);
+            WriteIfNotExists(Path.Combine(srcUserPath, "settings.h"), Resources.Cpp_SettingsH);
+
             // Write Visual Studio project and solution files
             var projectGuid = Guid.NewGuid();
-            var projectName = "IL2CppDLL";
             var projectFile = projectName + ".vcxproj";
 
             WriteIfNotExists(Path.Combine(projectPath, projectFile),
@@ -290,17 +341,33 @@ namespace Il2CppInspector.Outputs
             var guid1 = Guid.NewGuid();
             var guid2 = Guid.NewGuid();
             var guid3 = Guid.NewGuid();
+            var guid4 = Guid.NewGuid();
+            var guid5 = Guid.NewGuid();
+            var guid6 = Guid.NewGuid();
+            var guid7 = Guid.NewGuid();
+            var guid8 = Guid.NewGuid();
+            var guid9 = Guid.NewGuid();
+            var guid10 = Guid.NewGuid();
+            var guid11 = Guid.NewGuid();
             var filtersFile = projectFile + ".filters";
 
             var filters = Resources.CppProjFilters
                 .Replace("%GUID1%", guid1.ToString())
                 .Replace("%GUID2%", guid2.ToString())
-                .Replace("%GUID3%", guid3.ToString());
+                .Replace("%GUID3%", guid3.ToString())
+                .Replace("%GUID4%", guid4.ToString())
+                .Replace("%GUID5%", guid5.ToString())
+                .Replace("%GUID6%", guid6.ToString())
+                .Replace("%GUID7%", guid7.ToString())
+                .Replace("%GUID8%", guid8.ToString())
+                .Replace("%GUID9%", guid9.ToString())
+                .Replace("%GUID10%", guid10.ToString())
+                .Replace("%GUID11%", guid11.ToString());
 
             WriteIfNotExists(Path.Combine(projectPath, filtersFile), filters);
 
             var solutionGuid = Guid.NewGuid();
-            var solutionFile = projectName + ".sln";
+            var solutionFile = sanitizedProjectName + ".sln";
 
             var sln = Resources.CppSlnTemplate
                 .Replace("%PROJECTGUID%", projectGuid.ToString())
@@ -312,8 +379,11 @@ namespace Il2CppInspector.Outputs
         }
 
         private void writeHeader() {
-            writeLine("// Generated C++ file by Il2CppInspector - http://www.djkaty.com - https://github.com/djkaty");
+            writeLine("// Generated C++ file by Il2CppInspectorPro - https://github.com/Jadis0x/Il2CppInspectorPro");
+            writeLine("// Original author: djkaty - https://github.com/djkaty");
+            writeLine("// Enhanced by Jadis0x - https://github.com/jadis0x");
             writeLine("// Target Unity version: " + _model.UnityHeaders);
+            writeLine("// Date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             writeLine("");
         }
 

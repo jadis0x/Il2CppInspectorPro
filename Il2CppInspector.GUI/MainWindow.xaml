@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Il2CppInspectorGUI"
         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
-        Title="Il2CppInspectorRedux" Height="850" Width="1100" Background="White"
+        Title="Il2CppInspectorPro" Height="850" Width="1100" Background="White"
         WindowStartupLocation="CenterScreen"
         ContentRendered="MainWindow_OnContentRendered"
         Drop="MainWindow_OnDrop">
@@ -66,15 +66,15 @@
                 <!-- Footer text -->
                 <TextBlock DockPanel.Dock="Bottom" TextWrapping="WrapWithOverflow" Margin="5">
                     If you find this tool useful, please donate to help support its continued development!<LineBreak/>
+                    Donate to Jadis0x via <Hyperlink NavigateUri="http://buymeacoffee.com/Jadis0x" RequestNavigate="Hyperlink_OnRequestNavigate">BuyMeACoffee</Hyperlink><LineBreak/>
                     Donate to LukeFZ via <Hyperlink NavigateUri="http://buymeacoffee.com/LukeFZ" RequestNavigate="Hyperlink_OnRequestNavigate">BuyMeACoffee</Hyperlink><LineBreak/>
                     Donate to LukeFZ via <Hyperlink NavigateUri="http://patreon.com/LukeFZ" RequestNavigate="Hyperlink_OnRequestNavigate">Patreon</Hyperlink><LineBreak/>
                     Donate to djkaty via <Hyperlink NavigateUri="http://paypal.me/djkaty" RequestNavigate="Hyperlink_OnRequestNavigate">PayPal</Hyperlink><LineBreak/>
                     Donate to djkaty with bitcoin:<LineBreak/><TextBox IsReadOnly="True">3FoRUqUXgYj8NY8sMQfhX6vv9LqR3e2kzz</TextBox><LineBreak/>
                     <LineBreak/>
-                    <Hyperlink NavigateUri="https://github.com/LukeFZ/Il2CppInspectorRedux" RequestNavigate="Hyperlink_OnRequestNavigate">Il2CppInspectorRedux on GitHub</Hyperlink><LineBreak/>
-                    <Hyperlink NavigateUri="https://github.com/LukeFZ" RequestNavigate="Hyperlink_OnRequestNavigate">https://github.com/LukeFZ</Hyperlink><LineBreak/>
-                    <Hyperlink NavigateUri="http://www.djkaty.com" RequestNavigate="Hyperlink_OnRequestNavigate">www.djkaty.com</Hyperlink><LineBreak/>
-                    &#169; Katy Coe 2017-2021, LukeFZ 2023
+                    <Hyperlink NavigateUri="https://github.com/Jadis0x/Il2CppInspectorPro" RequestNavigate="Hyperlink_OnRequestNavigate">Il2CppInspectorPro on GitHub</Hyperlink><LineBreak/>
+                    <Hyperlink NavigateUri="https://github.com/Jadis0x" RequestNavigate="Hyperlink_OnRequestNavigate">https://github.com/Jadis0x</Hyperlink><LineBreak/>
+                    &#169; Katy Coe 2017-2021, LukeFZ 2023, Jadis0x 2024
                 </TextBlock>
 
                 <!-- Image details view -->
@@ -372,22 +372,28 @@
                         <Separator Margin="5,15,5,15"/>
 
                         <!-- C++ scaffolding -->
-                        <RadioButton GroupName="grpOutputType" Name="rdoOutputCpp" VerticalContentAlignment="Center" FontSize="18" Foreground="{StaticResource MicrosoftGreen}">C++ scaffolding / DLL injection project</RadioButton>
-                        <DockPanel>
-                            <ComboBox Name="cboCppUnityVersion" DockPanel.Dock="Right" Margin="4"></ComboBox>
-                            <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Unity version (if known):</Label>
-                        </DockPanel>
-                        <DockPanel>
-                            <ComboBox Name="cboCppCompiler" DockPanel.Dock="Right" Margin="4" Width="80">
-                                <ComboBoxItem IsSelected="True">MSVC</ComboBoxItem>
-                                <ComboBoxItem>GCC</ComboBoxItem>
-                            </ComboBox>
-                            <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Target C++ compiler for output:</Label>
-                        </DockPanel>
+                            <RadioButton GroupName="grpOutputType" Name="rdoOutputCpp" VerticalContentAlignment="Center" FontSize="18" Foreground="{StaticResource MicrosoftGreen}">C++ scaffolding / DLL injection project</RadioButton>
+                            <DockPanel>
+                                <ComboBox Name="cboCppUnityVersion" DockPanel.Dock="Right" Margin="4"></ComboBox>
+                                <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Unity version (if known):</Label>
+                            </DockPanel>
+                            <DockPanel>
+                                <ComboBox Name="cboCppCompiler" DockPanel.Dock="Right" Margin="4" Width="80">
+                                    <ComboBoxItem IsSelected="True">MSVC</ComboBoxItem>
+                                    <ComboBoxItem>GCC</ComboBoxItem>
+                                </ComboBox>
+                                <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Target C++ compiler for output:</Label>
+                            </DockPanel>
+                            <DockPanel>
+                                <TextBox Name="txtCppProjectName" Width="180" DockPanel.Dock="Right" Margin="4" Text="il2cpp-dll-injection"/>
+                                <Label DockPanel.Dock="Left" Width="250" VerticalAlignment="Center" HorizontalAlignment="Left">Project name:</Label>
+                            </DockPanel>
+                            <CheckBox Name="cbIncludeUnresolvedCppTypes" Margin="4,4,4,4" ToolTip="Also emit open generic and other unresolved IL2CPP types so their addresses appear in the generated headers.">
+                                Include types without generated C++ definitions
+                            </CheckBox>
+                            <Separator Margin="5,15,5,15"/>
 
-                        <Separator Margin="5,15,5,15"/>
-                            
-                        <!-- JSON metadata -->
+                            <!-- JSON metadata -->
                         <RadioButton GroupName="grpOutputType" Name="rdoOutputJSON" VerticalContentAlignment="Center" FontSize="18" Foreground="{StaticResource MicrosoftGreen}">JSON metadata</RadioButton>
                         <DockPanel>
                             <ComboBox Name="cboJsonUnityVersion" DockPanel.Dock="Right" Margin="4"></ComboBox>
