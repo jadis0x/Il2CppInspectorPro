@@ -37,10 +37,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{290A5778-CCBA-439B-BD5C-76D2D4848F6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{452BE076-A87D-4731-B223-2E249C00EBC1}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\build.yml = .github\workflows\build.yml
-		.github\workflows\release.yml = .github\workflows\release.yml
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VersionedSerialization", "VersionedSerialization\VersionedSerialization.csproj", "{803C3421-1907-4114-8B6B-F5E1789FD6A6}"
 EndProject
